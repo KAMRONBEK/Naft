@@ -10,7 +10,7 @@ if (Platform.OS === 'android') {
     }
 }
 
-const App = () => {
+const App: () => React$Node = () => {
     return (
         <NavigationContainer>
             <AppRouter />
