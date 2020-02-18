@@ -7,7 +7,7 @@ import strings from '../locales/strings';
 
 const SearchBar = () => {
     let [searchOn, setSearchOn] = useState(false);
-
+    let [searchString, setSearchString] = useState('');
     return (
         <View
             style={[
@@ -18,7 +18,11 @@ const SearchBar = () => {
             ]}>
             {!searchOn ? (
                 <View style={styles.iconWrapper}>
-                    <EvilIcons name="search" color={colors.white} size={25} />
+                    <EvilIcons
+                        name="search"
+                        color={colors.paleGray}
+                        size={25}
+                    />
                 </View>
             ) : (
                 <TouchableOpacity>
@@ -45,9 +49,14 @@ const SearchBar = () => {
                             width: 220
                         }
                     ]}
+                    value={searchString}
                     placeholder={strings.imLookingFor}
-                    placeholderTextColor={colors.white}
+                    placeholderTextColor={colors.paleGray}
+                    onChangeText={text => {
+                        setSearchString(text);
+                    }}
                     onFocus={() => {
+                        setSearchString('');
                         LayoutAnimation.configureNext(
                             LayoutAnimation.Presets.easeInEaseOut
                         );

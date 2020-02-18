@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         backgroundColor: colors.red,
-        padding: 15,
+        padding: 12,
         alignItems: 'center'
     },
     iconWrapper: {

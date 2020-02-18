@@ -1,38 +1,26 @@
 import React, {useState} from 'react';
-import {
-    View,
-    Text,
-    StyleSheet,
-    TouchableWithoutFeedback,
-    Image
-} from 'react-native';
+import {View, Text, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import colors from '../constants/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-const SearchItem = ({fav, tag}) => {
-    let [isFavorite, setIsFavorite] = useState(fav);
+const JobCard = ({item}) => {
+    let [isFavorite, setIsFavorite] = useState(item.fav);
 
     return (
         <View style={styles.container}>
             <View style={styles.box}>
-                {tag && (
+                {item.tag && (
                     <View
                         style={[
                             styles.tag,
-                            tag && {borderTopColor: tag, borderLeftColor: tag}
+                            item.tag && {
+                                borderTopColor: item.tag,
+                                borderLeftColor: item.tag
+                            }
                         ]}
                     />
                 )}
-                <View style={styles.imageWrapper}>
-                    <Image
-                        source={{
-                            uri:
-                                'https://content.etilize.com/Finish/1031247865.jpg'
-                        }}
-                        style={styles.image}
-                    />
-                </View>
                 <View style={styles.content}>
                     <View style={styles.titleWrapper}>
                         <Ionicons
@@ -44,35 +32,43 @@ const SearchItem = ({fav, tag}) => {
                         <Text style={styles.title}>Alfredo Kamuran</Text>
                     </View>
                     <Text numberOfLines={1} style={styles.desc}>
-                        This is some description text
+                        This is some description words
                     </Text>
                     <View style={styles.infoWrapper}>
-                        <View style={styles.titleWrapper}>
-                            <FontAwesome
-                                name="money"
-                                color={colors.black}
-                                size={13}
-                                style={{width: 20}}
-                            />
-                            <Text style={styles.title}>$44.50/hr</Text>
-                        </View>
-                        <View
-                            style={{
-                                borderWidth: 1,
-                                marginHorizontal: 10,
-                                height: 15,
-                                borderColor: colors.black
-                            }}
+                        <FontAwesome
+                            name="dollar"
+                            color={colors.green}
+                            size={14}
+                            style={{width: 20}}
                         />
-                        <View style={styles.titleWrapper}>
-                            <FontAwesome
-                                name="map-marker"
-                                color={colors.paleGray}
-                                size={14}
-                                style={{width: 20}}
-                            />
-                            <Text style={styles.title}>England</Text>
-                        </View>
+                        <Text style={styles.info}>Professional</Text>
+                    </View>
+                    <View style={styles.infoWrapper}>
+                        <FontAwesome
+                            name="map-marker"
+                            color={colors.paleGray}
+                            size={14}
+                            style={{width: 20}}
+                        />
+                        <Text style={styles.info}>England</Text>
+                    </View>
+                    <View style={styles.infoWrapper}>
+                        <FontAwesome
+                            name="folder-o"
+                            color={colors.blue}
+                            size={14}
+                            style={{width: 20}}
+                        />
+                        <Text style={styles.info}>Type: Per Hour</Text>
+                    </View>
+                    <View style={styles.infoWrapper}>
+                        <Ionicons
+                            name="md-time"
+                            color={colors.red}
+                            size={14}
+                            style={{width: 20}}
+                        />
+                        <Text style={styles.info}>Professional</Text>
                     </View>
                 </View>
             </View>
@@ -101,22 +97,24 @@ const SearchItem = ({fav, tag}) => {
 
 const styles = StyleSheet.create({
     container: {
+        width: 260,
         backgroundColor: 'transparent',
-        marginTop: 10,
-        marginHorizontal: 15,
-        flexDirection: 'row',
-        alignItems: 'center'
+        paddingBottom: 20,
+        paddingRight: 15,
+        marginTop: 15,
+        flexDirection: 'row'
     },
     box: {
-        backgroundColor: colors.white,
-        padding: 18,
-        marginRight: 20,
         flex: 1,
+        padding: 18,
+        backgroundColor: colors.white,
         borderRadius: 5,
         overflow: 'hidden',
         flexDirection: 'row'
     },
     tag: {
+        top: 0,
+        left: 0,
         position: 'absolute',
         width: 0,
         height: 0,
@@ -127,8 +125,10 @@ const styles = StyleSheet.create({
         borderBottomColor: 'transparent',
         borderRightColor: 'transparent'
     },
-    imageWrapper: {
-        overflow: 'hidden'
+    content: {
+        flex: 1,
+        paddingRight: 10,
+        justifyContent: 'space-between'
     },
     titleWrapper: {
         flexDirection: 'row',
@@ -138,29 +138,22 @@ const styles = StyleSheet.create({
         color: colors.black
     },
     desc: {
-        fontSize: 17,
-        color: colors.black
+        paddingVertical: 5,
+        fontSize: 17
     },
     infoWrapper: {
         flexDirection: 'row',
         alignItems: 'center'
     },
-    image: {
-        borderRadius: 5,
-        width: 70,
-        height: 70,
-        resizeMode: 'cover'
-    },
-    content: {
-        flex: 1,
-        paddingHorizontal: 10,
-        justifyContent: 'space-between'
+    info: {
+        paddingVertical: 3
     },
     favIcon: {
         position: 'absolute',
         width: 40,
         height: 40,
-        right: 0,
+        right: 30,
+        bottom: 0,
         borderWidth: 1,
         borderColor: colors.paleGray,
         borderRadius: 50,
@@ -170,4 +163,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default SearchItem;
+export default JobCard;
