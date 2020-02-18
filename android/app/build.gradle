@@ -160,6 +160,7 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+			
         }
     }
     // applicationVariants are e.g. debug, release
@@ -179,6 +180,15 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-vector-icons')
+
+    implementation 'com.google.android.gms:play-services-base:+'       //add this line
+    implementation 'com.google.android.gms:play-services-maps:+' 
+
+	implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
+	implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02'
+
+    implementation project(':react-native-gesture-handler')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
