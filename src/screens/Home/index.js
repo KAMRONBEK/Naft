@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import SearchItem from '../components/SearchItem';
-import colors from '../constants/colors';
+import SearchItem from '../../components/SearchItem';
+import colors from '../../constants/colors';
 import {FlatList} from 'react-native-gesture-handler';
-import JobCard from '../components/JobCard';
+import JobCard from '../../components/JobCard';
 
 const Home = () => {
     const jobList = [
