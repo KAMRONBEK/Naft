@@ -1,42 +1,64 @@
 import React, {useState, useEffect} from 'react';
-import {
-    View,
-    Text,
-    StyleSheet,
-    TouchableWithoutFeedback,
-    LayoutAnimation
-} from 'react-native';
+import {View, Text, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import SearchBar from '../components/SearchBar';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import Icons from 'react-native-vector-icons/SimpleLineIcons';
 import colors from '../constants/colors';
 import {withNavigation} from '@react-navigation/compat';
 import {useIsDrawerOpen} from '@react-navigation/drawer';
+import Animated, {Easing} from 'react-native-reanimated';
+import {DrawerGestureContext} from '@react-navigation/drawer/src/index';
 
-const Header = ({navigation}) => {
+let SimpleLineIcons = Animated.createAnimatedComponent(Icons);
+
+const Header = ({navigation, progress}) => {
+    const isDrawerOpen = useIsDrawerOpen();
+    console.warn(progress);
+	
+    let [rotateValue] = useState(new Animated.Value(0));
+
+    let rotateAnimation = () => {
+        Animated.timing(rotateValue, {
+            toValue: isDrawerOpen ? 45 : 0,
+            duration: isDrawerOpen ? 200 : 100,
+            easing: Easing.linear
+        }).start(() => {});
+    };
+
+    const interpolatedRotateAnimation = Animated.concat(
+        rotateValue,
+        'deg'
+    ); /* '0deg' */
+
+    useEffect(() => {
+        rotateAnimation();
+    }, [isDrawerOpen]);
+
     return (
         <View style={styles.container}>
             <TouchableWithoutFeedback
                 onPress={() => {
-                    LayoutAnimation.configureNext(
-                        LayoutAnimation.Presets.linear
-                    );
                     navigation.toggleDrawer();
                 }}>
                 <View style={[styles.iconWrapper]}>
-                    <SimpleLineIcons
-                        name="menu"
-                        color={colors.white}
-                        size={25}
-                        style={
-                            useIsDrawerOpen()
-                                ? {
-                                      transform: [{rotate: '45deg'}]
-                                  }
-                                : {
-                                      transform: [{rotate: '0deg'}]
-                                  }
-                        }
-                    />
+                    <DrawerGestureContext.Consumer>
+                        {props => {
+                            let ref = props || props.current;
+                            return (
+                                <SimpleLineIcons
+                                    name="menu"
+                                    color={colors.white}
+                                    size={25}
+                                    style={{
+                                        transform: [
+                                            {
+                                                rotate: interpolatedRotateAnimation
+                                            }
+                                        ]
+                                    }}
+                                />
+                            );
+                        }}
+                    </DrawerGestureContext.Consumer>
                 </View>
             </TouchableWithoutFeedback>
             <View style={styles.searchWrapper}>

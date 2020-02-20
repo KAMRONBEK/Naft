@@ -7,6 +7,7 @@ export default {
     blue: '#3498db',
     green: '#00cc8d',
     paleGray: '#dddddd',
-    darkGray: '#bbb',
+    darkGray: '#767676',
+    darkGrayBlue: '#3d4461',
     paleTransparent: 'rgba(0,0,0,0.1)'
 };
