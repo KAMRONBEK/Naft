@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Image} from 'react-native';
 import colors from '../constants/colors';
 import DrawetItem from '../components/DrawerItem';
 
-const DrawerContent = ({progress}) => {
+const DrawerContent = ({progress, ...props}) => {
     return (
         <View style={styles.container}>
             <View style={styles.top}></View>
@@ -72,8 +72,8 @@ const styles = StyleSheet.create({
         flex: 1
     },
     top: {
-        // backgroundColor: colors.red,
-        backgroundColor: colors.darkGray,
+        backgroundColor: colors.red,
+        // backgroundColor: colors.darkGray,
         height: 100
     },
     avatarWrapper: {
@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
     },
     bottom: {
         flex: 1,
-        // backgroundColor: colors.white,
-        backgroundColor: colors.darkGrayBlue,
+        backgroundColor: colors.white,
+        // backgroundColor: colors.darkGrayBlue,
         alignItems: 'center'
     },
     menus: {

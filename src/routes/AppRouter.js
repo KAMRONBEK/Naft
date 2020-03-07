@@ -3,7 +3,14 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {Home, Settings, Jobs, Freelancer, Company} from '../screens';
+import {
+    Home,
+    Settings,
+    Jobs,
+    Freelancer,
+    Company,
+    FreelancerPage
+} from '../screens';
 import Header from '../components/Header';
 import colors from '../constants/colors';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -45,12 +52,21 @@ let AppRouter = () => {
     };
     const FreelancerStack = () => {
         return (
-            <Stack.Navigator>
+            <Stack.Navigator
+            //initialRouteName="FreelancerPage"
+            >
                 <Stack.Screen
                     name="FreelancerStack"
                     component={Freelancer}
                     options={{
                         header: () => <Header />
+                    }}
+                />
+                <Stack.Screen
+                    name="FreelancerPage"
+                    component={FreelancerPage}
+                    options={{
+                        header: () => <Header back={true} />
                     }}
                 />
             </Stack.Navigator>
@@ -86,14 +102,14 @@ let AppRouter = () => {
     const BottomTabStack = () => {
         return (
             <TopTab.Navigator
-                // shifting={false}
+                initialRouteName="Company"
                 backBehavior="history"
-                // adaptive={true}
                 tabBarPosition="bottom"
                 barStyle={{
                     backgroundColor: colors.white,
                     justifyContent: 'center'
                 }}
+                // lazy={true}
                 tabBarOptions={{
                     labelStyle: {
                         margin: 0,
@@ -109,6 +125,7 @@ let AppRouter = () => {
                         padding: 0,
                         paddingVertical: 5
                     },
+
                     showIcon: true,
                     adaptive: true
                 }}>
@@ -189,6 +206,9 @@ let AppRouter = () => {
                 drawerContent={props => {
                     progress = props.progress;
                     return <DrawerContent {...props} />;
+                }}
+                drawerContentOptions={{
+                    activeTintColor: colors.red
                 }}
                 drawerStyle={{
                     width: 100

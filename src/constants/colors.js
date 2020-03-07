@@ -9,5 +9,7 @@ export default {
     paleGray: '#dddddd',
     darkGray: '#767676',
     darkGrayBlue: '#3d4461',
-    paleTransparent: 'rgba(0,0,0,0.1)'
+    paleTransparent: 'rgba(0,0,0,0.1)',
+    deepLilac: '#9b59b6',
+    gold: '#fecb02'
 };

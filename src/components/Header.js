@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import SearchBar from '../components/SearchBar';
 import Icons from 'react-native-vector-icons/SimpleLineIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import colors from '../constants/colors';
 import {withNavigation} from '@react-navigation/compat';
 import {useIsDrawerOpen} from '@react-navigation/drawer';
@@ -10,10 +11,9 @@ import {DrawerGestureContext} from '@react-navigation/drawer/src/index';
 
 let SimpleLineIcons = Animated.createAnimatedComponent(Icons);
 
-const Header = ({navigation, progress}) => {
+const Header = ({navigation, progress, back}) => {
     const isDrawerOpen = useIsDrawerOpen();
-    console.warn(progress);
-	
+
     let [rotateValue] = useState(new Animated.Value(0));
 
     let rotateAnimation = () => {
@@ -35,6 +35,24 @@ const Header = ({navigation, progress}) => {
 
     return (
         <View style={styles.container}>
+            {back && (
+                <TouchableWithoutFeedback
+                    onPress={() => {
+                        navigation.popToTop();
+                    }}>
+                    <View
+                        style={{
+                            padding: 5,
+                            marginRight: 10
+                        }}>
+                        <Ionicons
+                            name="ios-arrow-back"
+                            size={25}
+                            color={colors.white}
+                        />
+                    </View>
+                </TouchableWithoutFeedback>
+            )}
             <TouchableWithoutFeedback
                 onPress={() => {
                     navigation.toggleDrawer();

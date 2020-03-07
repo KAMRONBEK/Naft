@@ -18,7 +18,7 @@ const DrawerItem = ({name, antIcon, simpleIcon, to, onPress, navigation}) => {
             }>
             <View style={styles.container}>
                 {antIcon ? (
-                    <AntDesign name={antIcon} size={25} color={colors.white} />
+                    <AntDesign name={antIcon} size={25} color={colors.black} />
                 ) : (
                     <></>
                 )}
@@ -26,7 +26,7 @@ const DrawerItem = ({name, antIcon, simpleIcon, to, onPress, navigation}) => {
                     <SimpleLineIcons
                         name={simpleIcon}
                         size={25}
-                        color={colors.white}
+                        color={colors.black}
                     />
                 ) : (
                     <></>
@@ -43,7 +43,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     name: {
-        color: colors.white
+        color: colors.black
+        // color: colors.white
     }
 });
 

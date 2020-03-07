@@ -86,7 +86,7 @@ const JobCard = ({item}) => {
                     ]}>
                     <Ionicons
                         name="ios-heart"
-                        size={25}
+                        size={15}
                         color={isFavorite ? colors.white : colors.paleGray}
                     />
                 </View>
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         paddingBottom: 20,
         paddingRight: 15,
-        marginTop: 15,
+        // marginTop: 15,
         flexDirection: 'row'
     },
     box: {
@@ -150,10 +150,10 @@ const styles = StyleSheet.create({
     },
     favIcon: {
         position: 'absolute',
-        width: 40,
-        height: 40,
-        right: 30,
-        bottom: 0,
+        width: 25,
+        height: 25,
+        right: 35,
+        bottom: 7,
         borderWidth: 1,
         borderColor: colors.paleGray,
         borderRadius: 50,
