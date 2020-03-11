@@ -8,11 +8,11 @@ const CatogoryCard = ({item}) => {
             <Image
                 style={styles.image}
                 source={{
-                    uri: 'https://content.etilize.com/Finish/1031247865.jpg'
+                    uri: item.image
                 }}
             />
             <View style={styles.textWrapper}>
-                <Text>{item.name}</Text>
+                <Text style={styles.text}>{item.name}</Text>
             </View>
         </View>
     );
@@ -20,23 +20,26 @@ const CatogoryCard = ({item}) => {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 10,
-        paddingVertical: 15,
+        paddingLeft: 10,
+        paddingVertical: 10,
         backgroundColor: colors.white,
         marginRight: 7,
         flexDirection: 'row',
         alignItems: 'center',
-        borderRadius: 5
+        borderRadius: 5,
+        borderWidth: 0.3,
+        borderColor: colors.paleGray
     },
     image: {
         height: 50,
         width: 50
     },
     textWrapper: {
-        width: 80,
+        width: 90,
         paddingHorizontal: 10,
         justifyContent: 'center'
-    }
+    },
+    text: {fontSize: 12}
 });
 
 export default CatogoryCard;

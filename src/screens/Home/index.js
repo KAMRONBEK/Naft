@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     View,
     Text,
@@ -11,91 +11,99 @@ import FreelancerCard from '../../components/FreelancerCard';
 import colors from '../../constants/colors';
 import JobCard from '../../components/JobCard';
 import CategoryCard from '../../components/CategoryCard';
+import {freelancerList} from '../Jobs';
+import {withNavigation} from '@react-navigation/compat';
+import requests from '../../api/requests';
 
-const Home = () => {
-    const jobList = [
-        {
-            id: 1,
-            tag: colors.green,
-            fav: true
-        },
-        {
-            id: 2,
-            tag: colors.orange,
-            fav: false
-        },
-        {
-            id: 3,
-            tag: colors.yellow,
-            fav: true
-        }
-    ];
+export const jobList = [
+    {
+        id: 1,
+        tag: colors.green,
+        fav: true
+    },
+    {
+        id: 2,
+        tag: colors.orange,
+        fav: false
+    },
+    {
+        id: 3,
+        tag: colors.yellow,
+        fav: true
+    }
+];
 
-    const cateogryList = [
-        {
-            id: 1,
-            name: 'Graphics & Design'
-        },
-        {
-            id: 2,
-            name: 'Graphics & Design'
-        },
-        {
-            id: 3,
-            name: 'Graphics & Design'
-        },
-        {
-            id: 4,
-            name: 'Graphics & Design'
-        },
-        {
-            id: 5,
-            name: 'Graphics & Design'
-        }
-    ];
+const Home = ({navigation}) => {
+    const [categoryList, setCategoryList] = useState([]);
+
+    useEffect(() => {}, [
+        requests.list
+            .getCategory()
+            .then(res => {
+                setCategoryList(res.data);
+            })
+            .catch(err => {
+                console.warn(err);
+            })
+    ]);
 
     return (
         <ScrollView
             showsVerticalScrollIndicator={false}
             style={styles.container}>
-            <View style={styles.top}>
-                <View style={styles.banner}>
-                    <Text style={styles.bannerTitle}>Explore Categories</Text>
-                    <Text style={styles.bannerSubTitle}>
-                        Professional by categoies
-                    </Text>
+            <View style={styles.topImage}>
+                <Image
+                    source={{
+                        uri:
+                            'https://demotix.com/wp-content/uploads/2019/10/job.jpg'
+                    }}
+                    style={styles.image}
+                />
+            </View>
+            <View style={styles.banner}>
+                <Text style={styles.bannerTitle}>Explore Categories</Text>
+                <Text style={styles.bannerSubTitle}>
+                    Professional by categoies
+                </Text>
+                {!!categoryList && (
                     <FlatList
                         showsHorizontalScrollIndicator={false}
                         horizontal={true}
-                        data={cateogryList}
+                        data={categoryList || [{id: 1, name: 'some'}]}
                         renderItem={({item, index}) => (
-                            <CategoryCard key={item.id} item={item} />
+                            <CategoryCard item={item} />
                         )}
                         style={{
                             overflow: 'visible'
                         }}
                     />
-                </View>
+                )}
             </View>
             <View style={styles.titleWrapper}>
                 <Text style={styles.title}>Featured Freepancers</Text>
                 <Text style={styles.subTitle}>People You Can Rely On</Text>
             </View>
-            <FreelancerCard tag={colors.blue} fav={false} />
-            <FreelancerCard fav={true} />
-            <FreelancerCard tag={colors.orange} fav={true} />
-            <FreelancerCard tag={colors.yellow} fav={false} />
-            <FreelancerCard fav={true} />
+            <FlatList
+                style={{
+                    overflow: 'visible'
+                }}
+                data={freelancerList}
+                renderItem={({item}) => (
+                    <FreelancerCard item={item} navigation={navigation} />
+                )}
+            />
             <View style={styles.titleWrapper}>
                 <Text style={styles.title}>Latest Posted Jobs</Text>
                 <Text style={styles.subTitle}>Start Today For Better</Text>
             </View>
             <FlatList
-                showsHorizontalScrollIndicator={false}
-                horizontal={true}
-                data={jobList}
-                renderItem={({item, index}) => (
-                    <JobCard key={index} item={item} />
+                data={freelancerList}
+                renderItem={({item}) => (
+                    <JobCard
+                        keyExtractor={item => item.toString()}
+                        item={item}
+                        navigation={navigation}
+                    />
                 )}
                 keyExtractor={item => item.id.toString()}
                 style={{
@@ -109,8 +117,17 @@ const Home = () => {
 
 const styles = StyleSheet.create({
     container: {
-        marginBottom: 10,
-        overflow: 'visible'
+        overflow: 'visible',
+        backgroundColor: colors.white
+    },
+    topImage: {
+        borderRadius: 5,
+        overflow: 'hidden'
+    },
+    image: {
+        borderRadius: 5,
+        height: 200,
+        resizeMode: 'cover'
     },
     top: {
         backgroundColor: colors.darkGrayBlue,
@@ -120,16 +137,17 @@ const styles = StyleSheet.create({
     },
     banner: {
         // position: 'absolute',
-        top: 85,
+        marginTop: -100,
         marginLeft: 15,
         overflow: 'visible'
     },
     bannerTitle: {
         fontSize: 20,
-        color: colors.white
+        color: colors.white,
+        fontWeight: 'bold'
     },
     bannerSubTitle: {
-        fontSize: 17,
+        fontSize: 15,
         color: colors.white,
         paddingBottom: 15
     },
@@ -148,4 +166,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Home;
+export default withNavigation(Home);

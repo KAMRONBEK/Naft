@@ -4,7 +4,7 @@ import colors from '../../constants/colors';
 import FreelancerCard from '../../components/FreelancerCard';
 import {FlatList} from 'react-native-gesture-handler';
 
-const freelancerList = [
+export const freelancerList = [
     {
         id: 1,
         name: 'Emilia Clark',
@@ -91,7 +91,7 @@ const Freelancer = ({navigation}) => {
                     marginTop: 10,
                     overflow: 'visible'
                 }}
-            />	
+            />
         </ScrollView>
     );
 };

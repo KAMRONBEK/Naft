@@ -131,7 +131,9 @@ const styles = StyleSheet.create({
         flex: 1,
         borderRadius: 5,
         overflow: 'hidden',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        borderWidth: 0.3,
+        borderColor: colors.paleGray
     },
     tag: {
         position: 'absolute',

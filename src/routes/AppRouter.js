@@ -9,7 +9,9 @@ import {
     Jobs,
     Freelancer,
     Company,
-    FreelancerPage
+    FreelancerPage,
+    CompanyPage,
+    JobPage
 } from '../screens';
 import Header from '../components/Header';
 import colors from '../constants/colors';
@@ -47,14 +49,17 @@ let AppRouter = () => {
                         header: () => <Header />
                     }}
                 />
+                <Stack.Screen
+                    name="JobPage"
+                    component={JobPage}
+                    options={{header: () => <Header back={true} />}}
+                />
             </Stack.Navigator>
         );
     };
     const FreelancerStack = () => {
         return (
-            <Stack.Navigator
-            //initialRouteName="FreelancerPage"
-            >
+            <Stack.Navigator>
                 <Stack.Screen
                     name="FreelancerStack"
                     component={Freelancer}
@@ -82,6 +87,13 @@ let AppRouter = () => {
                         header: () => <Header />
                     }}
                 />
+                <Stack.Screen
+                    name="CompanyPage"
+                    component={CompanyPage}
+                    options={{
+                        header: () => <Header back={true} />
+                    }}
+                />
             </Stack.Navigator>
         );
     };
@@ -102,8 +114,6 @@ let AppRouter = () => {
     const BottomTabStack = () => {
         return (
             <TopTab.Navigator
-                initialRouteName="Company"
-                backBehavior="history"
                 tabBarPosition="bottom"
                 barStyle={{
                     backgroundColor: colors.white,

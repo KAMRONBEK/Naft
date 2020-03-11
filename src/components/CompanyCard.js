@@ -9,83 +9,95 @@ import {
 import colors from '../constants/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import strings from '../locales/strings';
+import {withNavigation} from '@react-navigation/compat';
 
-const CompanyCard = ({item}) => {
+const CompanyCard = ({item, navigation}) => {
     let [bannerWidth, setBannerWidth] = useState(0);
     let [isFavorite, setIsFavorite] = useState(
         (item && item.favotire) || false
     );
 
     return (
-        <View style={styles.contianer}>
-            <View
-                style={styles.banner}
-                onLayout={e => {
-                    setBannerWidth(e.nativeEvent.layout.width);
-                }}>
-                <Image
-                    style={[
-                        styles.bannerImage,
-                        {
-                            width: bannerWidth
-                        }
-                    ]}
-                    source={{
-                        uri: item.banner
-                    }}
-                />
-            </View>
-            <View style={styles.contentWrapper}>
-                <View style={styles.left}>
-                    <View style={styles.imageWrapper}>
-                        <Image
-                            source={{uri: item.image}}
-                            style={styles.image}
-                        />
-                    </View>
-                    <TouchableWithoutFeedback
-                        onPress={() => {
-                            setIsFavorite(!isFavorite);
-                        }}>
-                        <View
-                            style={[
-                                styles.favIcon,
-                                isFavorite && {
-                                    backgroundColor: colors.red,
-                                    borderColor: colors.red
-                                }
-                            ]}>
-                            <Ionicons
-                                name="ios-heart"
-                                size={15}
-                                color={
-                                    isFavorite ? colors.white : colors.paleGray
-                                }
+        <TouchableWithoutFeedback
+            onPress={() => {
+                navigation.navigate('CompanyPage');
+            }}>
+            <View style={styles.contianer}>
+                <View
+                    style={styles.banner}
+                    onLayout={e => {
+                        setBannerWidth(e.nativeEvent.layout.width);
+                    }}>
+                    <Image
+                        style={[
+                            styles.bannerImage,
+                            {
+                                width: bannerWidth
+                            }
+                        ]}
+                        source={{
+                            uri: item.banner
+                        }}
+                    />
+                </View>
+                <View style={styles.contentWrapper}>
+                    <View style={styles.left}>
+                        <View style={styles.imageWrapper}>
+                            <Image
+                                source={{uri: item.image}}
+                                style={styles.image}
                             />
                         </View>
-                    </TouchableWithoutFeedback>
-                </View>
-                <View style={styles.content}>
-                    <View style={styles.titleWrapper}>
-                        <Ionicons
-                            name="md-checkmark-circle"
-                            color={colors.green}
-                            size={14}
-                            style={{width: 20}}
-                        />
-                        <Text style={styles.name}>{!!item && item.name}</Text>
+                        <TouchableWithoutFeedback
+                            onPress={() => {
+                                setIsFavorite(!isFavorite);
+                            }}>
+                            <View
+                                style={[
+                                    styles.favIcon,
+                                    isFavorite && {
+                                        backgroundColor: colors.red,
+                                        borderColor: colors.red
+                                    }
+                                ]}>
+                                <Ionicons
+                                    name="ios-heart"
+                                    size={15}
+                                    color={
+                                        isFavorite
+                                            ? colors.white
+                                            : colors.paleGray
+                                    }
+                                />
+                            </View>
+                        </TouchableWithoutFeedback>
                     </View>
-                    <Text numberOfLines={1} style={styles.desc}>
-                        {item.desc}
-                    </Text>
-                    <View style={styles.titleWrapper}>
-                        <Text style={styles.link}>{strings.openJobs}</Text>
-                        <View style={styles.verticalLine} />
-                        <Text style={styles.link}>{strings.fullProfile}</Text>
+                    <View style={styles.content}>
+                        <View style={styles.titleWrapper}>
+                            <Ionicons
+                                name="md-checkmark-circle"
+                                color={colors.green}
+                                size={14}
+                                style={{width: 20}}
+                            />
+                            <Text style={styles.name}>
+                                {!!item && item.name}
+                            </Text>
+                        </View>
+                        <Text numberOfLines={1} style={styles.desc}>
+                            {item.desc}
+                        </Text>
+                        <View style={styles.titleWrapper}>
+                            <Text style={styles.link}>{strings.openJobs}</Text>
+                            <View style={styles.verticalLine} />
+                            <Text style={styles.link}>
+                                {strings.fullProfile}
+                            </Text>
+                        </View>
                     </View>
                 </View>
             </View>
-        </View>
+        </TouchableWithoutFeedback>
     );
 };
 
@@ -163,4 +175,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default CompanyCard;
+export default withNavigation(CompanyCard);

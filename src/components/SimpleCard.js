@@ -41,10 +41,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginBottom: 10,
         padding: 15,
-        borderWidth: 0.2,
-        borderColor: colors.paleGray,
         borderRadius: 5,
-        backgroundColor: colors.white
+        backgroundColor: colors.white,
+        borderWidth: 0.2,
+        borderColor: colors.paleGray
     },
     imageWrapper: {
         borderRadius: 5,

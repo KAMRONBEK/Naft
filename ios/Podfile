@@ -41,6 +41,8 @@ target 'Work' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
   target 'WorkTests' do
     inherit! :search_paths
     # Pods for testing
