@@ -34,7 +34,7 @@ export const jobList = [
 ];
 
 const Home = ({navigation}) => {
-    const [categoryList, setCategoryList] = useState([]);
+    const [categoryList, setCategoryList] = useState([{}, {}, {}]);
 
     useEffect(() => {}, [
         requests.list

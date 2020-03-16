@@ -120,6 +120,7 @@ let AppRouter = () => {
                     justifyContent: 'center'
                 }}
                 // lazy={true}
+                swipeEnabled={false}
                 tabBarOptions={{
                     labelStyle: {
                         margin: 0,
