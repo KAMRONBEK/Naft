@@ -9,8 +9,7 @@ import {
 import colors from '../constants/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import strings from '../locales/strings';
-import {withNavigation} from '@react-navigation/compat';
-
+import {withNavigation} from 'react-navigation';
 const CompanyCard = ({item, navigation}) => {
     let [bannerWidth, setBannerWidth] = useState(0);
     let [isFavorite, setIsFavorite] = useState(

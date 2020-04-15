@@ -57,7 +57,7 @@ const RectangleButton = ({
 const styles = StyleSheet.create({
     container: {
         borderRadius: 5,
-        padding: 15,
+        padding: 18,
         paddingVertical: 12,
         justifyContent: 'center',
         alignItems: 'center'

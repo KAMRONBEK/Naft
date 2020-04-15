@@ -1,13 +1,14 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import colors from '../constants/colors';
+import images from '../assets/images';
 
 const Attachment = ({item}) => {
     return (
         <View style={styles.container}>
             <View style={styles.iconWrapper}>
-                <AntDesign name="filetext1" size={40} />
+                <Image source={images.file} style={styles.icon} />
             </View>
             <Text numberOfLines={1} style={styles.name}>
                 {item.name}
@@ -32,6 +33,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: 100
+    },
+    icon: {
+        height: 60,
+        width: 60
     },
     name: {
         textAlign: 'center',

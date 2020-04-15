@@ -67,17 +67,19 @@ const Comapany = () => {
     ];
 
     return (
-        <ScrollView style={styles.container}>
-            <FlatList
-                style={{
-                    paddingHorizontal: 15,
-                    marginTop: 10
-                }}
-                data={companyList}
-                renderItem={({item}) => <CompanyCard item={item} />}
-                keyExtractor={item => item.id}
-            />
-        </ScrollView>
+        <View style={styles.container}>
+            <View>
+                <FlatList
+                    style={{
+                        paddingHorizontal: 15,
+                        marginTop: 10
+                    }}
+                    data={companyList}
+                    renderItem={({item}) => <CompanyCard item={item} />}
+                    keyExtractor={item => item.id.toString()}
+                />
+            </View>
+        </View>
     );
 };
 

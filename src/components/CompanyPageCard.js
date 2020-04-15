@@ -40,7 +40,7 @@ const CompanyPageCard = ({}) => {
                         fill
                         textColor={colors.white}
                         text="some"
-                        minWidth={240}
+                        minWidth={260}
                     />
                     <RectangleButton
                         backColor={colors.green}

@@ -50,7 +50,8 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         borderRadius: 5,
         borderColor: colors.paleGray,
-        borderWidth: 0.2
+        borderWidth: 0.2,
+        marginHorizontal: -15
     },
     main: {
         flexDirection: 'row',

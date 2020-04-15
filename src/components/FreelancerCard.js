@@ -10,8 +10,7 @@ import {
 import colors from '../constants/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {withNavigation} from '@react-navigation/compat';
-
+import {withNavigation} from 'react-navigation';
 const FreelancerCard = ({item, navigation}) => {
     let [isFavorite, setIsFavorite] = useState((item && item.fav) || false);
 

@@ -5,6 +5,7 @@ import {
     StyleSheet,
     Image,
     ScrollView,
+    SafeAreaView,
     FlatList
 } from 'react-native';
 import FreelancerCard from '../../components/FreelancerCard';
@@ -12,7 +13,7 @@ import colors from '../../constants/colors';
 import JobCard from '../../components/JobCard';
 import CategoryCard from '../../components/CategoryCard';
 import {freelancerList} from '../Jobs';
-import {withNavigation} from '@react-navigation/compat';
+import {withNavigation} from 'react-navigation';
 import requests from '../../api/requests';
 
 export const jobList = [
@@ -34,9 +35,13 @@ export const jobList = [
 ];
 
 const Home = ({navigation}) => {
-    const [categoryList, setCategoryList] = useState([{}, {}, {}]);
+    const [categoryList, setCategoryList] = useState([
+        {id: 1},
+        {id: 2},
+        {id: 3}
+    ]);
 
-    useEffect(() => {}, [
+    useEffect(() => {
         requests.list
             .getCategory()
             .then(res => {
@@ -44,74 +49,106 @@ const Home = ({navigation}) => {
             })
             .catch(err => {
                 console.warn(err);
-            })
-    ]);
+            });
+    }, []);
 
     return (
-        <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={styles.container}>
-            <View style={styles.topImage}>
-                <Image
-                    source={{
-                        uri:
-                            'https://demotix.com/wp-content/uploads/2019/10/job.jpg'
-                    }}
-                    style={styles.image}
-                />
-            </View>
-            <View style={styles.banner}>
-                <Text style={styles.bannerTitle}>Explore Categories</Text>
-                <Text style={styles.bannerSubTitle}>
-                    Professional by categoies
-                </Text>
-                {!!categoryList && (
-                    <FlatList
-                        showsHorizontalScrollIndicator={false}
-                        horizontal={true}
-                        data={categoryList || [{id: 1, name: 'some'}]}
-                        renderItem={({item, index}) => (
-                            <CategoryCard item={item} />
-                        )}
-                        style={{
-                            overflow: 'visible'
-                        }}
-                    />
-                )}
-            </View>
-            <View style={styles.titleWrapper}>
-                <Text style={styles.title}>Featured Freepancers</Text>
-                <Text style={styles.subTitle}>People You Can Rely On</Text>
-            </View>
+        <SafeAreaView
+            style={{flex: 1, backgroundColor: colors.white}}
+            showsVerticalScrollIndicator={false}>
             <FlatList
+                ListHeaderComponent={() => {
+                    return (
+                        <>
+                            <View style={styles.topImage}>
+                                <Image
+                                    source={{
+                                        uri:
+                                            'https://demotix.com/wp-content/uploads/2019/10/job.jpg'
+                                    }}
+                                    style={styles.image}
+                                />
+                            </View>
+                            <View style={styles.banner}>
+                                <Text style={styles.bannerTitle}>
+                                    Explore Categories
+                                </Text>
+                                <Text style={styles.bannerSubTitle}>
+                                    Professional by categoies
+                                </Text>
+                                {!!categoryList && (
+                                    <FlatList
+                                        showsHorizontalScrollIndicator={false}
+                                        horizontal={true}
+                                        data={
+                                            categoryList || [
+                                                {id: 1, name: 'some'}
+                                            ]
+                                        }
+                                        renderItem={({item, index}) => (
+                                            <CategoryCard
+                                                item={item}
+                                                key={index.toString()}
+                                            />
+                                        )}
+                                        keyExtractor={(item, index) =>
+                                            index.toString()
+                                        }
+                                        style={{
+                                            overflow: 'visible'
+                                        }}
+                                    />
+                                )}
+                            </View>
+                            <View style={styles.titleWrapper}>
+                                <Text style={styles.title}>
+                                    Featured Freepancers
+                                </Text>
+                                <Text style={styles.subTitle}>
+                                    People You Can Rely On
+                                </Text>
+                            </View>
+                        </>
+                    );
+                }}
                 style={{
                     overflow: 'visible'
                 }}
+                keyExtractor={item => item.id.toString()}
                 data={freelancerList}
-                renderItem={({item}) => (
+                renderItem={({item, index}) => (
                     <FreelancerCard item={item} navigation={navigation} />
                 )}
-            />
-            <View style={styles.titleWrapper}>
-                <Text style={styles.title}>Latest Posted Jobs</Text>
-                <Text style={styles.subTitle}>Start Today For Better</Text>
-            </View>
-            <FlatList
-                data={freelancerList}
-                renderItem={({item}) => (
-                    <JobCard
-                        keyExtractor={item => item.toString()}
-                        item={item}
-                        navigation={navigation}
-                    />
-                )}
-                keyExtractor={item => item.id.toString()}
-                style={{
-                    marginLeft: 15,
-                    overflow: 'visible'
+                ListFooterComponent={() => {
+                    return (
+                        <>
+                            <View style={styles.titleWrapper}>
+                                <Text style={styles.title}>
+                                    Latest Posted Jobs
+                                </Text>
+                                <Text style={styles.subTitle}>
+                                    Start Today For Better
+                                </Text>
+                            </View>
+                            <FlatList
+                                data={freelancerList}
+                                renderItem={({item, index}) => (
+                                    <JobCard
+                                        item={item}
+                                        navigation={navigation}
+                                    />
+                                )}
+                                keyExtractor={item => item.id.toString()}
+                                style={{
+                                    marginLeft: 15,
+                                    overflow: 'visible'
+                                }}
+                            />
+                        </>
+                    );
                 }}
             />
-        </ScrollView>
+        </SafeAreaView>
     );
 };
 

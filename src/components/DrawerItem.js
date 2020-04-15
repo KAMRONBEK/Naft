@@ -3,7 +3,7 @@ import {View, Text, StyleSheet} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
-import {withNavigation} from '@react-navigation/compat';
+import {withNavigation} from 'react-navigation';
 import colors from '../constants/colors';
 
 const DrawerItem = ({name, antIcon, simpleIcon, to, onPress, navigation}) => {

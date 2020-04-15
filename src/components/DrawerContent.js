@@ -3,10 +3,10 @@ import {View, Text, StyleSheet, Image} from 'react-native';
 import colors from '../constants/colors';
 import DrawetItem from '../components/DrawerItem';
 
-const DrawerContent = ({progress, ...props}) => {
+const DrawerContent = () => {
     return (
         <View style={styles.container}>
-            <View style={styles.top}></View>
+            <View style={styles.top} />
             <View style={styles.bottom}>
                 <View style={styles.avatarWrapper}>
                     <Image

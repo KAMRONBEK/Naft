@@ -1,37 +1,44 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableWithoutFeedback,
+    Image
+} from 'react-native';
 import SearchBar from '../components/SearchBar';
 import Icons from 'react-native-vector-icons/SimpleLineIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import colors from '../constants/colors';
-import {withNavigation} from '@react-navigation/compat';
-import {useIsDrawerOpen} from '@react-navigation/drawer';
+import {withNavigation} from 'react-navigation';
 import Animated, {Easing} from 'react-native-reanimated';
-import {DrawerGestureContext} from '@react-navigation/drawer/src/index';
+import images from '../assets/images';
+// import {useIsDrawerOpen} from '@react-navigation/drawer';
+// import {DrawerGestureContext} from '@react-navigation/drawer/src/index';
 
 let SimpleLineIcons = Animated.createAnimatedComponent(Icons);
 
 const Header = ({navigation, progress, back}) => {
-    const isDrawerOpen = useIsDrawerOpen();
+    // const isDrawerOpen = useIsDrawerOpen();
 
-    let [rotateValue] = useState(new Animated.Value(0));
+    // let [rotateValue] = useState(new Animated.Value(0));
 
-    let rotateAnimation = () => {
-        Animated.timing(rotateValue, {
-            toValue: isDrawerOpen ? 45 : 0,
-            duration: isDrawerOpen ? 200 : 100,
-            easing: Easing.linear
-        }).start(() => {});
-    };
+    // let rotateAnimation = () => {
+    //     Animated.timing(rotateValue, {
+    //         toValue: isDrawerOpen ? 45 : 0,
+    //         duration: isDrawerOpen ? 200 : 100,
+    //         easing: Easing.linear
+    //     }).start(() => {});
+    // };
 
-    const interpolatedRotateAnimation = Animated.concat(
-        rotateValue,
-        'deg'
-    ); /* '0deg' */
+    // const interpolatedRotateAnimation = Animated.concat(
+    //     rotateValue,
+    //     'deg'
+    // ); /* '0deg' */
 
-    useEffect(() => {
-        rotateAnimation();
-    }, [isDrawerOpen]);
+    // useEffect(() => {
+    //     rotateAnimation();
+    // }, [isDrawerOpen]);
 
     return (
         <View style={styles.container}>
@@ -43,7 +50,7 @@ const Header = ({navigation, progress, back}) => {
                     <View
                         style={{
                             padding: 5,
-                            marginRight: 10
+                            marginRight: 15
                         }}>
                         <Ionicons
                             name="ios-arrow-back"
@@ -58,7 +65,7 @@ const Header = ({navigation, progress, back}) => {
                     navigation.toggleDrawer();
                 }}>
                 <View style={[styles.iconWrapper]}>
-                    <DrawerGestureContext.Consumer>
+                    {/* <DrawerGestureContext.Consumer>
                         {props => {
                             let ref = props || props.current;
                             return (
@@ -76,7 +83,20 @@ const Header = ({navigation, progress, back}) => {
                                 />
                             );
                         }}
-                    </DrawerGestureContext.Consumer>
+                    </DrawerGestureContext.Consumer> */}
+                    {/* <SimpleLineIcons
+                        name="menu"
+                        color={colors.white}
+                        size={25}
+                        style={{
+                            transform: [
+                                {
+                                    rotate: '0deg'
+                                }
+                            ]
+                        }}
+                    /> */}
+                    <Image source={images.menu} style={styles.icon} />
                 </View>
             </TouchableWithoutFeedback>
             <View style={styles.searchWrapper}>
@@ -94,7 +114,12 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     iconWrapper: {
-        paddingRight: 30
+        paddingRight: 20
+    },
+    icon: {
+        height: 20,
+        width: 30,
+        tintColor: colors.white
     },
     searchWrapper: {
         flex: 1

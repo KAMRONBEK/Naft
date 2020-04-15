@@ -75,24 +75,26 @@ export const freelancerList = [
 
 const Freelancer = ({navigation}) => {
     return (
-        <ScrollView
+        <>
+            {/* <ScrollView
             showsVerticalScrollIndicator={false}
-            style={styles.container}>
-            <FlatList
-                data={freelancerList}
-                renderItem={({item}) => (
-                    <FreelancerCard
-                        keyExtractor={item => item.toString()}
-                        item={item}
-                        navigation={navigation}
-                    />
-                )}
-                style={{
-                    marginTop: 10,
-                    overflow: 'visible'
-                }}
-            />
-        </ScrollView>
+          style={styles.container}>*/}
+            <View style={styles.container}>
+                <FlatList
+                    data={freelancerList}
+                    renderItem={({item}) => (
+                        <FreelancerCard item={item} navigation={navigation} />
+                    )}
+                    keyExtractor={item => item.id.toString()}
+                    style={{
+                        marginTop: 10,
+                        overflow: 'visible',
+                        flex: 1
+                    }}
+                />
+            </View>
+            {/* </ScrollView> */}
+        </>
     );
 };
 

@@ -2,8 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, ScrollView, FlatList} from 'react-native';
 import colors from '../../constants/colors';
 import JobCard from '../../components/JobCard';
-import {withNavigation} from '@react-navigation/compat';
-
+import {withNavigation} from 'react-navigation';
 export const freelancerList = [
     {
         id: 1,
@@ -75,25 +74,25 @@ export const freelancerList = [
 
 const Jobs = ({navigation}) => {
     return (
-        <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={styles.container}>
-            <FlatList
-                data={freelancerList}
-                renderItem={({item}) => (
-                    <JobCard
-                        vertical={true}
-                        keyExtractor={item => item.toString()}
-                        item={item}
-                        navigation={navigation}
-                    />
-                )}
-                style={{
-                    marginTop: 10,
-                    overflow: 'visible'
-                }}
-            />
-        </ScrollView>
+        <View style={styles.container}>
+            <View>
+                <FlatList
+                    data={freelancerList}
+                    renderItem={({item}) => (
+                        <JobCard
+                            vertical={true}
+                            item={item}
+                            navigation={navigation}
+                        />
+                    )}
+                    keyExtractor={item => item.id.toString()}
+                    style={{
+                        marginTop: 10,
+                        overflow: 'visible'
+                    }}
+                />
+            </View>
+        </View>
     );
 };
 
