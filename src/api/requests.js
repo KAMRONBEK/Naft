@@ -1,8 +1,7 @@
 import axios from 'axios';
+import {url} from './config';
 // import {userLoaded} from '../redux/actions';
 // import AsyncStorage from '@react-native-community/async-storage';
-
-export const url = 'http://naft.uz/api/v1/';
 
 // export const configureAxios = store => {
 //     let interceptor = axios.interceptors.response.use(

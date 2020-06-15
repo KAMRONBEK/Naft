@@ -21,6 +21,7 @@
         "@react-navigation/stack": "^5.0.5",
         "axios": "^0.19.2",
         "localized-strings": "^0.2.4",
+        "lottie-react-native": "^3.4.0",
         "react": "16.9.0",
         "react-native": "0.61.5",
         "react-native-gesture-handler": "^1.6.1",
@@ -36,7 +37,9 @@
         "react-navigation-drawer": "^2.4.11",
         "react-navigation-material-bottom-tabs": "^2.2.10",
         "react-navigation-stack": "^2.3.11",
-        "react-navigation-tabs": "^2.8.11"
+        "react-navigation-tabs": "^2.8.11",
+        "react-redux": "^7.2.0",
+        "redux": "^4.0.5"
     },
     "devDependencies": {
         "@babel/core": "^7.8.4",

@@ -75,23 +75,18 @@ export const freelancerList = [
 const Jobs = ({navigation}) => {
     return (
         <View style={styles.container}>
-            <View>
-                <FlatList
-                    data={freelancerList}
-                    renderItem={({item}) => (
-                        <JobCard
-                            vertical={true}
-                            item={item}
-                            navigation={navigation}
-                        />
-                    )}
-                    keyExtractor={item => item.id.toString()}
-                    style={{
-                        marginTop: 10,
-                        overflow: 'visible'
-                    }}
-                />
-            </View>
+            <FlatList
+                data={freelancerList}
+                renderItem={({item}) => (
+                    <JobCard
+                        vertical={true}
+                        item={item}
+                        navigation={navigation}
+                    />
+                )}
+                keyExtractor={item => item.id.toString()}
+                style={{flex: 1}}
+            />
         </View>
     );
 };

@@ -28,7 +28,8 @@ export default new LocalizedStrings({
         enterYourFirstName: 'Enter Your First Name',
         enterYourLastName: 'Enter Your Last Name',
         enterHourlyRate: 'Enter Your Hourly Rate',
-        enterTagline: 'Enter Your Tagline'
+        enterTagline: 'Enter Your Tagline',
+        loading: 'Loading'
     },
     ru: {imLookingFor: ''},
     uz: {imLookingFor: ''}

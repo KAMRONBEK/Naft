@@ -15,6 +15,9 @@ import CategoryCard from '../../components/CategoryCard';
 import {freelancerList} from '../Jobs';
 import {withNavigation} from 'react-navigation';
 import requests from '../../api/requests';
+import {connect} from 'react-redux';
+import {showLoading, hideLoading} from '../../redux/actions/appState';
+import strings from '../../locales/strings';
 
 export const jobList = [
     {
@@ -34,7 +37,7 @@ export const jobList = [
     }
 ];
 
-const Home = ({navigation}) => {
+const Home = ({navigation, showLoading, hideLoading}) => {
     const [categoryList, setCategoryList] = useState([
         {id: 1},
         {id: 2},
@@ -42,13 +45,16 @@ const Home = ({navigation}) => {
     ]);
 
     useEffect(() => {
+        showLoading(strings.loading);
         requests.list
             .getCategory()
             .then(res => {
                 setCategoryList(res.data);
+                hideLoading();
             })
             .catch(err => {
                 console.warn(err);
+                hideLoading();
             });
     }, []);
 
@@ -203,4 +209,16 @@ const styles = StyleSheet.create({
     }
 });
 
-export default withNavigation(Home);
+// const mapStateToProps = state => {};
+
+const mapDispatchToProps = {
+    showLoading,
+    hideLoading
+};
+
+let ConnectedHome = connect(
+    null,
+    mapDispatchToProps
+)(Home);
+
+export default withNavigation(ConnectedHome);
