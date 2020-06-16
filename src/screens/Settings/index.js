@@ -13,7 +13,7 @@ import colors from '../../constants/colors';
 import strings from '../../locales/strings';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {TextInput} from 'react-native-paper';
@@ -303,7 +303,6 @@ const Settings = () => {
                         loadingEnabled={true}
                         loadingIndicatorColor={colors.green}
                         showsMyLocationButton={true}
-                        provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                         style={styles.map}
                         region={currentRegion}
                         onLongPress={({nativeEvent}) => {
