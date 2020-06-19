@@ -137,6 +137,7 @@ const Home = ({navigation, showLoading, hideLoading}) => {
                                 </Text>
                             </View>
                             <FlatList
+                                horizontal={true}
                                 data={freelancerList}
                                 renderItem={({item, index}) => (
                                     <JobCard
@@ -164,11 +165,13 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white
     },
     topImage: {
-        borderRadius: 5,
+        borderBottomLeftRadius: 5,
+        borderBottomLeftRadius: 5,
         overflow: 'hidden'
     },
     image: {
-        borderRadius: 5,
+        borderBottomLeftRadius: 5,
+        borderBottomLeftRadius: 5,
         height: 200,
         resizeMode: 'cover'
     },

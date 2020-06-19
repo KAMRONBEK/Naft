@@ -56,12 +56,17 @@ const CompanyPageCard = ({}) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.white,
-        // elevation: 3,
         flexDirection: 'column',
         overflow: 'hidden',
         borderRadius: 5,
         borderColor: colors.paleGray,
-        elevation: 4,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
         borderWidth: 0.2
     },
     main: {

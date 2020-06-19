@@ -18,7 +18,7 @@ import images from '../assets/images';
 
 let SimpleLineIcons = Animated.createAnimatedComponent(Icons);
 
-const Header = ({navigation, progress, back}) => {
+const Header = ({navigation, progress, back, title, noMenu}) => {
     // const isDrawerOpen = useIsDrawerOpen();
 
     // let [rotateValue] = useState(new Animated.Value(0));
@@ -60,12 +60,13 @@ const Header = ({navigation, progress, back}) => {
                     </View>
                 </TouchableWithoutFeedback>
             )}
-            <TouchableWithoutFeedback
-                onPress={() => {
-                    navigation.toggleDrawer();
-                }}>
-                <View style={[styles.iconWrapper]}>
-                    {/* <DrawerGestureContext.Consumer>
+            {!noMenu && (
+                <TouchableWithoutFeedback
+                    onPress={() => {
+                        navigation.toggleDrawer();
+                    }}>
+                    <View style={[styles.iconWrapper]}>
+                        {/* <DrawerGestureContext.Consumer>
                         {props => {
                             let ref = props || props.current;
                             return (
@@ -84,7 +85,7 @@ const Header = ({navigation, progress, back}) => {
                             );
                         }}
                     </DrawerGestureContext.Consumer> */}
-                    {/* <SimpleLineIcons
+                        {/* <SimpleLineIcons
                         name="menu"
                         color={colors.white}
                         size={25}
@@ -96,12 +97,19 @@ const Header = ({navigation, progress, back}) => {
                             ]
                         }}
                     /> */}
-                    <Image source={images.menu} style={styles.icon} />
+                        <Image source={images.menu} style={styles.icon} />
+                    </View>
+                </TouchableWithoutFeedback>
+            )}
+            {!title ? (
+                <View style={styles.searchWrapper}>
+                    <SearchBar />
                 </View>
-            </TouchableWithoutFeedback>
-            <View style={styles.searchWrapper}>
-                <SearchBar />
-            </View>
+            ) : (
+                <View style={styles.titleWrapper}>
+                    <Text style={styles.title}>{title}</Text>
+                </View>
+            )}
         </View>
     );
 };
@@ -123,6 +131,16 @@ const styles = StyleSheet.create({
     },
     searchWrapper: {
         flex: 1
+    },
+    titleWrapper: {
+        flex: 1,
+        paddingRight: 45
+    },
+    title: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: colors.white
     }
 });
 

@@ -40,7 +40,8 @@ const DrawerItem = ({name, antIcon, simpleIcon, to, onPress, navigation}) => {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingBottom: 30
     },
     name: {
         color: colors.black

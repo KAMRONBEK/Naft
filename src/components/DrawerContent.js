@@ -1,9 +1,30 @@
-import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, Image, Linking} from 'react-native';
 import colors from '../constants/colors';
 import DrawetItem from '../components/DrawerItem';
+import {userLoggedOut} from '../redux/actions';
+import {connect} from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
+import strings from '../locales/strings';
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
-const DrawerContent = () => {
+const DrawerContent = ({userLoggedOut, navigation}) => {
+    let [user, setUser] = useState({});
+
+    let bootstrap = async () => {
+        let userData = await AsyncStorage.getItem('@user');
+        if (userData) {
+            console.warn(userData);
+            setUser(userData);
+        } else {
+            console.warn('no user');
+        }
+    };
+
+    useEffect(() => {
+        bootstrap();
+    }, []);
+
     return (
         <View style={styles.container}>
             <View style={styles.top} />
@@ -18,49 +39,72 @@ const DrawerContent = () => {
                     />
                 </View>
                 <View style={styles.menus}>
-                    <DrawetItem
-                        name="Home"
-                        antIcon="home"
-                        to="Home"
-                        simpleIcon=""
-                    />
-                    <DrawetItem
-                        name="Jobs"
-                        antIcon="iconfontdesktop"
-                        to="Jobs"
-                        simpleIcon=""
-                    />
-                    <DrawetItem
-                        name="Freelancer"
-                        antIcon="rest"
-                        to="Freelancer"
-                        simpleIcon=""
-                    />
-                    <DrawetItem
-                        name="Company"
-                        antIcon=""
-                        to="Company"
-                        simpleIcon="briefcase"
-                    />
-                    <DrawetItem
-                        name="Settings"
-                        antIcon="setting"
-                        to="Settings"
-                        simpleIcon=""
-                    />
-                    <DrawetItem
-                        name="About Us"
-                        antIcon="customerservice"
-                        to="About"
-                        simpleIcon=""
-                    />
-                    <DrawetItem
-                        name="Logout"
-                        antIcon="poweroff"
-                        to=""
-                        onPress={() => {}}
-                        simpleIcon=""
-                    />
+                    {user === 'success' ? (
+                        <>
+                            <DrawetItem
+                                name="Home"
+                                antIcon="home"
+                                to="Home"
+                                simpleIcon=""
+                            />
+                            <DrawetItem
+                                name="Jobs"
+                                antIcon="iconfontdesktop"
+                                to="Jobs"
+                                simpleIcon=""
+                            />
+                            <DrawetItem
+                                name="Freelancer"
+                                antIcon="rest"
+                                to="Freelancer"
+                                simpleIcon=""
+                            />
+                            <DrawetItem
+                                name="Company"
+                                antIcon=""
+                                to="Company"
+                                simpleIcon="briefcase"
+                            />
+                            <DrawetItem
+                                name="Settings"
+                                antIcon="setting"
+                                to="Settings"
+                                simpleIcon=""
+                            />
+                            <DrawetItem
+                                name="About Us"
+                                antIcon="customerservice"
+                                to="About"
+                                simpleIcon=""
+                            />
+                            <DrawetItem
+                                name="Logout"
+                                antIcon="poweroff"
+                                to=""
+                                onPress={() => {
+                                    userLoggedOut();
+                                    navigation.navigate('Auth');
+                                }}
+                                simpleIcon=""
+                            />
+                        </>
+                    ) : (
+                        <View style={styles.registerWrapper}>
+                            <DrawetItem
+                                name={strings.login}
+                                antIcon="user"
+                                to="Login"
+                                simpleIcon=""
+                            />
+                            <DrawetItem
+                                name={strings.ourWebsite}
+                                simpleIcon="globe"
+                                onPress={() => {
+                                    Linking.openURL('http://naft.uz/');
+                                }}
+                            />
+                        </View>
+                    )}
                 </View>
             </View>
         </View>
@@ -100,8 +144,23 @@ const styles = StyleSheet.create({
     menus: {
         flex: 1,
         paddingTop: 40,
-        justifyContent: 'space-evenly'
+        justifyContent: 'flex-start'
+    },
+    registerWrapper: {
+        justifyContent: 'space-between',
+        flex: 1
     }
 });
 
-export default DrawerContent;
+const mapStateToProps = ({user}) => ({
+    user
+});
+
+const mapDispatchToProps = {
+    userLoggedOut
+};
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(DrawerContent);

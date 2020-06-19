@@ -30,23 +30,37 @@ import {url} from './config';
 //         }
 //     );
 // };
-
-// let formData = rawData => {
-//     let form = new FormData();
-//     Object.keys(rawData).forEach(key => {
-//         form.append(key, rawData[key]);
-//     });
-//     return form;
-// };
+let formData = rawData => {
+    let form = new FormData();
+    Object.keys(rawData).forEach(key => {
+        if (Array.isArray(rawData[key])) {
+            let obj = rawData[key];
+            for (let index in obj) {
+                form.append(`${key}[${index}]`, obj[index]);
+            }
+            return;
+        }
+        if (typeof rawData[key] === 'object') {
+            let obj = rawData[key];
+            let i = 0;
+            Object.keys(obj).forEach((id, index) => {
+                if (obj[id]) form.append(`${key}[${i++}]`, parseInt(id));
+            });
+            return;
+        }
+        form.append(key, rawData[key]);
+    });
+    return form;
+};
 
 let requests = {
     auth: {
-        login: credentials =>
-            axios.post(`${url}/auth/signin`, credentials).then(res => res),
+        login: data =>
+            axios.post(`${url}user/do-login?`, formData(data)).then(res => res),
         register: data =>
-            axios.post(`${url}/auth/signup`, data).then(res => res),
+            axios.post(`${url}auth/signup`, data).then(res => res),
         refreshToken: token =>
-            axios.post(`${url}/auth/refresh-token?token=${token}`)
+            axios.post(`${url}auth/refresh-token?token=${token}`)
     },
     list: {
         getCategory: () =>

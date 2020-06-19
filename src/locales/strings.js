@@ -29,7 +29,15 @@ export default new LocalizedStrings({
         enterYourLastName: 'Enter Your Last Name',
         enterHourlyRate: 'Enter Your Hourly Rate',
         enterTagline: 'Enter Your Tagline',
-        loading: 'Loading'
+        loading: 'Loading',
+        login: 'Login',
+        register: 'Register',
+        naftDescription: 'Наймите опытных фрилансеров для любой работы, онлайн',
+        noAccount: 'No account',
+        enterMail: 'Enter your email',
+        password: 'password',
+        ourWebsite: 'Our website',
+        passwordOrMailWrong: 'Password or mail wrong'
     },
     ru: {imLookingFor: ''},
     uz: {imLookingFor: ''}

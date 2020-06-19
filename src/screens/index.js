@@ -6,6 +6,9 @@ import Settings from './Settings';
 import FreelancerPage from './Freelancer/FreelancerPage';
 import CompanyPage from './Company/CompanyPage';
 import JobPage from './Jobs/JobPage';
+import Auth from './Auth';
+import Register from './Auth/Register'
+
 
 export {
     Home,
@@ -15,5 +18,5 @@ export {
     Settings,
     FreelancerPage,
     CompanyPage,
-    JobPage
+    JobPage,Auth,Register
 };

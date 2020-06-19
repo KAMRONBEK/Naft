@@ -121,7 +121,13 @@ const styles = StyleSheet.create({
     imageWrapper: {
         height: 70,
         marginTop: -30,
-        elevation: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
         borderWidth: 1,
         borderColor: colors.paleTransparent,
         borderRadius: 5,
