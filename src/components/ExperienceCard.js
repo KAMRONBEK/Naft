@@ -7,10 +7,12 @@ import colors from '../constants/colors';
 const ExperienceCard = ({item}) => {
     return (
         <View style={styles.container}>
-            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.name}>{item.title}</Text>
             <View style={styles.middle}>
                 <FontAwesome name="building-o" />
-                <Text style={styles.text}>{item.location}</Text>
+                <Text style={styles.text}>
+                    {item.company || item.institute}
+                </Text>
                 <View
                     style={{
                         marginHorizontal: 7,
@@ -21,10 +23,11 @@ const ExperienceCard = ({item}) => {
                 />
                 <AntDesign name="calendar" />
                 <Text style={styles.text}>
-                    {item.fromDate} - {item.toDate ? item.toDate : 'Till Now'}
+                    {item.startdate} -{' '}
+                    {item.enddate ? item.enddate : 'Till Now'}
                 </Text>
             </View>
-            <Text style={styles.quote}>{`"${item.quote}"`}</Text>
+            <Text style={styles.quote}>{`"${item.description}"`}</Text>
         </View>
     );
 };

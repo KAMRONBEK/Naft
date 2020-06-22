@@ -15,11 +15,12 @@ const CompanyCard = ({item, navigation}) => {
     let [isFavorite, setIsFavorite] = useState(
         (item && item.favotire) || false
     );
-
     return (
         <TouchableWithoutFeedback
             onPress={() => {
-                navigation.navigate('CompanyPage');
+                navigation.navigate('CompanyPage', {
+                    company: item
+                });
             }}>
             <View style={styles.contianer}>
                 <View
@@ -35,7 +36,9 @@ const CompanyCard = ({item, navigation}) => {
                             }
                         ]}
                         source={{
-                            uri: item.banner
+                            uri: !!item.banner_img
+                                ? item.banner_img
+                                : 'https://ehyperspace.com/wp-content/uploads/2019/10/7.jpg'
                         }}
                     />
                 </View>
@@ -43,7 +46,11 @@ const CompanyCard = ({item, navigation}) => {
                     <View style={styles.left}>
                         <View style={styles.imageWrapper}>
                             <Image
-                                source={{uri: item.image}}
+                                source={{
+                                    uri: !!item.profile_img
+                                        ? item.profile_img
+                                        : 'https://media.istockphoto.com/vectors/user-iconlogo-app-profile-picture-person-avatarvector-vector-id1168155551'
+                                }}
                                 style={styles.image}
                             />
                         </View>
@@ -84,7 +91,7 @@ const CompanyCard = ({item, navigation}) => {
                             </Text>
                         </View>
                         <Text numberOfLines={1} style={styles.desc}>
-                            {item.desc}
+                            {item.employer_des}
                         </Text>
                         <View style={styles.titleWrapper}>
                             <Text style={styles.link}>{strings.openJobs}</Text>
@@ -121,10 +128,10 @@ const styles = StyleSheet.create({
     imageWrapper: {
         height: 70,
         marginTop: -30,
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: {
             width: 0,
-            height: 5,
+            height: 5
         },
         shadowOpacity: 0.34,
         shadowRadius: 6.27,

@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import colors from '../constants/colors';
+import strings from '../locales/strings';
 
 const FreelancerPageCard = ({item}) => {
     return (
@@ -10,8 +11,7 @@ const FreelancerPageCard = ({item}) => {
                 <View style={styles.tag} />
                 <Image
                     source={{
-                        uri:
-                            'https://humancapitalmedia.com/wp-content/uploads/sites/14/2017/02/gray-square.png'
+                        uri: item && item.profile_img
                     }}
                     style={styles.image}
                 />
@@ -32,20 +32,24 @@ const FreelancerPageCard = ({item}) => {
                 </View>
             </View>
             <View style={styles.secondary}>
-                <Text style={styles.rightText}>Hourly Rate</Text>
-                <Text style={styles.leftText}>$44.5/hr</Text>
+                <Text style={styles.rightText}>{strings.hourlyRate}</Text>
+                <Text style={styles.leftText}>
+                    {item && item._perhour_rate1}
+                </Text>
             </View>
             <View style={styles.secondary}>
-                <Text style={styles.rightText}>Hourly Rate</Text>
-                <Text style={styles.leftText}>$44.5/hr</Text>
+                <Text style={styles.rightText}>{strings.location}</Text>
+                <Text style={styles.leftText}>
+                    {item && item.location._country}
+                </Text>
             </View>
             <View style={styles.secondary}>
-                <Text style={styles.rightText}>Hourly Rate</Text>
-                <Text style={styles.leftText}>$44.5/hr</Text>
+                <Text style={styles.rightText}>{strings.reviews}</Text>
+                <Text style={styles.leftText}>{strings.noReviewsYet}</Text>
             </View>
             <View style={styles.secondary}>
-                <Text style={styles.rightText}>Hourly Rate</Text>
-                <Text style={styles.leftText}>$44.5/hr</Text>
+                <Text style={styles.rightText}>{strings.registerYear}</Text>
+                <Text style={styles.leftText}>{item.member_since}</Text>
             </View>
         </View>
     );

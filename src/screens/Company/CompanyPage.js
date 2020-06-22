@@ -13,40 +13,27 @@ import strings from '../../locales/strings';
 import JobCard from '../../components/JobCard';
 import {jobList} from '../Home';
 
-const CompanyPage = () => {
+const CompanyPage = ({navigation}) => {
+    let company = navigation.getParam('company');
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.topImage}>
                 <Image
                     source={{
-                        uri:
-                            'https://i1.wp.com/geoawesomeness.com/wp-content/uploads/2017/09/Coding-Geospatial.jpg?ssl=1'
+                        uri: !!company.banner_img
+                            ? company.banner_img
+                            : 'https://ehyperspace.com/wp-content/uploads/2019/10/7.jpg'
                     }}
                     style={styles.image}
                 />
             </View>
             <View style={styles.cardWrapper}>
-                <CompanyPageCard />
+                <CompanyPageCard item={company} />
             </View>
             <View style={styles.contentWrapper}>
-                <Text style={styles.title}>Project Stats</Text>
-                <Text>
-                    Consectetur adipisicing elit, sedsmod tempor incididunt ut
-                    labore et dolore magna aliqua. Ut enim ad minimame quis
-                    nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                    commodo consequat. Duis aute irure dolor in repit in
-                    voluptate velit esse cillum dolore eu fugiat nulla pariri
-                    Excepteur sint occaecat cupidatat non proident, sunt in
-                </Text>
-                <Text>{''}</Text>
-                <Text>
-                    culpa qui officia deserunt mollit anim. Sed ut perspiciatis
-                    unde omnis iste natus error sitatatem accusantium doloremque
-                    laudantium, totam rem aciam eaque ipsa quae ab illo
-                    inventore veritatis et quasi archo beatae vitae dicta sunt
-                    explicabo. Nemo enim ipsam vim quia voluptas sit aspernatur
-                    aut odit aut fugit.
-                </Text>
+                <Text style={styles.title}>{strings.about}</Text>
+                <Text>{company.employer_des} </Text>
                 <Text style={styles.title}>{strings.jobOpenings}</Text>
                 <FlatList
                     showsVerticalScrollIndicator={false}

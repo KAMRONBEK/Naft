@@ -1,20 +1,26 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import colors from '../constants/colors';
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
-const CatogoryCard = ({item}) => {
+const CatogoryCard = ({item, navigation}) => {
     return (
-        <View style={styles.container}>
-            <Image
-                style={styles.image}
-                source={{
-                    uri: item.image
-                }}
-            />
-            <View style={styles.textWrapper}>
-                <Text style={styles.text}>{item.name}</Text>
+        <TouchableWithoutFeedback
+            onPress={() => {
+                navigation.navigate('Jobs');
+            }}>
+            <View style={styles.container}>
+                <Image
+                    style={styles.image}
+                    source={{
+                        uri: item.image
+                    }}
+                />
+                <View style={styles.textWrapper}>
+                    <Text style={styles.text}>{item.name}</Text>
+                </View>
             </View>
-        </View>
+        </TouchableWithoutFeedback>
     );
 };
 

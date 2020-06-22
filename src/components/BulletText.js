@@ -7,7 +7,7 @@ const BulletText = ({item}) => {
     return (
         <View style={styles.container}>
             <FontAwesome name="dot-circle-o" color={colors.black} size={10} />
-            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.name}>{item.skill_name}</Text>
         </View>
     );
 };

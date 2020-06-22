@@ -1,70 +1,57 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, StyleSheet, FlatList} from 'react-native';
 import CompanyCard from '../../components/CompanyCard';
+import strings from '../../locales/strings';
+import {showLoading, hideLoading} from '../../redux/actions';
+import {connect} from 'react-redux';
+import requests from '../../api/requests';
 
-const Comapany = () => {
-    const companyList = [
-        {
-            id: 1,
-            image:
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRtYO9V_qOSTfT_uW0U8ow_cjG29TqUlPAU7bC9b4Wj-pg-PMiD',
-            banner:
-                'https://assets.entrepreneur.com/content/3x2/2000/20150805204041-google-company-building-corporate.jpeg',
-            name: 'Google',
-            favorite: true,
-            desc: ' Examples of Companies With Fantastic Cultures'
-        },
-        {
-            id: 2,
-            image:
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRtYO9V_qOSTfT_uW0U8ow_cjG29TqUlPAU7bC9b4Wj-pg-PMiD',
-            banner:
-                'https://assets.entrepreneur.com/content/3x2/2000/20150805204041-google-company-building-corporate.jpeg',
-            name: 'Google',
-            favorite: true,
-            desc: ' Examples of Companies With Fantastic Cultures'
-        },
-        {
-            id: 3,
-            image:
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRtYO9V_qOSTfT_uW0U8ow_cjG29TqUlPAU7bC9b4Wj-pg-PMiD',
-            banner:
-                'https://assets.entrepreneur.com/content/3x2/2000/20150805204041-google-company-building-corporate.jpeg',
-            name: 'Google',
-            favorite: true,
-            desc: ' Examples of Companies With Fantastic Cultures'
-        },
-        {
-            id: 4,
-            image:
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRtYO9V_qOSTfT_uW0U8ow_cjG29TqUlPAU7bC9b4Wj-pg-PMiD',
-            banner:
-                'https://assets.entrepreneur.com/content/3x2/2000/20150805204041-google-company-building-corporate.jpeg',
-            name: 'Google',
-            favorite: true,
-            desc: ' Examples of Companies With Fantastic Cultures'
-        },
-        {
-            id: 5,
-            image:
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRtYO9V_qOSTfT_uW0U8ow_cjG29TqUlPAU7bC9b4Wj-pg-PMiD',
-            banner:
-                'https://assets.entrepreneur.com/content/3x2/2000/20150805204041-google-company-building-corporate.jpeg',
-            name: 'Google',
-            favorite: true,
-            desc: ' Examples of Companies With Fantastic Cultures'
-        },
-        {
-            id: 6,
-            image:
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRtYO9V_qOSTfT_uW0U8ow_cjG29TqUlPAU7bC9b4Wj-pg-PMiD',
-            banner:
-                'https://assets.entrepreneur.com/content/3x2/2000/20150805204041-google-company-building-corporate.jpeg',
-            name: 'Google',
-            favorite: true,
-            desc: ' Examples of Companies With Fantastic Cultures'
+const Comapany = ({navigation, showLoading, hideLoading}) => {
+    let [pageIndex, setPageIndex] = useState(1);
+    let [companyList, setCompanyList] = useState([]);
+    let [loading, setLoading] = useState(false);
+
+    const effect = async () => {
+        showLoading(strings.loading);
+        try {
+            let companyRes = await requests.list.getCompanies(
+                'latest',
+                10,
+                pageIndex
+            );
+            setCompanyList(companyRes.data);
+        } catch (error) {
+            console.warn(error.message);
+        } finally {
+            hideLoading();
         }
-    ];
+    };
+
+    const fetchCompanies = async () => {
+        if (loading) {
+            return;
+        }
+        setLoading(true);
+        try {
+            let res = await requests.list.getCompanies(
+                'latest',
+                10,
+                pageIndex + 1
+            );
+            if (res.data.type != 'error') {
+                setCompanyList([...companyList, ...res.data]);
+                setPageIndex(pageIndex + 1);
+            }
+        } catch (error) {
+            console.warn(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        effect();
+    }, [navigation]);
 
     return (
         <View style={styles.container}>
@@ -76,7 +63,9 @@ const Comapany = () => {
                     }}
                     data={companyList}
                     renderItem={({item}) => <CompanyCard item={item} />}
-                    keyExtractor={item => item.id.toString()}
+                    keyExtractor={index => index.toString()}
+                    onEndReached={fetchCompanies}
+                    onEndReachedThreshold={0.5}
                 />
             </View>
         </View>
@@ -84,7 +73,17 @@ const Comapany = () => {
 };
 
 const styles = StyleSheet.create({
-    contianer: {}
+    contianer: {
+        flex: 1
+    }
 });
 
-export default Comapany;
+const mapDispatchToProps = {
+    showLoading,
+    hideLoading
+};
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(Comapany);

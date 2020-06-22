@@ -16,7 +16,7 @@ export default (state = INITIAL_STATE, {type, payload}) => {
             return newState;
         case USER_LOGGED_OUT:
             AsyncStorage.setItem('@user', '');
-            return state;
+            return INITIAL_STATE;
         default:
             return state;
     }

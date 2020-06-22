@@ -1,89 +1,95 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Image, Linking} from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    Linking,
+    TouchableWithoutFeedback
+} from 'react-native';
 import colors from '../constants/colors';
 import DrawetItem from '../components/DrawerItem';
-import {userLoggedOut} from '../redux/actions';
+import {
+    userLoggedOut,
+    userLoaded,
+    showLoading,
+    hideLoading
+} from '../redux/actions';
 import {connect} from 'react-redux';
-import AsyncStorage from '@react-native-community/async-storage';
 import strings from '../locales/strings';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import images from '../assets/images';
+// import {color} from 'react-native-reanimated';
 
-const DrawerContent = ({userLoggedOut, navigation}) => {
-    let [user, setUser] = useState({});
-
-    let bootstrap = async () => {
-        let userData = await AsyncStorage.getItem('@user');
-        if (userData) {
-            console.warn(userData);
-            setUser(userData);
-        } else {
-            console.warn('no user');
-        }
-    };
-
-    useEffect(() => {
-        bootstrap();
-    }, []);
-
+const DrawerContent = ({userLoggedOut, navigation, user}) => {
     return (
         <View style={styles.container}>
             <View style={styles.top} />
             <View style={styles.bottom}>
                 <View style={styles.avatarWrapper}>
                     <Image
-                        style={styles.avatar}
-                        source={{
-                            uri:
-                                'https://mulder-onions.com/wp-content/uploads/2017/02/White-square.jpg'
-                        }}
+                        style={[
+                            styles.avatar,
+                            !user.profile.pmeta && {
+                                tintColor: colors.white,
+                                width: 50,
+                                height: 50
+                            }
+                        ]}
+                        source={
+                            !!user.profile.pmeta
+                                ? {
+                                      uri: user.profile.pmeta.profile_img
+                                  }
+                                : images.logo
+                        }
                     />
                 </View>
                 <View style={styles.menus}>
-                    {user === 'success' ? (
+                    {user.type == 'success' ? (
                         <>
                             <DrawetItem
-                                name="Home"
+                                name={strings.main}
                                 antIcon="home"
                                 to="Home"
                                 simpleIcon=""
                             />
                             <DrawetItem
-                                name="Jobs"
+                                name={strings.jobs}
                                 antIcon="iconfontdesktop"
                                 to="Jobs"
                                 simpleIcon=""
                             />
                             <DrawetItem
-                                name="Freelancer"
+                                name={strings.freelancers}
                                 antIcon="rest"
                                 to="Freelancer"
                                 simpleIcon=""
                             />
                             <DrawetItem
-                                name="Company"
+                                name={strings.company}
                                 antIcon=""
                                 to="Company"
                                 simpleIcon="briefcase"
                             />
                             <DrawetItem
-                                name="Settings"
+                                name={strings.settings}
                                 antIcon="setting"
                                 to="Settings"
                                 simpleIcon=""
                             />
                             <DrawetItem
-                                name="About Us"
+                                name={strings.aboutUs}
                                 antIcon="customerservice"
                                 to="About"
                                 simpleIcon=""
                             />
                             <DrawetItem
-                                name="Logout"
+                                name={strings.logout}
                                 antIcon="poweroff"
                                 to=""
                                 onPress={() => {
                                     userLoggedOut();
-                                    navigation.navigate('Auth');
+                                    navigation.navigate('Home');
                                 }}
                                 simpleIcon=""
                             />
@@ -129,11 +135,15 @@ const styles = StyleSheet.create({
         zIndex: 100,
         position: 'absolute',
         borderWidth: 1,
-        borderColor: colors.paleGray
+        borderColor: colors.white,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: colors.darkGrayBlue
     },
     avatar: {
+        height: 60,
         width: 60,
-        height: 60
+        resizeMode: 'cover'
     },
     bottom: {
         flex: 1,
@@ -161,6 +171,6 @@ const mapDispatchToProps = {
 };
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(DrawerContent);

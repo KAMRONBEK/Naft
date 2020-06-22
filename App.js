@@ -11,6 +11,7 @@ import {
     SafeAreaContext,
     SafeAreaProvider
 } from 'react-native-safe-area-context';
+import Modal from './src/components/Modal';
 
 if (Platform.OS === 'android') {
     if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -32,10 +33,11 @@ const App = () => {
                             flex: 1
                         }}>
                         <Provider store={store}>
-                            <NavigationContainer>
-                                <AppRouter />
-                                <LoadingModal />
-                            </NavigationContainer>
+                            {/* <NavigationContainer> */}
+                            <AppRouter />
+                            <LoadingModal />
+                            <Modal />
+                            {/* </NavigationContainer> */}
                         </Provider>
                     </View>
                 )}

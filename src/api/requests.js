@@ -57,14 +57,55 @@ let requests = {
     auth: {
         login: data =>
             axios.post(`${url}user/do-login?`, formData(data)).then(res => res),
-        register: data =>
-            axios.post(`${url}auth/signup`, data).then(res => res),
+        register: (
+            first_name,
+            last_name,
+            email,
+            password,
+            role = 'freelancer',
+            employees = '',
+            department_name = '',
+            location = ''
+        ) =>
+            axios
+                .post(
+                    `${url}register?first_name=${first_name}&last_name=${last_name}&email=${email}&password=${password}&role=${role}&employees=${employees}&department_name=${department_name}&locations=${location}`
+                )
+                .then(res => res),
         refreshToken: token =>
             axios.post(`${url}auth/refresh-token?token=${token}`)
     },
     list: {
         getCategory: () =>
-            axios.get(`${url}list/get-categories`).then(res => res)
+            axios.get(`${url}list/get-categories`).then(res => res),
+        getFreelancer: (
+            type = 'latest',
+            count = 10,
+            id = '',
+            page_number = ''
+        ) =>
+            axios.get(
+                `${url}listing/get-freelancers?profile_id=${id}&listing_type=${type}&show_users=${count}&page_number=${page_number}`
+            ),
+        getJobs: (
+            type = 'latest',
+            count = 10,
+            id = '',
+            page_number = '',
+            company_id = ''
+        ) =>
+            axios.get(
+                `${url}listing/get-jobs?profile_id=${id}&listing_type=${type}&show_users=${count}&page_number=${page_number}&company_id=${company_id}`
+            ),
+        getCompanies: (
+            type = 'latest',
+            count = 10,
+            page_number = '',
+            id = ''
+        ) =>
+            axios.get(
+                `${url}listing/get-employers?profile_id=${id}&listing_type=${type}&show_users=${count}&page_number=${page_number}`
+            )
     }
 };
 

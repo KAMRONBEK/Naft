@@ -2,8 +2,9 @@ import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import colors from '../constants/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import strings from '../locales/strings';
 
-const JobPageCard = () => {
+const JobPageCard = ({item}) => {
     return (
         <View style={styles.container}>
             <View style={styles.main}>
@@ -15,29 +16,27 @@ const JobPageCard = () => {
                             size={14}
                             style={{width: 20}}
                         />
-                        <Text style={styles.title}>Kamronbek Juraev</Text>
+                        <Text style={styles.title}>{item.employer_name}</Text>
                     </View>
 
-                    <Text style={styles.desc}>
-                        This is some long description
-                    </Text>
+                    <Text style={styles.desc}>{item.project_title}</Text>
                 </View>
             </View>
             <View style={styles.secondary}>
-                <Text style={styles.rightText}>Hourly Rate</Text>
-                <Text style={styles.leftText}>$44.5/hr</Text>
+                <Text style={styles.rightText}>{strings.hourlyRate}</Text>
+                <Text style={styles.leftText}>{item.amount}</Text>
             </View>
             <View style={styles.secondary}>
-                <Text style={styles.rightText}>Hourly Rate</Text>
-                <Text style={styles.leftText}>$44.5/hr</Text>
+                <Text style={styles.rightText}>{strings.jobType}</Text>
+                <Text style={styles.leftText}>{item.project_type}</Text>
             </View>
             <View style={styles.secondary}>
-                <Text style={styles.rightText}>Hourly Rate</Text>
-                <Text style={styles.leftText}>$44.5/hr</Text>
+                <Text style={styles.rightText}>{strings.location}</Text>
+                <Text style={styles.leftText}>{item.location._country}</Text>
             </View>
             <View style={styles.secondary}>
-                <Text style={styles.rightText}>Hourly Rate</Text>
-                <Text style={styles.leftText}>$44.5/hr</Text>
+                <Text style={styles.rightText}>{strings.jobDuration}</Text>
+                <Text style={styles.leftText}>{item.project_duration}</Text>
             </View>
         </View>
     );

@@ -1,8 +1,9 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import colors from '../constants/colors';
+import strings from '../locales/strings';
 
-const CustomCounter = () => {
+const CustomCounter = ({item}) => {
     return (
         <View style={styles.container}>
             <View style={styles.block}>
@@ -13,9 +14,9 @@ const CustomCounter = () => {
                             color: colors.green
                         }
                     ]}>
-                    03
+                    {item.ongoning_jobs}
                 </Text>
-                <Text style={styles.name}>Ongoing Ptojects</Text>
+                <Text style={styles.name}>{strings.currentProjects}</Text>
             </View>
             <View style={styles.block}>
                 <Text
@@ -25,9 +26,9 @@ const CustomCounter = () => {
                             color: colors.blue
                         }
                     ]}>
-                    1503
+                    {item.completed_jobs}
                 </Text>
-                <Text style={styles.name}>Completed Projects</Text>
+                <Text style={styles.name}>{strings.completedProjects}</Text>
             </View>
             <View style={styles.block}>
                 <Text
@@ -37,9 +38,9 @@ const CustomCounter = () => {
                             color: colors.orange
                         }
                     ]}>
-                    02
+                    {item.cancelled_jobs}
                 </Text>
-                <Text style={styles.name}>Cancelled Projects</Text>
+                <Text style={styles.name}>{strings.cancelledProjects}</Text>
             </View>
             <View style={styles.block}>
                 <Text
@@ -49,9 +50,9 @@ const CustomCounter = () => {
                             color: colors.deepLilac
                         }
                     ]}>
-                    25k
+                    {item.wt_total_rating}
                 </Text>
-                <Text style={styles.name}>Served Hours</Text>
+                <Text style={styles.name}>{strings.allEarnings}</Text>
             </View>
         </View>
     );

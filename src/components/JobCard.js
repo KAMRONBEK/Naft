@@ -10,7 +10,9 @@ const JobCard = ({item, vertical, navigation}) => {
     return (
         <TouchableWithoutFeedback
             onPress={() => {
-                navigation.navigate('JobPage');
+                navigation.navigate('JobPage', {
+                    job: item
+                });
             }}>
             <View
                 style={[
@@ -20,17 +22,7 @@ const JobCard = ({item, vertical, navigation}) => {
                     }
                 ]}>
                 <View style={styles.box}>
-                    {item.tag && (
-                        <View
-                            style={[
-                                styles.tag,
-                                item.tag && {
-                                    borderTopColor: item.tag,
-                                    borderLeftColor: item.tag
-                                }
-                            ]}
-                        />
-                    )}
+                    <View style={styles.tag} />
                     <View style={styles.content}>
                         <View style={styles.titleWrapper}>
                             <Ionicons
@@ -39,10 +31,12 @@ const JobCard = ({item, vertical, navigation}) => {
                                 size={14}
                                 style={{width: 20}}
                             />
-                            <Text style={styles.title}>Alfredo Kamuran</Text>
+                            <Text style={styles.title}>
+                                {item.employer_name}
+                            </Text>
                         </View>
                         <Text numberOfLines={1} style={styles.desc}>
-                            This is some description words
+                            {item.project_title}
                         </Text>
                         <View style={styles.infoWrapper}>
                             <FontAwesome
@@ -51,7 +45,7 @@ const JobCard = ({item, vertical, navigation}) => {
                                 size={14}
                                 style={{width: 20}}
                             />
-                            <Text style={styles.info}>Professional</Text>
+                            <Text style={styles.info}>{item.amount}</Text>
                         </View>
                         <View style={styles.infoWrapper}>
                             <FontAwesome
@@ -60,7 +54,9 @@ const JobCard = ({item, vertical, navigation}) => {
                                 size={14}
                                 style={{width: 20}}
                             />
-                            <Text style={styles.info}>England</Text>
+                            <Text style={styles.info}>
+                                {item.location._country}
+                            </Text>
                         </View>
                         <View style={styles.infoWrapper}>
                             <FontAwesome
@@ -69,7 +65,7 @@ const JobCard = ({item, vertical, navigation}) => {
                                 size={14}
                                 style={{width: 20}}
                             />
-                            <Text style={styles.info}>Type: Per Hour</Text>
+                            <Text style={styles.info}>{item.project_type}</Text>
                         </View>
                         <View style={styles.infoWrapper}>
                             <Ionicons
@@ -78,7 +74,9 @@ const JobCard = ({item, vertical, navigation}) => {
                                 size={14}
                                 style={{width: 20}}
                             />
-                            <Text style={styles.info}>Professional</Text>
+                            <Text style={styles.info}>
+                                {item.project_duration}
+                            </Text>
                         </View>
                     </View>
                 </View>
@@ -137,8 +135,8 @@ const styles = StyleSheet.create({
         height: 0,
         borderWidth: 15,
         borderStyle: 'solid',
-        borderTopColor: colors.green,
-        borderLeftColor: colors.green,
+        borderTopColor: colors.red,
+        borderLeftColor: colors.red,
         borderBottomColor: 'transparent',
         borderRightColor: 'transparent'
     },

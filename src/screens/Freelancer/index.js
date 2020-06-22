@@ -1,100 +1,82 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, StyleSheet} from 'react-native';
 import colors from '../../constants/colors';
 import FreelancerCard from '../../components/FreelancerCard';
 import {FlatList} from 'react-native-gesture-handler';
+import {showLoading, hideLoading} from '../../redux/actions';
+import strings from '../../locales/strings';
+import {connect} from 'react-redux';
+import requests from '../../api/requests';
 
-export const freelancerList = [
-    {
-        id: 1,
-        name: 'Emilia Clark',
-        title: 'How comunication happens',
-        hourRate: 12,
-        location: 'England'
-    },
-    {
-        id: 2,
-        name: 'Emilia Clark',
-        title: 'How comunication happens',
-        hourRate: 12,
-        location: 'England',
-        tag: colors.red
-    },
-    {
-        id: 3,
-        name: 'Emilia Clark',
-        title: 'How comunication happens',
-        hourRate: 12,
-        location: 'England'
-    },
-    {
-        id: 4,
-        name: 'Emilia Clark',
-        title: 'How comunication happens',
-        hourRate: 12,
-        location: 'England',
-        tag: colors.blue
-    },
-    {
-        id: 5,
-        name: 'Emilia Clark',
-        title: 'How comunication happens',
-        hourRate: 12,
-        location: 'England'
-    },
-    {
-        id: 6,
-        name: 'Emilia Clark',
-        title: 'How comunication happens',
-        hourRate: 12,
-        location: 'England',
-        tag: colors.yellow
-    },
-    {
-        id: 7,
-        name: 'Emilia Clark',
-        title: 'How comunication happens',
-        hourRate: 12,
-        location: 'England'
-    },
-    {
-        id: 8,
-        name: 'Emilia Clark',
-        title: 'How comunication happens',
-        hourRate: 12,
-        location: 'England'
-    },
-    {
-        id: 9,
-        name: 'Emilia Clark',
-        title: 'How comunication happens',
-        hourRate: 12,
-        location: 'England'
-    }
-];
+const Freelancer = ({navigation, hideLoading, showLoading}) => {
+    let [pageIndex, setPageIndex] = useState(1);
+    let [freelancerList, setFreelancerList] = useState([]);
 
-const Freelancer = ({navigation}) => {
+    let [loading, setLoading] = useState(false);
+
+    const effect = async () => {
+        showLoading(strings.loading);
+        try {
+            let freelancerRes = await requests.list.getFreelancer(
+                'latest',
+                10,
+                '',
+                pageIndex
+            );
+            setFreelancerList(freelancerRes.data);
+        } catch (error) {
+            console.warn(error.message);
+        } finally {
+            hideLoading();
+        }
+    };
+
+    const fetchFreelancers = async () => {
+        if (loading) {
+            return;
+        }
+        setLoading(true);
+        try {
+            let res = await requests.list.getFreelancer(
+                'latest',
+                10,
+                '',
+                pageIndex + 1
+            );
+            console.warn(res.data.type);
+            if (res.data.type != 'error') {
+                setFreelancerList([...freelancerList, ...res.data]);
+            }
+            setPageIndex(pageIndex + 1);
+        } catch (error) {
+            console.warn(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        effect();
+    }, [navigation]);
+
     return (
-        <>
-            {/* <ScrollView
-            showsVerticalScrollIndicator={false}
-          style={styles.container}>*/}
-            <View style={styles.container}>
-                <FlatList
-                    data={freelancerList}
-                    renderItem={({item}) => (
-                        <FreelancerCard item={item} navigation={navigation} />
-                    )}
-                    keyExtractor={item => item.id.toString()}
-                    style={{
-                        marginTop: 10,
-                        overflow: 'visible',
-                        flex: 1
-                    }}
-                />
-            </View>
-            {/* </ScrollView> */}
-        </>
+        <View style={styles.container}>
+            <FlatList
+                data={freelancerList}
+                renderItem={({item}) => (
+                    <FreelancerCard item={item} navigation={navigation} />
+                )}
+                keyExtractor={index => {
+                    index;
+                }}
+                style={{
+                    marginTop: 10,
+                    overflow: 'visible'
+                }}
+                onEndReached={fetchFreelancers}
+                onEndReachedThreshold={0.5}
+            />
+        </View>
     );
 };
 
@@ -112,4 +94,12 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Freelancer;
+const mapDispatchToProps = {
+    showLoading,
+    hideLoading
+};
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(Freelancer);

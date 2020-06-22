@@ -12,50 +12,40 @@ import FreelancerCard from '../../components/FreelancerCard';
 import colors from '../../constants/colors';
 import JobCard from '../../components/JobCard';
 import CategoryCard from '../../components/CategoryCard';
-import {freelancerList} from '../Jobs';
+// import {freelancerList} from '../Jobs';
 import {withNavigation} from 'react-navigation';
 import requests from '../../api/requests';
 import {connect} from 'react-redux';
 import {showLoading, hideLoading} from '../../redux/actions/appState';
 import strings from '../../locales/strings';
 
-export const jobList = [
-    {
-        id: 1,
-        tag: colors.green,
-        fav: true
-    },
-    {
-        id: 2,
-        tag: colors.orange,
-        fav: false
-    },
-    {
-        id: 3,
-        tag: colors.yellow,
-        fav: true
-    }
-];
+const Home = ({navigation, showLoading, hideLoading, user}) => {
+    const [categoryList, setCategoryList] = useState([]);
+    const [freelancerList, setFreelancerList] = useState([]);
+    const [jobList, setJobList] = useState([]);
 
-const Home = ({navigation, showLoading, hideLoading}) => {
-    const [categoryList, setCategoryList] = useState([
-        {id: 1},
-        {id: 2},
-        {id: 3}
-    ]);
+    let effect = async () => {
+        showLoading(strings.loading);
+        try {
+            //get categories
+            let categoies = await requests.list.getCategory();
+            setCategoryList(categoies.data);
+
+            //get freelancers
+            let freelancers = await requests.list.getFreelancer('featured', 5);
+            setFreelancerList(freelancers.data);
+
+            //get jobs
+            let jobs = await requests.list.getJobs('latest', 5);
+            setJobList(jobs.data);
+        } catch (error) {
+            console.warn(error.message);
+        } finally {
+        }
+    };
 
     useEffect(() => {
-        showLoading(strings.loading);
-        requests.list
-            .getCategory()
-            .then(res => {
-                setCategoryList(res.data);
-                hideLoading();
-            })
-            .catch(err => {
-                console.warn(err);
-                hideLoading();
-            });
+        effect();
     }, []);
 
     return (
@@ -77,10 +67,10 @@ const Home = ({navigation, showLoading, hideLoading}) => {
                             </View>
                             <View style={styles.banner}>
                                 <Text style={styles.bannerTitle}>
-                                    Explore Categories
+                                    {strings.categories}
                                 </Text>
                                 <Text style={styles.bannerSubTitle}>
-                                    Professional by categoies
+                                    {strings.profsByCategory}
                                 </Text>
                                 {!!categoryList && (
                                     <FlatList
@@ -94,7 +84,7 @@ const Home = ({navigation, showLoading, hideLoading}) => {
                                         renderItem={({item, index}) => (
                                             <CategoryCard
                                                 item={item}
-                                                key={index.toString()}
+                                                navigation={navigation}
                                             />
                                         )}
                                         keyExtractor={(item, index) =>
@@ -108,10 +98,10 @@ const Home = ({navigation, showLoading, hideLoading}) => {
                             </View>
                             <View style={styles.titleWrapper}>
                                 <Text style={styles.title}>
-                                    Featured Freepancers
+                                    {strings.featuredFreelancers}
                                 </Text>
                                 <Text style={styles.subTitle}>
-                                    People You Can Rely On
+                                    {strings.peopleYouCanTrust}
                                 </Text>
                             </View>
                         </>
@@ -120,8 +110,15 @@ const Home = ({navigation, showLoading, hideLoading}) => {
                 style={{
                     overflow: 'visible'
                 }}
-                keyExtractor={item => item.id.toString()}
-                data={freelancerList}
+                keyExtractor={(item, index) => index.toString()}
+                data={
+                    freelancerList || [
+                        {
+                            id: 'asda',
+                            name: 'asdas'
+                        }
+                    ]
+                }
                 renderItem={({item, index}) => (
                     <FreelancerCard item={item} navigation={navigation} />
                 )}
@@ -130,22 +127,22 @@ const Home = ({navigation, showLoading, hideLoading}) => {
                         <>
                             <View style={styles.titleWrapper}>
                                 <Text style={styles.title}>
-                                    Latest Posted Jobs
+                                    {strings.latestJobs}
                                 </Text>
                                 <Text style={styles.subTitle}>
-                                    Start Today For Better
+                                    {strings.dontBeLate}
                                 </Text>
                             </View>
                             <FlatList
                                 horizontal={true}
-                                data={freelancerList}
+                                data={jobList}
                                 renderItem={({item, index}) => (
                                     <JobCard
                                         item={item}
                                         navigation={navigation}
                                     />
                                 )}
-                                keyExtractor={item => item.id.toString()}
+                                keyExtractor={index => index.toString()}
                                 style={{
                                     marginLeft: 15,
                                     overflow: 'visible'
@@ -213,6 +210,9 @@ const styles = StyleSheet.create({
 });
 
 // const mapStateToProps = state => {};
+const mapStateToProps = ({user}) => ({
+    user
+});
 
 const mapDispatchToProps = {
     showLoading,
@@ -220,7 +220,7 @@ const mapDispatchToProps = {
 };
 
 let ConnectedHome = connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(Home);
 

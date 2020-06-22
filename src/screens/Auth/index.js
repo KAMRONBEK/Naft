@@ -12,9 +12,14 @@ import strings from '../../locales/strings';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import RectangleButton from '../../components/RectangleButton';
 import requests from '../../api/requests';
-import {userLoggedIn, userLoaded} from '../../redux/actions';
+import {
+    userLoggedIn,
+    userLoaded,
+    showLoading,
+    hideLoading
+} from '../../redux/actions';
 
-const Auth = ({user, navigation}) => {
+const Auth = ({user, navigation, userLoggedIn, showLoading, hideLoading}) => {
     let [mail, setMail] = useState('');
     let [password, setPassword] = useState('');
 
@@ -22,13 +27,11 @@ const Auth = ({user, navigation}) => {
     let [internetError, setInternetError] = useState('');
 
     const onLoginPress = () => {
-        console.warn(mail);
-        console.warn(password);
-
+        showLoading(strings.loggingIn);
         requests.auth
             .login({email: mail, password: password})
             .then(res => {
-                console.warn(res.data);
+                hideLoading();
                 if (res.data.type === 'success') {
                     userLoggedIn(res.data);
                     navigation.navigate('Home');
@@ -38,7 +41,7 @@ const Auth = ({user, navigation}) => {
                 }
             })
             .catch(err => {
-                console.warn(err.message);
+                hideLoading();
             });
     };
 
@@ -140,7 +143,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 10
+        padding: 10
     },
     input: {
         flex: 1,
@@ -171,4 +174,13 @@ const mapStateToProps = ({user}) => ({
     user
 });
 
-export default connect(mapStateToProps)(Auth);
+const mapDispatchToProps = {
+    userLoggedIn,
+    showLoading,
+    hideLoading
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Auth);

@@ -11,7 +11,7 @@ const Attachment = ({item}) => {
                 <Image source={images.file} style={styles.icon} />
             </View>
             <Text numberOfLines={1} style={styles.name}>
-                {item.name}
+                {item.document_name}
             </Text>
             <Text style={styles.size} numberOfLines={1}>
                 {item.size}

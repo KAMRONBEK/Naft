@@ -13,31 +13,22 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {withNavigation} from 'react-navigation';
 const FreelancerCard = ({item, navigation}) => {
     let [isFavorite, setIsFavorite] = useState((item && item.fav) || false);
-
     return (
         <TouchableWithoutFeedback
             onPress={() => {
-                navigation.navigate('FreelancerPage');
+                navigation.navigate('FreelancerPage', {
+                    freelancer: item
+                });
             }}>
             <View style={styles.container}>
                 <View style={styles.box}>
-                    {!!item && item.tag && item.tag && (
-                        <View
-                            style={[
-                                styles.tag,
-                                !!item.tag &&
-                                    item.tag && {
-                                        borderTopColor: !!item.tag && item.tag,
-                                        borderLeftColor: !!item.tag && item.tag
-                                    }
-                            ]}
-                        />
-                    )}
+                    {/* {!!item && item.tag && item.tag && ( */}
+                    <View style={styles.tag} />
+                    {/* )} */}
                     <View style={styles.imageWrapper}>
                         <Image
                             source={{
-                                uri:
-                                    'https://content.etilize.com/Finish/1031247865.jpg'
+                                uri: item.profile_img
                             }}
                             style={styles.image}
                         />
@@ -55,7 +46,7 @@ const FreelancerCard = ({item, navigation}) => {
                             </Text>
                         </View>
                         <Text numberOfLines={1} style={styles.desc}>
-                            {!!item && item.title}
+                            {!!item && item.content}
                         </Text>
                         <View style={styles.infoWrapper}>
                             <View style={styles.titleWrapper}>
@@ -66,7 +57,7 @@ const FreelancerCard = ({item, navigation}) => {
                                     style={{width: 20}}
                                 />
                                 <Text style={styles.title}>
-                                    ${!!item && item.hourRate}/hr
+                                    {!!item && item._perhour_rate1}
                                 </Text>
                             </View>
                             <View
@@ -85,7 +76,7 @@ const FreelancerCard = ({item, navigation}) => {
                                     style={{width: 20}}
                                 />
                                 <Text style={styles.title}>
-                                    {!!item && item.location}
+                                    {!!item.location && item.location._country}
                                 </Text>
                             </View>
                         </View>
@@ -140,8 +131,8 @@ const styles = StyleSheet.create({
         height: 0,
         borderWidth: 15,
         borderStyle: 'solid',
-        borderTopColor: colors.green,
-        borderLeftColor: colors.green,
+        borderTopColor: colors.red,
+        borderLeftColor: colors.red,
         borderBottomColor: 'transparent',
         borderRightColor: 'transparent'
     },

@@ -3,7 +3,7 @@ import {createDrawerNavigator} from 'react-navigation-drawer';
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
-import {Text} from 'react-native';
+import {Text, View} from 'react-native';
 import {
     Home,
     Settings,
@@ -14,7 +14,8 @@ import {
     CompanyPage,
     JobPage,
     Register,
-    Auth
+    Auth,
+    Loader
 } from '../screens';
 import Header from '../components/Header';
 import colors from '../constants/colors';
@@ -22,6 +23,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import DrawerContent from '../components/DrawerContent';
 import strings from '../locales/strings';
+import {connect} from 'react-redux';
 
 let JobsStack = createStackNavigator(
     {
@@ -81,60 +83,95 @@ let CompanyStack = createStackNavigator({
     }
 });
 
-let TabNavigator = createMaterialTopTabNavigator(
+let TabRoutes = {
+    Home: {
+        screen: Home,
+        navigationOptions: {
+            tabBarIcon: () => (
+                <AntDesign name="home" size={24} color={colors.black} />
+            ),
+            tabBarLabel: () => {
+                return <Text>{strings.main}</Text>;
+            }
+        }
+    },
+    Jobs: {
+        screen: JobsStack,
+        navigationOptions: {
+            tabBarIcon: () => (
+                <AntDesign
+                    name="iconfontdesktop"
+                    size={24}
+                    color={colors.black}
+                />
+            ),
+            tabBarLabel: () => {
+                return <Text>{strings.jobs}</Text>;
+            }
+        }
+    },
+    Freelancer: {
+        screen: FreelancerStack,
+        navigationOptions: {
+            tabBarIcon: () => (
+                <AntDesign name="rest" size={24} color={colors.black} />
+            ),
+            tabBarLabel: () => {
+                return <Text>{strings.freelancers}</Text>;
+            }
+        }
+    },
+    Company: {
+        screen: CompanyStack,
+        navigationOptions: {
+            tabBarIcon: () => (
+                <SimpleLineIcons
+                    name="briefcase"
+                    size={24}
+                    color={colors.black}
+                />
+            ),
+            tabBarLabel: () => {
+                return <Text>{strings.company}</Text>;
+            }
+        }
+    }
+};
+
+const mapStateToProps = ({user}) => ({user});
+
+let tabOptions = {
+    swipeEnabled: false,
+    tabBarPosition: 'bottom',
+    tabBarOptions: {
+        style: {
+            backgroundColor: colors.white
+        },
+        labelStyle: {
+            margin: 0,
+            marginBottom: 3,
+            fontSize: 12,
+            textTransform: 'none',
+            height: 20,
+            color: colors.black
+        },
+        indicatorStyle: {
+            backgroundColor: colors.red
+        },
+        tabStyle: {
+            padding: 0,
+            paddingVertical: 5
+        },
+
+        showIcon: true,
+        adaptive: true
+    }
+};
+
+let Tabs = createMaterialTopTabNavigator(TabRoutes, tabOptions);
+let WithSettingsTabs = createMaterialTopTabNavigator(
     {
-        Home: {
-            screen: Home,
-            navigationOptions: {
-                tabBarIcon: () => (
-                    <AntDesign name="home" size={24} color={colors.black} />
-                ),
-                tabBarLabel: () => {
-                    return <Text>Home</Text>;
-                }
-            }
-        },
-        Jobs: {
-            screen: JobsStack,
-            navigationOptions: {
-                tabBarIcon: () => (
-                    <AntDesign
-                        name="iconfontdesktop"
-                        size={24}
-                        color={colors.black}
-                    />
-                ),
-                tabBarLabel: () => {
-                    return <Text>Jobs</Text>;
-                }
-            }
-        },
-        Freelancer: {
-            screen: FreelancerStack,
-            navigationOptions: {
-                tabBarIcon: () => (
-                    <AntDesign name="rest" size={24} color={colors.black} />
-                ),
-                tabBarLabel: () => {
-                    return <Text>Freelancer</Text>;
-                }
-            }
-        },
-        Company: {
-            screen: CompanyStack,
-            navigationOptions: {
-                tabBarIcon: () => (
-                    <SimpleLineIcons
-                        name="briefcase"
-                        size={24}
-                        color={colors.black}
-                    />
-                ),
-                tabBarLabel: () => {
-                    return <Text>Company</Text>;
-                }
-            }
-        },
+        ...TabRoutes,
         Settings: {
             screen: Settings,
             navigationOptions: {
@@ -142,41 +179,21 @@ let TabNavigator = createMaterialTopTabNavigator(
                     <AntDesign name="setting" size={24} color={colors.black} />
                 ),
                 tabBarLabel: () => {
-                    return <Text>Settings</Text>;
+                    return <Text>{strings.settings}</Text>;
                 }
             }
         }
     },
-    {
-        swipeEnabled: false,
-        tabBarPosition: 'bottom',
-        tabBarOptions: {
-            style: {
-                backgroundColor: colors.white
-            },
-            labelStyle: {
-                margin: 0,
-                marginBottom: 3,
-                fontSize: 12,
-                textTransform: 'none',
-                height: 20,
-                color: colors.black
-            },
-            indicatorStyle: {
-                backgroundColor: colors.red
-            },
-            tabStyle: {
-                padding: 0,
-                paddingVertical: 5
-            },
-
-            showIcon: true,
-            adaptive: true
-        }
-    }
+    tabOptions
 );
 
 let AuthStack = createStackNavigator({
+    Loader: {
+        screen: Loader,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
     Login: {
         screen: Auth,
         navigationOptions: {
@@ -192,19 +209,46 @@ let AuthStack = createStackNavigator({
 });
 
 let AuthvsTab = createStackNavigator({
-    tab: {
-        screen: TabNavigator,
-        navigationOptions: {
-            headerShown: false
-        }
-    },
     auth: {
         screen: AuthStack,
         navigationOptions: {
             headerShown: false
         }
+    },
+    tab: {
+        screen: Tabs,
+        navigationOptions: {
+            headerShown: false
+        }
     }
 });
+
+let DrawerWithSettings = createDrawerNavigator(
+    {
+        AuthvsTab: createStackNavigator({
+            auth: {
+                screen: AuthStack,
+                navigationOptions: {
+                    headerShown: false
+                }
+            },
+            tab: {
+                screen: WithSettingsTabs,
+                navigationOptions: {
+                    headerShown: false
+                }
+            }
+        })
+    },
+    {
+        drawerType: 'slide',
+        contentComponent: props => {
+            progress = props.progress;
+            return <DrawerContent {...props} />;
+        },
+        drawerWidth: 100
+    }
+);
 
 let DrawerNavigator = createDrawerNavigator(
     {
@@ -216,16 +260,17 @@ let DrawerNavigator = createDrawerNavigator(
             progress = props.progress;
             return <DrawerContent {...props} />;
         },
-        // drawerContentOptions: {
-        //     activeTintColor: colors.red
-        // },
         drawerWidth: 100
     }
 );
 
-// let AuthSwitch = createSwitchNavigator({
-//     DrawerNavigator
-// });
+let AppRouter = ({user}) => {
+    if (user && user.type === 'success') {
+        let App = createAppContainer(DrawerWithSettings);
+        return <App />;
+    }
+    let App = createAppContainer(DrawerNavigator);
+    return <App />;
+};
 
-let App = createAppContainer(DrawerNavigator);
-export default App;
+export default connect(mapStateToProps)(AppRouter);

@@ -1,14 +1,19 @@
 import LottieView from 'lottie-react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {connect} from 'react-redux';
 import lotties from '../assets/lotties';
 import colors from '../constants/colors';
+import AsyncStorage from '@react-native-community/async-storage';
+import requests from '../api/requests';
+import {showLoading, hideLoading} from '../redux/actions';
+import strings from '../locales/strings';
 
 const LoadingModal = ({loadingMessage, isLoading}) => {
     if (!isLoading) {
         return null;
     }
+
     return (
         <View style={styles.container}>
             <View style={styles.content}>
@@ -45,6 +50,12 @@ const mapStateToProps = ({appState: {loadingMessage, isLoading}}) => ({
     isLoading
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+    showLoading,
+    hideLoading
+};
 
-export default connect(mapStateToProps)(LoadingModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(LoadingModal);

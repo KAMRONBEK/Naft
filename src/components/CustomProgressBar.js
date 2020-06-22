@@ -4,6 +4,7 @@ import colors from '../constants/colors';
 
 const CustomProgressBar = ({item}) => {
     let [containerWidth, setContainerWidth] = useState(0);
+
     return (
         <View
             onLayout={event => {
@@ -12,15 +13,15 @@ const CustomProgressBar = ({item}) => {
             }}
             style={styles.container}>
             <View style={styles.top}>
-                <Text style={styles.text}>{item && item.name}</Text>
-                <Text style={styles.text}>{item && item.percent}</Text>
+                <Text style={styles.text}>{item && item.skill_name}</Text>
+                <Text style={styles.text}>{item && item.skill_val}</Text>
             </View>
             <View
                 style={[
                     styles.bar,
                     item &&
-                        item.percent && {
-                            width: (containerWidth * item.percent) / 100
+                        item.skill_val && {
+                            width: (containerWidth * item.skill_val) / 100
                         }
                 ]}>
                 <Image

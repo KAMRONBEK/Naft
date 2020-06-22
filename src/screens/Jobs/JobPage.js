@@ -26,37 +26,20 @@ const attachmentList = [
     {id: 7, name: 'WireFrame Documentation', size: '512 kb'}
 ];
 
-const JobPage = () => {
+const JobPage = ({navigation}) => {
+    let job = navigation.getParam('job');
+
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
                 ListHeaderComponent={() => {
                     return (
                         <>
-                            <JobPageCard />
+                            <JobPageCard item={job} />
                             <Text style={styles.title}>
                                 {strings.projectDetails}
                             </Text>
-                            <Text>
-                                Consectetur adipisicing elit, sedsmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut
-                                enim ad minimame quis nostrud exercitation
-                                ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat. Duis aute irure dolor in repit in
-                                voluptate velit esse cillum dolore eu fugiat
-                                nulla pariri Excepteur sint occaecat cupidatat
-                                non proident, sunt in
-                            </Text>
-                            <Text>{''}</Text>
-                            <Text>
-                                culpa qui officia deserunt mollit anim. Sed ut
-                                perspiciatis unde omnis iste natus error
-                                sitatatem accusantium doloremque laudantium,
-                                totam rem aciam eaque ipsa quae ab illo
-                                inventore veritatis et quasi archo beatae vitae
-                                dicta sunt explicabo. Nemo enim ipsam vim quia
-                                voluptas sit aspernatur aut odit aut fugit.
-                            </Text>
+                            <Text>{job.project_content}</Text>
                             <Text style={styles.title}>
                                 {strings.skillsRequired}
                             </Text>
@@ -65,7 +48,7 @@ const JobPage = () => {
                 }}
                 numColumns={2}
                 contentContainerStyle={styles.contentWrapper}
-                data={skillList}
+                data={job.skills}
                 renderItem={({item}) => <BulletText item={item} />}
                 keyExtractor={(item, index) => index.toString()}
                 ListFooterComponent={() => {
@@ -76,7 +59,7 @@ const JobPage = () => {
                             </Text>
                             <FlatList
                                 showsHorizontalScrollIndicator={false}
-                                data={attachmentList}
+                                data={job.attanchents}
                                 horizontal={true}
                                 renderItem={({item}) => (
                                     <Attachment item={item} />

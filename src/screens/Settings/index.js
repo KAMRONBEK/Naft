@@ -5,9 +5,9 @@ import {
     StyleSheet,
     Image,
     ScrollView,
-    PermissionsAndroid
+    TextInput,
+    TouchableWithoutFeedback
 } from 'react-native';
-import {WebView} from 'react-native-webview';
 import RoundButton from '../../components/RoundButton';
 import colors from '../../constants/colors';
 import strings from '../../locales/strings';
@@ -15,61 +15,41 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView, {Marker} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
-import {TextInput} from 'react-native-paper';
+import {connect} from 'react-redux';
+import {showModal} from '../../redux/actions';
+import AsyncStorage from '@react-native-community/async-storage';
+import ImagePicker from 'react-native-image-picker';
+import images from '../../assets/images';
 
-{
-    /* <WebView
-            source={{uri: 'http://naft.uz/register'}}
-            style={{fmarginTop: 20}}
-		/> */
-}
+const options = {
+    title: strings.selectImage,
+    customButtons: [{name: 'fb', title: 'Choose Photo from Facebook'}],
+    storageOptions: {
+        skipBackup: true,
+        path: 'images'
+    }
+};
 
-const Settings = () => {
+const Settings = ({navigation, showModal, userData}) => {
+    //style-realted variables
     let [bannerWidth, setBannerWidth] = useState(0);
     let [bannerHeight, setBannerHeight] = useState(0);
-
     let [buttonWidth, setButtonWidth] = useState(0);
-
     let [inputBorderColor, setInputBorderColor] = useState('');
 
+    //for geolocation
     let [currentMarker, setCurrentMarker] = useState({
         latitude: 37.78825,
         longitude: -122.4324,
         latitudeDelta: 0.005,
         longitudeDelta: 0.0021
     });
-
     let [currentRegion, setCurrentRegion] = useState({
         latitude: 37.78825,
         longitude: -122.4324,
         latitudeDelta: 0.005,
         longitudeDelta: 0.0021
     });
-
-    async function requestLocationPermission() {
-        try {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-                {
-                    title: 'Cool Photo App Location Permission',
-                    message: 'Cool Photo App needs access to your location ',
-                    buttonNeutral: 'Ask Me Later',
-                    buttonNegative: 'Cancel',
-                    buttonPositive: 'OK'
-                }
-            );
-            // console.warn(granted);
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                // console.warn('You can use the location');
-            } else {
-                // console.warn('Location permission denied');
-            }
-        } catch (err) {
-            // console.warn(err);
-        }
-    }
-
     let getCurrentPosition = () => {
         Geolocation.getCurrentPosition(info => {
             if (!!info) {
@@ -83,22 +63,31 @@ const Settings = () => {
             }
         });
     };
-
     useEffect(() => {
-        requestLocationPermission();
-        Geolocation.getCurrentPosition(info => {
-            if (!!info) {
-                // console.warn(info.coords);
-                setCurrentMarker(info.coords);
-                setCurrentRegion({
-                    ...info.coords,
-                    latitudeDelta: 0.005,
-                    longitudeDelta: 0.0021
-                });
+        getCurrentPosition();
+        console.warn('setting', userData);
+    }, [userData]);
+
+    //images
+    let [banner, setBanner] = useState('');
+    let [avatar, setAvatar] = useState({
+        // uri: user.profile.pmeta && user.profile.pmeta.banner_img
+    });
+
+    const onBannerPress = () => {
+        ImagePicker.showImagePicker(options, response => {
+            if (response.uri) {
+                setBanner(response);
             }
         });
-    }, []);
-
+    };
+    const onAvatarPress = () => {
+        ImagePicker.showImagePicker(options, response => {
+            if (response.uri) {
+                setAvatar(response);
+            }
+        });
+    };
     return (
         <ScrollView style={styles.container}>
             <View
@@ -107,13 +96,7 @@ const Settings = () => {
                     setBannerHeight(nativeEvent.layout.height);
                 }}
                 style={styles.topBanner}>
-                <Image
-                    style={styles.banner}
-                    source={{
-                        uri:
-                            'https://cdn5.f-cdn.com/contestentries/161530/14448983/54edf5c20a2af_thumb900.jpg'
-                    }}
-                />
+                <Image style={styles.banner} source={banner} />
             </View>
             <View
                 style={[
@@ -126,14 +109,12 @@ const Settings = () => {
                 ]}>
                 <Image
                     style={styles.avatar}
-                    source={{
-                        uri:
-                            'https://pngimage.net/wp-content/uploads/2018/05/default-user-profile-image-png-6.png'
-                    }}
+                    source={avatar}
                     style={styles.avatar}
                 />
                 <View style={styles.buttonWrapper}>
                     <RoundButton
+                        onPress={onAvatarPress}
                         borderColor={colors.white}
                         iconName="plus"
                         borderColor={colors.white}
@@ -154,6 +135,7 @@ const Settings = () => {
                         }
                     ]}>
                     <RoundButton
+                        onPress={onBannerPress}
                         text={strings.changeBanner}
                         backColor={colors.green}
                         borderColor={colors.white}
@@ -217,7 +199,7 @@ const Settings = () => {
                 <View style={styles.box}>
                     <View style={styles.inputWrapper}>
                         <Text style={styles.iconName}>
-                            {strings.yourHourlyRate} ($)
+                            {strings.yourHourlyRate} (UZS)
                         </Text>
                         <TextInput
                             onFocus={() => {
@@ -404,8 +386,8 @@ const styles = StyleSheet.create({
     inputStyle: {
         borderColor: colors.yellow,
         backgroundColor: colors.white,
-        height: 50,
-        width: 300
+        height: 30
+        // width: 300
     },
     input: {
         fontSize: 18,
@@ -419,4 +401,15 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Settings;
+const mapStateToProps = ({user}) => ({
+    userData: user
+});
+
+const mapDispatchToProps = {
+    showModal
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Settings);

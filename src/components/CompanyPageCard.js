@@ -3,16 +3,20 @@ import {View, Text, StyleSheet, Image} from 'react-native';
 import colors from '../constants/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RectangleButton from './RectangleButton';
+import strings from '../locales/strings';
 
-const CompanyPageCard = ({}) => {
+const CompanyPageCard = ({item}) => {
+    //needs to get job of this company/employer
+
     return (
         <View style={styles.container}>
             <View style={styles.main}>
                 <View style={styles.tag} />
                 <Image
                     source={{
-                        uri:
-                            'https://humancapitalmedia.com/wp-content/uploads/sites/14/2017/02/gray-square.png'
+                        uri: !!item.profile_img
+                            ? item.profile_img
+                            : 'https://media.istockphoto.com/vectors/user-iconlogo-app-profile-picture-person-avatarvector-vector-id1168155551'
                     }}
                     style={styles.image}
                 />
@@ -24,22 +28,26 @@ const CompanyPageCard = ({}) => {
                             size={14}
                             style={{width: 20}}
                         />
-                        <Text style={styles.title}>Kamronbek Juraev</Text>
+                        <Text style={styles.title}>{item.name}</Text>
                     </View>
-
-                    <Text style={styles.desc}>
-                        This is some long description
+                    <Text
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                        style={styles.desc}>
+                        {item._tag_line}
                     </Text>
                 </View>
             </View>
             <View style={styles.secondary}>
-                <Text style={styles.textCenter}>Company ID: SDF12312DSFSD</Text>
+                <Text style={styles.textCenter}>
+                    {strings.companyId}: {item.profile_id}
+                </Text>
                 <View style={styles.buttonWrapper}>
                     <RectangleButton
                         backColor={colors.red}
                         fill
                         textColor={colors.white}
-                        text="some"
+                        text={strings.follow}
                         minWidth={260}
                     />
                     <RectangleButton
@@ -57,16 +65,17 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.white,
         flexDirection: 'column',
-        overflow: 'hidden',
+        // overflow: 'hidden',
         borderRadius: 5,
         borderColor: colors.paleGray,
-        shadowColor: "#000",
+        shadowColor: colors.green,
         shadowOffset: {
             width: 0,
-            height: 2,
+            height: 3
         },
-        shadowOpacity: 0.23,
-        shadowRadius: 2.62,
+        shadowOpacity: 0.29,
+        shadowRadius: 4.65,
+
         borderWidth: 0.2
     },
     main: {
@@ -105,7 +114,8 @@ const styles = StyleSheet.create({
     title: {},
     desc: {
         fontSize: 20,
-        color: colors.black
+        color: colors.black,
+        width: '70%'
     },
     secondary: {
         padding: 15

@@ -1,82 +1,67 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, ScrollView, FlatList} from 'react-native';
 import colors from '../../constants/colors';
 import JobCard from '../../components/JobCard';
 import {withNavigation} from 'react-navigation';
-export const freelancerList = [
-    {
-        id: 1,
-        name: 'Emilia Clark',
-        title: 'How comunication happens',
-        hourRate: 12,
-        location: 'England'
-    },
-    {
-        id: 2,
-        name: 'Emilia Clark',
-        title: 'How comunication happens',
-        hourRate: 12,
-        location: 'England',
-        tag: colors.red
-    },
-    {
-        id: 3,
-        name: 'Emilia Clark',
-        title: 'How comunication happens',
-        hourRate: 12,
-        location: 'England'
-    },
-    {
-        id: 4,
-        name: 'Emilia Clark',
-        title: 'How comunication happens',
-        hourRate: 12,
-        location: 'England',
-        tag: colors.blue
-    },
-    {
-        id: 5,
-        name: 'Emilia Clark',
-        title: 'How comunication happens',
-        hourRate: 12,
-        location: 'England'
-    },
-    {
-        id: 6,
-        name: 'Emilia Clark',
-        title: 'How comunication happens',
-        hourRate: 12,
-        location: 'England',
-        tag: colors.yellow
-    },
-    {
-        id: 7,
-        name: 'Emilia Clark',
-        title: 'How comunication happens',
-        hourRate: 12,
-        location: 'England'
-    },
-    {
-        id: 8,
-        name: 'Emilia Clark',
-        title: 'How comunication happens',
-        hourRate: 12,
-        location: 'England'
-    },
-    {
-        id: 9,
-        name: 'Emilia Clark',
-        title: 'How comunication happens',
-        hourRate: 12,
-        location: 'England'
-    }
-];
+import {connect} from 'react-redux';
+import requests from '../../api/requests';
+import {showLoading, hideLoading} from '../../redux/actions';
+import strings from '../../locales/strings';
 
-const Jobs = ({navigation}) => {
+const Jobs = ({navigation, showLoading, hideLoading}) => {
+    let [pageIndex, setPageIndex] = useState(1);
+    let [jobList, setJobList] = useState([]);
+
+    let [loading, setLoading] = useState(false);
+
+    const effect = async () => {
+        showLoading(strings.loading);
+        try {
+            let jobRes = await requests.list.getJobs(
+                'latest',
+                10,
+                '',
+                pageIndex
+            );
+            setJobList(jobRes.data);
+        } catch (error) {
+            console.warn(error.message);
+        } finally {
+            hideLoading();
+        }
+    };
+
+    const fetchJobs = async () => {
+        if (loading) {
+            return;
+        }
+        setLoading(true);
+        try {
+            let res = await requests.list.getJobs(
+                'latest',
+                10,
+                '',
+                pageIndex + 1
+            );
+            if (res.data.type != 'error') {
+                setJobList([...jobList, ...res.data]);
+                setPageIndex(pageIndex + 1);
+            }
+        } catch (error) {
+            console.warn(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        effect();
+    }, [navigation]);
+
     return (
         <View style={styles.container}>
             <FlatList
-                data={freelancerList}
+                data={jobList}
                 renderItem={({item}) => (
                     <JobCard
                         vertical={true}
@@ -84,8 +69,9 @@ const Jobs = ({navigation}) => {
                         navigation={navigation}
                     />
                 )}
-                keyExtractor={item => item.id.toString()}
-                style={{flex: 1}}
+                keyExtractor={index => index.toString()}
+                onEndReached={fetchJobs}
+                onEndReachedThreshold={0.5}
             />
         </View>
     );
@@ -104,4 +90,14 @@ const styles = StyleSheet.create({
     cardWrapper: {}
 });
 
-export default withNavigation(Jobs);
+const mapDispatchToProps = {
+    showLoading,
+    hideLoading
+};
+
+const ConnectedJobs = connect(
+    null,
+    mapDispatchToProps
+)(Jobs);
+
+export default withNavigation(ConnectedJobs);

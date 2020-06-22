@@ -17,17 +17,17 @@ const SimpleCard = ({item}) => {
                     style={styles.image}
                     source={{
                         uri: item.image
-                            ? item.image
+                            ? item.image.url
                             : 'https://content.etilize.com/Finish/1031247865.jpg'
                     }}
                 />
             </View>
             <View style={styles.aside}>
-                {item.name && <Text style={styles.name}>{item.name}</Text>}
-                {item.link && (
+                {/* {item.url && <Text style={styles.name}>{item.title}</Text>} */}
+                {item.url && (
                     <TouchableWithoutFeedback
-                        onPress={() => Linking.openURL(`http://${item.link}/`)}>
-                        <Text style={styles.link}>{item.link}</Text>
+                        onPress={() => Linking.openURL(`http://${item.url}/`)}>
+                        <Text style={styles.link}>{item.url}</Text>
                     </TouchableWithoutFeedback>
                 )}
                 <Text style={styles.title}>{item.title}</Text>
