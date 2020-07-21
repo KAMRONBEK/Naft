@@ -14,26 +14,35 @@ import requests from '../../api/requests';
 import strings from '../../locales/strings';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
-const Loader = ({navigation, showLoading, hideLoading}) => {
+const Loader = ({navigation, showLoading, hideLoading, userLoaded}) => {
     let bootstrap = async () => {
         showLoading(strings.loading);
         let userData = await AsyncStorage.getItem('@user');
         if (userData) {
             console.warn('loader');
             let parsedUser = JSON.parse(userData);
-            console.warn(parsedUser);
+            console.warn(
+                parsedUser.profile.umeta.user_number,
+                parsedUser.profile.umeta.user_pass
+            );
             requests.auth
                 .login({
-                    email: parsedUser.profile.umeta.user_email,
+                    phone: parsedUser.profile.umeta.user_number,
                     password: parsedUser.profile.umeta.user_pass
                 })
                 .then(res => {
+                    console.warn(res.data.type);
                     if (res.data.type == 'success') {
-                        // console.warn(parsedUser);
+                        navigation.navigate('Home');
+                        console.warn('navigation');
                         userLoaded(parsedUser);
+                        navigation.navigate('Home');
+                    } else {
+                        console.warn('cant login with asyncs');
                     }
                 })
                 .catch(err => {
+                    console.warn('inside error');
                     console.warn(err.message, 'error');
                     userLoggedOut();
                 })
@@ -55,12 +64,7 @@ const Loader = ({navigation, showLoading, hideLoading}) => {
 
     return (
         <View style={styles.container}>
-            <TouchableWithoutFeedback
-                onPress={() => {
-                    console.warn('click');
-
-                    navigation.navigate('Login');
-                }}>
+            <TouchableWithoutFeedback>
                 <Image source={images.logo} style={styles.logo} />
             </TouchableWithoutFeedback>
         </View>

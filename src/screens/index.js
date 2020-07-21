@@ -9,6 +9,7 @@ import JobPage from './Jobs/JobPage';
 import Auth from './Auth';
 import Register from './Auth/Register';
 import Loader from './Auth/Loader';
+import Activation from './Auth/Activation';
 
 export {
     Home,
@@ -21,5 +22,6 @@ export {
     JobPage,
     Auth,
     Register,
-    Loader
+    Loader,
+    Activation
 };

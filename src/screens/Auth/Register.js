@@ -1,14 +1,16 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     StyleSheet,
     Text,
     View,
     TextInput,
+    ScrollView,
     TouchableWithoutFeedback
 } from 'react-native';
 import strings from '../../locales/strings';
 import colors from '../../constants/colors';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import RectangleButton from '../../components/RectangleButton';
 import RNPickerSelect from 'react-native-picker-select';
 import requests from '../../api/requests';
@@ -55,7 +57,7 @@ const departments = [
 const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
     let [name, setName] = useState('');
     let [lastName, setLastName] = useState('');
-    let [email, setEmail] = useState('');
+    let [phone, setPhone] = useState('');
     let [password, setPassword] = useState('');
     let [role, setRole] = useState(0);
     let [employeeCount, setEmployeeCount] = useState(0);
@@ -70,7 +72,7 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
             let registerRes = await requests.auth.register(
                 name,
                 lastName,
-                email,
+                phone,
                 password,
                 titles[role].role,
                 employeeCount,
@@ -81,13 +83,10 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
             if (data.type == 'error') {
                 setErrorMessage(registerRes.data.message);
             } else {
-                showLoading(strings.loading);
-                let loginRes = await requests.auth.login({
-                    email: email,
+                navigation.navigate('Activation', {
+                    phone: phone,
                     password: password
                 });
-                userLoggedIn(loginRes.data);
-                navigation.navigate('Home');
             }
         } catch (error) {
             if (error.response) {
@@ -103,82 +102,22 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
     return (
         <View style={styles.container}>
             <View style={styles.content}>
-                <Text style={styles.title}>Naft</Text>
-                <Text
-                    style={[
-                        styles.desc,
-                        {
-                            color: errorMessage ? colors.red : colors.darkGray
-                        }
-                    ]}>
-                    {errorMessage ? errorMessage : strings.naftDescription}
-                </Text>
-                <View style={styles.inputs}>
-                    <View
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    style={{flex: 1}}>
+                    <Text style={styles.title}>Naft</Text>
+                    <Text
                         style={[
-                            styles.inputWrapper,
+                            styles.desc,
                             {
-                                borderBottomWidth: 0.5
+                                color: errorMessage
+                                    ? colors.red
+                                    : colors.darkGray
                             }
                         ]}>
-                        <TextInput
-                            onChangeText={text => setName(text)}
-                            placeholder={strings.firstName}
-                            keyboardType="default"
-                            style={styles.input}
-                        />
-                        <EvilIcons name="user" size={25} />
-                    </View>
-                    <View
-                        style={[
-                            styles.inputWrapper,
-                            {
-                                borderBottomWidth: 0.5
-                            }
-                        ]}>
-                        <TextInput
-                            onChangeText={text => setLastName(text)}
-                            placeholder={strings.lastName}
-                            keyboardType="default"
-                            style={styles.input}
-                        />
-                        <EvilIcons name="user" size={25} />
-                    </View>
-                    <View
-                        style={[
-                            styles.inputWrapper,
-                            {
-                                borderBottomWidth: 0.5
-                            }
-                        ]}>
-                        <TextInput
-                            onChangeText={text => setEmail(text)}
-                            placeholder={strings.enterMail}
-                            keyboardType="email-address"
-                            style={styles.input}
-                        />
-                        <EvilIcons name="envelope" size={25} />
-                    </View>
-                    <View
-                        style={[
-                            styles.inputWrapper,
-                            {
-                                borderBottomWidth: 0.5
-                            }
-                        ]}>
-                        <TextInput
-                            onChangeText={text => setPassword(text)}
-                            secureTextEntry={true}
-                            placeholder={strings.password}
-                            style={styles.input}
-                        />
-                        <EvilIcons name="lock" size={25} />
-                    </View>
-                    <RNPickerSelect
-                        doneText={strings.select}
-                        onValueChange={value => setRole(value)}
-                        items={titles}
-                        style={{overflow: 'hidden'}}>
+                        {errorMessage ? errorMessage : strings.naftDescription}
+                    </Text>
+                    <View style={styles.inputs}>
                         <View
                             style={[
                                 styles.inputWrapper,
@@ -186,17 +125,63 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
                                     borderBottomWidth: 0.5
                                 }
                             ]}>
-                            <Text style={styles.input}>
-                                {role ? titles[role].label : strings.selectRole}
-                            </Text>
-                            <EvilIcons name="check" size={25} />
+                            <TextInput
+                                onChangeText={text => setName(text)}
+                                placeholder={strings.firstName}
+                                keyboardType="default"
+                                style={styles.input}
+                            />
+                            <EvilIcons name="user" size={25} />
                         </View>
-                    </RNPickerSelect>
-                    {titles[role].label == strings.employer && (
+                        <View
+                            style={[
+                                styles.inputWrapper,
+                                {
+                                    borderBottomWidth: 0.5
+                                }
+                            ]}>
+                            <TextInput
+                                onChangeText={text => setLastName(text)}
+                                placeholder={strings.lastName}
+                                keyboardType="default"
+                                style={styles.input}
+                            />
+                            <EvilIcons name="user" size={25} />
+                        </View>
+                        <View
+                            style={[
+                                styles.inputWrapper,
+                                {
+                                    borderBottomWidth: 0.5
+                                }
+                            ]}>
+                            <TextInput
+                                onChangeText={text => setPhone(text)}
+                                placeholder={strings.enterPhoneNumber}
+                                keyboardType="number-pad"
+                                style={styles.input}
+                            />
+                            <SimpleLineIcons name="phone" size={18} />
+                        </View>
+                        <View
+                            style={[
+                                styles.inputWrapper,
+                                {
+                                    borderBottomWidth: 0.5
+                                }
+                            ]}>
+                            <TextInput
+                                onChangeText={text => setPassword(text)}
+                                secureTextEntry={true}
+                                placeholder={strings.password}
+                                style={styles.input}
+                            />
+                            <EvilIcons name="lock" size={25} />
+                        </View>
                         <RNPickerSelect
                             doneText={strings.select}
-                            onValueChange={value => setEmployeeCount(value)}
-                            items={employees}
+                            onValueChange={value => setRole(value)}
+                            items={titles}
                             style={{overflow: 'hidden'}}>
                             <View
                                 style={[
@@ -206,76 +191,98 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
                                     }
                                 ]}>
                                 <Text style={styles.input}>
-                                    {employeeCount
-                                        ? employeeCount
-                                        : strings.selectEmployeeCount}
+                                    {role
+                                        ? titles[role].label
+                                        : strings.selectRole}
                                 </Text>
-                                <EvilIcons name="chart" size={25} />
+                                <EvilIcons name="check" size={25} />
                             </View>
                         </RNPickerSelect>
-                    )}
-                    {titles[role].label == strings.employer && (
+                        {titles[role].label == strings.employer && (
+                            <RNPickerSelect
+                                doneText={strings.select}
+                                onValueChange={value => setEmployeeCount(value)}
+                                items={employees}
+                                style={{overflow: 'hidden'}}>
+                                <View
+                                    style={[
+                                        styles.inputWrapper,
+                                        {
+                                            borderBottomWidth: 0.5
+                                        }
+                                    ]}>
+                                    <Text style={styles.input}>
+                                        {employeeCount
+                                            ? employeeCount
+                                            : strings.selectEmployeeCount}
+                                    </Text>
+                                    <EvilIcons name="chart" size={25} />
+                                </View>
+                            </RNPickerSelect>
+                        )}
+                        {titles[role].label == strings.employer && (
+                            <RNPickerSelect
+                                doneText={strings.select}
+                                onValueChange={value => setDepartment(value)}
+                                items={departments}
+                                style={{overflow: 'hidden'}}>
+                                <View
+                                    style={[
+                                        styles.inputWrapper,
+                                        {
+                                            borderBottomWidth: 0.5
+                                        }
+                                    ]}>
+                                    <Text style={styles.input}>
+                                        {department
+                                            ? departments[department - 1].label
+                                            : strings.selectDepartment}
+                                    </Text>
+                                    <EvilIcons name="tag" size={25} />
+                                </View>
+                            </RNPickerSelect>
+                        )}
                         <RNPickerSelect
                             doneText={strings.select}
-                            onValueChange={value => setDepartment(value)}
-                            items={departments}
-                            style={{overflow: 'hidden'}}>
-                            <View
-                                style={[
-                                    styles.inputWrapper,
-                                    {
-                                        borderBottomWidth: 0.5
-                                    }
-                                ]}>
+                            onValueChange={value => setLocation(value)}
+                            items={locations}>
+                            <View style={styles.inputWrapper}>
                                 <Text style={styles.input}>
-                                    {department
-                                        ? departments[department - 1].label
-                                        : strings.selectDepartment}
+                                    {location
+                                        ? locations[location - 1].label
+                                        : strings.selectLocation}
                                 </Text>
-                                <EvilIcons name="tag" size={25} />
+                                <EvilIcons name="location" size={25} />
                             </View>
                         </RNPickerSelect>
-                    )}
-                    <RNPickerSelect
-                        doneText={strings.select}
-                        onValueChange={value => setLocation(value)}
-                        items={locations}>
-                        <View style={styles.inputWrapper}>
-                            <Text style={styles.input}>
-                                {location
-                                    ? locations[location - 1].label
-                                    : strings.selectLocation}
-                            </Text>
-                            <EvilIcons name="location" size={25} />
-                        </View>
-                    </RNPickerSelect>
-                </View>
-                <View style={styles.buttonWrapper}>
-                    <RectangleButton
-                        onPress={
-                            name &&
-                            lastName &&
-                            email &&
-                            password &&
-                            role &&
-                            location &&
-                            onRegisterPress
-                        }
-                        backColor={
-                            name &&
-                            lastName &&
-                            email &&
-                            password &&
-                            role &&
-                            location != false
-                                ? colors.red
-                                : colors.paleGray
-                        }
-                        textColor={colors.white}
-                        text={strings.register}
-                        fill
-                    />
-                </View>
+                    </View>
+                    <View style={styles.buttonWrapper}>
+                        <RectangleButton
+                            onPress={
+                                name &&
+                                lastName &&
+                                phone &&
+                                password &&
+                                role &&
+                                location &&
+                                onRegisterPress
+                            }
+                            backColor={
+                                name &&
+                                lastName &&
+                                phone &&
+                                password &&
+                                role &&
+                                location != false
+                                    ? colors.red
+                                    : colors.paleGray
+                            }
+                            textColor={colors.white}
+                            text={strings.register}
+                            fill
+                        />
+                    </View>
+                </ScrollView>
             </View>
             <View style={styles.footer}>
                 <TouchableWithoutFeedback
@@ -303,7 +310,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     title: {
-        marginTop: -40,
         fontSize: 25,
         textAlign: 'center',
         color: colors.darkGrayBlue,
@@ -337,7 +343,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10
     },
     buttonWrapper: {
-        paddingHorizontal: 30
+        paddingHorizontal: 30,
+        paddingBottom: 30
     },
     footer: {
         padding: 10,

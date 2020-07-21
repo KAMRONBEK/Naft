@@ -60,7 +60,7 @@ let requests = {
         register: (
             first_name,
             last_name,
-            email,
+            phone,
             password,
             role = 'freelancer',
             employees = '',
@@ -69,11 +69,13 @@ let requests = {
         ) =>
             axios
                 .post(
-                    `${url}register?first_name=${first_name}&last_name=${last_name}&email=${email}&password=${password}&role=${role}&employees=${employees}&department_name=${department_name}&locations=${location}`
+                    `${url}register?first_name=${first_name}&last_name=${last_name}&phone=${phone}&password=${password}&role=${role}&employees=${employees}&department_name=${department_name}&locations=${location}`
                 )
                 .then(res => res),
         refreshToken: token =>
-            axios.post(`${url}auth/refresh-token?token=${token}`)
+            axios.post(`${url}auth/refresh-token?token=${token}`),
+        verifyUser: data =>
+            axios.post(`${url}user/verify?`, formData(data)).then(res => res)
     },
     list: {
         getCategory: () =>

@@ -87,7 +87,12 @@ export default new LocalizedStrings({
         enterMail: 'E-pochtangizni kiriting',
         password: 'Parol',
         ourWebsite: 'Veb-saytimiz',
-        passwordOrMailWrong: "Parol yoki pochta noto'g'ri"
+        passwordOrMailWrong: "Parol yoki pochta noto'g'ri",
+        enterPhoneNumber: 'Telefon raqamingizni kiring',
+        activation: 'Aktivlashtirish',
+        codeSentToYourNumber: 'Aktivatsiya kodi raqamingizga yuborildi',
+        enterCode: 'Kodni kiriting',
+        send: 'Yuborish'
     },
     ru: {imLookingFor: ''}
 });

@@ -15,7 +15,8 @@ import {
     JobPage,
     Register,
     Auth,
-    Loader
+    Loader,
+    Activation
 } from '../screens';
 import Header from '../components/Header';
 import colors from '../constants/colors';
@@ -204,6 +205,12 @@ let AuthStack = createStackNavigator({
         screen: Register,
         navigationOptions: {
             header: () => <Header title={strings.register} back noMenu />
+        }
+    },
+    Activation: {
+        screen: Activation,
+        navigationOptions: {
+            header: () => <Header title={strings.activation} back noMenu />
         }
     }
 });

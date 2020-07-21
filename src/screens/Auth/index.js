@@ -20,7 +20,7 @@ import {
 } from '../../redux/actions';
 
 const Auth = ({user, navigation, userLoggedIn, showLoading, hideLoading}) => {
-    let [mail, setMail] = useState('');
+    let [phone, setPhone] = useState('');
     let [password, setPassword] = useState('');
 
     let [errorEntry, setErrorEntry] = useState('');
@@ -29,7 +29,7 @@ const Auth = ({user, navigation, userLoggedIn, showLoading, hideLoading}) => {
     const onLoginPress = () => {
         showLoading(strings.loggingIn);
         requests.auth
-            .login({email: mail, password: password})
+            .login({phone: phone, password: password})
             .then(res => {
                 hideLoading();
                 if (res.data.type === 'success') {
@@ -67,9 +67,9 @@ const Auth = ({user, navigation, userLoggedIn, showLoading, hideLoading}) => {
                             }
                         ]}>
                         <TextInput
-                            onChangeText={text => setMail(text)}
-                            placeholder={strings.enterMail}
-                            keyboardType="email-address"
+                            onChangeText={text => setPhone(text)}
+                            placeholder={strings.enterPhoneNumber}
+                            keyboardType="number-pad"
                             style={styles.input}
                         />
                         <EvilIcons name="envelope" size={25} />
