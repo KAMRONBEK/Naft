@@ -14,10 +14,20 @@ import requests from '../../api/requests';
 import strings from '../../locales/strings';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
-const Loader = ({navigation, showLoading, hideLoading, userLoaded}) => {
+const Loader = ({
+    navigation,
+    showLoading,
+    hideLoading,
+    userLoaded,
+    userLoggedOut
+}) => {
     let bootstrap = async () => {
         showLoading(strings.loading);
         let userData = await AsyncStorage.getItem('@user');
+        if (!userData) {
+            navigation.navigate('Home');
+            return;
+        }
         if (userData) {
             console.warn('loader');
             let parsedUser = JSON.parse(userData);
@@ -33,7 +43,6 @@ const Loader = ({navigation, showLoading, hideLoading, userLoaded}) => {
                 .then(res => {
                     console.warn(res.data.type);
                     if (res.data.type == 'success') {
-                        navigation.navigate('Home');
                         console.warn('navigation');
                         userLoaded(parsedUser);
                         navigation.navigate('Home');

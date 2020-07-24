@@ -4,7 +4,8 @@ import {
     Text,
     View,
     TextInput,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    InteractionManager
 } from 'react-native';
 import {connect} from 'react-redux';
 import colors from '../../constants/colors';
@@ -34,13 +35,14 @@ const Auth = ({user, navigation, userLoggedIn, showLoading, hideLoading}) => {
                 hideLoading();
                 if (res.data.type === 'success') {
                     userLoggedIn(res.data);
-                    navigation.navigate('Home');
+                    navigation.navigate('tab');
                 } else {
                     setErrorEntry(res.data.message);
                     // setErrorEntry(strings.passwordOrMailWrong);
                 }
             })
             .catch(err => {
+                console.warn(err);
                 hideLoading();
             });
     };

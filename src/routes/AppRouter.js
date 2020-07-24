@@ -144,6 +144,7 @@ const mapStateToProps = ({user}) => ({user});
 let tabOptions = {
     swipeEnabled: false,
     tabBarPosition: 'bottom',
+    lazy: false,
     tabBarOptions: {
         style: {
             backgroundColor: colors.white
@@ -189,12 +190,6 @@ let WithSettingsTabs = createMaterialTopTabNavigator(
 );
 
 let AuthStack = createStackNavigator({
-    Loader: {
-        screen: Loader,
-        navigationOptions: {
-            headerShown: false
-        }
-    },
     Login: {
         screen: Auth,
         navigationOptions: {
@@ -216,8 +211,8 @@ let AuthStack = createStackNavigator({
 });
 
 let AuthvsTab = createStackNavigator({
-    auth: {
-        screen: AuthStack,
+    Loader: {
+        screen: Loader,
         navigationOptions: {
             headerShown: false
         }
@@ -227,20 +222,26 @@ let AuthvsTab = createStackNavigator({
         navigationOptions: {
             headerShown: false
         }
+    },
+    auth: {
+        screen: AuthStack,
+        navigationOptions: {
+            headerShown: false
+        }
     }
 });
 
 let DrawerWithSettings = createDrawerNavigator(
     {
         AuthvsTab: createStackNavigator({
-            auth: {
-                screen: AuthStack,
+            tab: {
+                screen: WithSettingsTabs,
                 navigationOptions: {
                     headerShown: false
                 }
             },
-            tab: {
-                screen: WithSettingsTabs,
+            auth: {
+                screen: AuthStack,
                 navigationOptions: {
                     headerShown: false
                 }
