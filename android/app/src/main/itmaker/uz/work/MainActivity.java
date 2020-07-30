@@ -1,4 +1,4 @@
-package com.work;
+package itmaker.uz.work;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

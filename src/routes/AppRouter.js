@@ -193,13 +193,13 @@ let AuthStack = createStackNavigator({
     Login: {
         screen: Auth,
         navigationOptions: {
-            header: () => <Header title={strings.login} back noMenu />
+            header: () => <Header title={strings.login} noMenu />
         }
     },
     Register: {
         screen: Register,
         navigationOptions: {
-            header: () => <Header title={strings.register} back noMenu />
+            header: () => <Header title={strings.register} noMenu />
         }
     },
     Activation: {

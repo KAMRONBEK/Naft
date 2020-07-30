@@ -106,7 +106,14 @@ const Header = ({navigation, progress, back, title, noMenu}) => {
                     <SearchBar />
                 </View>
             ) : (
-                <View style={styles.titleWrapper}>
+                <View
+                    style={[
+                        styles.titleWrapper,
+                        back ||
+                            (!noMenu && {
+                                paddingRight: 45
+                            })
+                    ]}>
                     <Text style={styles.title}>{title}</Text>
                 </View>
             )}
@@ -133,8 +140,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     titleWrapper: {
-        flex: 1,
-        paddingRight: 45
+        flex: 1
     },
     title: {
         fontSize: 16,

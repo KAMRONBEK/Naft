@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.work">
+  package="itmaker.uz.work">
 
     <uses-feature android:name="android.hardware.location" android:required="true"/>
     <uses-permission android:name="android.permission.INTERNET" />
