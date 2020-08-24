@@ -1,7 +1,7 @@
 import axios from 'axios';
 import requests from './requests';
 
-export const url = 'http://naft.uz/api/v1/';
+export const url = 'https://work.itmaker.uz/api/v1/';
 
 export let configureAxios = store => {
     axios.interceptors.request.use(res => {
