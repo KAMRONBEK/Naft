@@ -55,7 +55,7 @@ const JobCard = ({item, vertical, navigation}) => {
                                 style={{width: 20}}
                             />
                             <Text style={styles.info}>
-                                {item.location._country}
+                                {item.location?._country}
                             </Text>
                         </View>
                         <View style={styles.infoWrapper}>

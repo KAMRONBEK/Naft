@@ -40,7 +40,7 @@ const FreelancerPageCard = ({item}) => {
             <View style={styles.secondary}>
                 <Text style={styles.rightText}>{strings.location}</Text>
                 <Text style={styles.leftText}>
-                    {item && item.location._country}
+                    {item && item.location?._country}
                 </Text>
             </View>
             <View style={styles.secondary}>
