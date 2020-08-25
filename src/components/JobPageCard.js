@@ -24,7 +24,7 @@ const JobPageCard = ({item}) => {
             </View>
             <View style={styles.secondary}>
                 <Text style={styles.rightText}>{strings.hourlyRate}</Text>
-                <Text style={styles.leftText}>{item.amount}</Text>
+                <Text style={styles.leftText}>{item.amount_price}</Text>
             </View>
             <View style={styles.secondary}>
                 <Text style={styles.rightText}>{strings.jobType}</Text>

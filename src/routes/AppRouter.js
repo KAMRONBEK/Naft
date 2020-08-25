@@ -84,9 +84,24 @@ let CompanyStack = createStackNavigator({
     }
 });
 
-let TabRoutes = {
+let HomeStack = createStackNavigator({
     Home: {
         screen: Home,
+        navigationOptions: {
+            header: () => <Header />
+        }
+    },
+    JobsList: {
+        screen: Jobs,
+        navigationOptions: {
+            header: () => <Header />
+        }
+    }
+});
+
+let TabRoutes = {
+    Home: {
+        screen: HomeStack,
         navigationOptions: {
             tabBarIcon: () => (
                 <AntDesign name="home" size={24} color={colors.black} />
@@ -189,7 +204,7 @@ let WithSettingsTabs = createMaterialTopTabNavigator(
     tabOptions
 );
 
-let AuthStack = createStackNavigator({
+let AuthStack = createSwitchNavigator({
     Login: {
         screen: Auth,
         navigationOptions: {
@@ -210,7 +225,7 @@ let AuthStack = createStackNavigator({
     }
 });
 
-let AuthvsTab = createStackNavigator({
+let AuthvsTab = createSwitchNavigator({
     Loader: {
         screen: Loader,
         navigationOptions: {

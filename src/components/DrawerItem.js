@@ -1,19 +1,31 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Linking} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {withNavigation} from 'react-navigation';
 import colors from '../constants/colors';
 
-const DrawerItem = ({name, antIcon, simpleIcon, to, onPress, navigation}) => {
+const DrawerItem = ({
+    name,
+    antIcon,
+    simpleIcon,
+    to,
+    onPress,
+    navigation,
+    link
+}) => {
     return (
         <TouchableWithoutFeedback
             onPress={
                 onPress
                     ? onPress
                     : () => {
-                          navigation.navigate(to);
+                          if (link) {
+                              Linking.openURL(to);
+                          } else {
+                              navigation.navigate(to);
+                          }
                       }
             }>
             <View style={styles.container}>

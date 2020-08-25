@@ -23,7 +23,7 @@ const Modal = ({hideModal, modalVisible, modalMessage, modalType}) => {
                 </View>
                 <TouchableWithoutFeedback onPress={onPress}>
                     <View style={styles.button}>
-                        <Text style={styles.buttonText}>{strings.ok}</Text>
+                        <Text style={styles.buttonText}>{strings.OK}</Text>
                     </View>
                 </TouchableWithoutFeedback>
             </View>

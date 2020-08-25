@@ -7,7 +7,11 @@ const CatogoryCard = ({item, navigation}) => {
     return (
         <TouchableWithoutFeedback
             onPress={() => {
-                navigation.navigate('Jobs');
+                setTimeout(() => {
+                    navigation.navigate('JobsList', {
+                        categorySlug: item.slug
+                    });
+                }, 1);
             }}>
             <View style={styles.container}>
                 <Image
