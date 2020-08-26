@@ -40,7 +40,7 @@ let formData = rawData => {
             }
             return;
         }
-        if (typeof rawData[key] === 'object') {
+        if (typeof rawData[key] === 'object' && key.indexOf('image' === -1)) {
             let obj = rawData[key];
             let i = 0;
             Object.keys(obj).forEach((id, index) => {
@@ -115,7 +115,9 @@ let requests = {
         updateProfile: (user_id, first_name, last_name, location_id, role) =>
             axios.post(
                 `${url}user/update-profile?user_id=${user_id}&first_name=${first_name}&last_name=${last_name}&location_id${location_id}&role${role}`
-            )
+            ),
+        updateImage: (id, data) =>
+            axios.post(`${url}media/upload-media?id=${id}`, formData(data))
     },
     act: {
         submitProposal: filters => axios.post(`${url}user/submit-proposal`)

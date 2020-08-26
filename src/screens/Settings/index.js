@@ -98,17 +98,25 @@ const Settings = ({navigation, showModal, userData}) => {
         // uri: user.profile.pmeta && user.profile.pmeta.banner_img
     });
 
-    const onBannerPress = () => {
-        ImagePicker.showImagePicker(options, response => {
+    const onBannerPress = async () => {
+        ImagePicker.showImagePicker(options, async response => {
             if (response.uri) {
                 setBanner(response);
+                let res = await requests.profile.updateImage({
+                    banner_image: response
+                });
+                console.log({bannerRes: res.data});
             }
         });
     };
     const onAvatarPress = () => {
-        ImagePicker.showImagePicker(options, response => {
+        ImagePicker.showImagePicker(options, async response => {
             if (response.uri) {
                 setAvatar(response);
+                let res = await requests.profile.updateImage({
+                    profile_image: response
+                });
+                console.log({avatarRes: res.data});
             }
         });
         //TODO upload to the server
