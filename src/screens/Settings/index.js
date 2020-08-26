@@ -102,7 +102,7 @@ const Settings = ({navigation, showModal, userData}) => {
         ImagePicker.showImagePicker(options, async response => {
             if (response.uri) {
                 setBanner(response);
-                let res = await requests.profile.updateImage({
+                let res = await requests.profile.updateImage('43', {
                     banner_image: response
                 });
                 console.log({bannerRes: res.data});
@@ -113,7 +113,7 @@ const Settings = ({navigation, showModal, userData}) => {
         ImagePicker.showImagePicker(options, async response => {
             if (response.uri) {
                 setAvatar(response);
-                let res = await requests.profile.updateImage({
+                let res = await requests.profile.updateImage('43', {
                     profile_image: response
                 });
                 console.log({avatarRes: res.data});
