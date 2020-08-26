@@ -108,6 +108,13 @@ let requests = {
             axios.get(
                 `${url}listing/get-employers?profile_id=${id}&listing_type=${type}&show_users=${count}&page_number=${page_number}`
             )
+    },
+    profile: {
+        getProfile: id => axios.get(`${url}profile/setting?id=${id}`),
+        updateProfile: (user_id, first_name, last_name, location_id, role) =>
+            axios.post(
+                `${url}user/update-profile?user_id=${user_id}&first_name=${first_name}&last_name=${last_name}&location_id${location_id}&role${role}`
+            )
     }
 };
 
