@@ -90,7 +90,7 @@ const Settings = ({navigation, showModal, userData}) => {
     useEffect(() => {
         getCurrentPosition();
         console.warn('setting', userData);
-    }, [userData]);
+    }, []);
 
     //images
     let [banner, setBanner] = useState('');

@@ -45,7 +45,7 @@ const JobCard = ({item, vertical, navigation}) => {
                                 size={14}
                                 style={{width: 20}}
                             />
-                            <Text style={styles.info}>{item.amount}</Text>
+                            <Text style={styles.info}>{item.amount_price}</Text>
                         </View>
                         <View style={styles.infoWrapper}>
                             <FontAwesome

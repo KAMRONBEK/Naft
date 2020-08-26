@@ -1,23 +1,20 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-    View,
-    Text,
-    StyleSheet,
+    FlatList,
     Image,
-    ScrollView,
     SafeAreaView,
-    FlatList
+    StyleSheet,
+    Text,
+    View
 } from 'react-native';
-import FreelancerCard from '../../components/FreelancerCard';
-import colors from '../../constants/colors';
-import JobCard from '../../components/JobCard';
-import CategoryCard from '../../components/CategoryCard';
-// import {freelancerList} from '../Jobs';
-import {withNavigation} from 'react-navigation';
-import requests from '../../api/requests';
 import {connect} from 'react-redux';
-import {showLoading, hideLoading} from '../../redux/actions/appState';
+import requests from '../../api/requests';
+import CategoryCard from '../../components/CategoryCard';
+import FreelancerCard from '../../components/FreelancerCard';
+import JobCard from '../../components/JobCard';
+import colors from '../../constants/colors';
 import strings from '../../locales/strings';
+import {hideLoading, showLoading} from '../../redux/actions/appState';
 
 const Home = ({navigation, showLoading, hideLoading, user}) => {
     const [categoryList, setCategoryList] = useState([]);
@@ -224,4 +221,4 @@ let ConnectedHome = connect(
     mapDispatchToProps
 )(Home);
 
-export default withNavigation(ConnectedHome);
+export default ConnectedHome;

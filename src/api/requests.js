@@ -94,10 +94,11 @@ let requests = {
             count = 10,
             id = '',
             page_number = '',
-            company_id = ''
+            company_id = '',
+            slug = ''
         ) =>
             axios.get(
-                `${url}listing/get-jobs?profile_id=${id}&listing_type=${type}&show_users=${count}&page_number=${page_number}&company_id=${company_id}`
+                `${url}listing/get-jobs?profile_id=${id}&listing_type=${type}&show_users=${count}&page_number=${page_number}&company_id=${company_id}&categories[]=${slug}`
             ),
         getCompanies: (
             type = 'latest',
@@ -115,6 +116,9 @@ let requests = {
             axios.post(
                 `${url}user/update-profile?user_id=${user_id}&first_name=${first_name}&last_name=${last_name}&location_id${location_id}&role${role}`
             )
+    },
+    act: {
+        submitProposal: filters => axios.post(`${url}user/submit-proposal`)
     }
 };
 

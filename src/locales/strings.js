@@ -3,9 +3,10 @@ import LocalizedStrings from 'localized-strings';
 export default new LocalizedStrings({
     uz: {
         save: 'Saqlash',
+        attention: 'Diqqat',
         sendOffer: 'Taklif yuborish',
         selectImage: 'Rasm tanlash',
-        ok: 'OK',
+        OK: 'OK',
         pleaseLogin: 'Iltimos tizimga kiring',
         connectionProblem: "Internet tarmog'i yo'q",
         wrongData: "Noto'g'ri ma'lumut kiritilgan",
@@ -93,7 +94,8 @@ export default new LocalizedStrings({
         activation: 'Aktivlashtirish',
         codeSentToYourNumber: 'Aktivatsiya kodi raqamingizga yuborildi',
         enterCode: 'Kodni kiriting',
-        send: 'Yuborish'
+        send: 'Yuborish',
+        CANCEL: 'BEKOR QILISH'
     },
     ru: {imLookingFor: ''}
 });

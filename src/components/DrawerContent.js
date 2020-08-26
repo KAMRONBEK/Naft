@@ -80,8 +80,9 @@ const DrawerContent = ({userLoggedOut, navigation, user}) => {
                             <DrawetItem
                                 name={strings.aboutUs}
                                 antIcon="customerservice"
-                                to="About"
+                                to={`http://naft.uz/page/o-nas`}
                                 simpleIcon=""
+                                link
                             />
                             <DrawetItem
                                 name={strings.logout}

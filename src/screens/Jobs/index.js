@@ -13,17 +13,19 @@ const Jobs = ({navigation, showLoading, hideLoading}) => {
     let [jobList, setJobList] = useState([]);
 
     let [loading, setLoading] = useState(false);
-
     const effect = async () => {
         showLoading(strings.loading);
         try {
+            let categorySlug = navigation.getParam('categorySlug') || '';
             let jobRes = await requests.list.getJobs(
                 'latest',
                 10,
                 '',
-                pageIndex
+                pageIndex,
+                '',
+                categorySlug
             );
-            setJobList(jobRes.data);
+            setJobList(jobRes.data || []);
         } catch (error) {
             console.warn(error.message);
         } finally {
@@ -37,11 +39,13 @@ const Jobs = ({navigation, showLoading, hideLoading}) => {
         }
         setLoading(true);
         try {
+            let categorySlug = navigation.getParam('categorySlug') || '';
             let res = await requests.list.getJobs(
                 'latest',
                 10,
                 '',
-                pageIndex + 1
+                pageIndex + 1,
+                categorySlug
             );
             if (res.data.type != 'error') {
                 setJobList([...jobList, ...res.data]);
@@ -56,7 +60,7 @@ const Jobs = ({navigation, showLoading, hideLoading}) => {
 
     useEffect(() => {
         effect();
-    }, [navigation]);
+    }, [navigation.state.params]);
 
     return (
         <View style={styles.container}>
@@ -100,4 +104,4 @@ const ConnectedJobs = connect(
     mapDispatchToProps
 )(Jobs);
 
-export default withNavigation(ConnectedJobs);
+export default ConnectedJobs;
