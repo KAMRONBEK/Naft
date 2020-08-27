@@ -4,6 +4,7 @@ import {
     Text,
     StyleSheet,
     Image,
+    Alert,
     ScrollView,
     TextInput,
     TouchableWithoutFeedback
@@ -20,6 +21,8 @@ import {showModal} from '../../redux/actions';
 import AsyncStorage from '@react-native-community/async-storage';
 import ImagePicker from 'react-native-image-picker';
 import images from '../../assets/images';
+import requests from '../../api/requests';
+import RectangleButton from '../../components/RectangleButton';
 
 const options = {
     title: strings.selectImage,
@@ -36,6 +39,7 @@ const Settings = ({navigation, showModal, userData}) => {
     let [bannerHeight, setBannerHeight] = useState(0);
     let [buttonWidth, setButtonWidth] = useState(0);
     let [inputBorderColor, setInputBorderColor] = useState('');
+    const [profileData, setProfileData] = useState({});
 
     //for geolocation
     let [currentMarker, setCurrentMarker] = useState({
@@ -50,6 +54,26 @@ const Settings = ({navigation, showModal, userData}) => {
         latitudeDelta: 0.005,
         longitudeDelta: 0.0021
     });
+
+    let handleChange = (key, value) => {
+        setProfileData({...profileData, [key]: value});
+    };
+
+    let effect = async () => {
+        console.log({userData: userData.profile.umeta.id});
+        let id = userData.profile.umeta.id;
+        try {
+            let res = await requests.profile.getProfile(id);
+        } catch (error) {}
+        console.log({res: res.data});
+        setProfileData(res.data);
+        //TODO show these data in fields
+    };
+
+    useEffect(() => {
+        effect();
+    }, []);
+
     let getCurrentPosition = () => {
         Geolocation.getCurrentPosition(info => {
             if (!!info) {
@@ -74,19 +98,36 @@ const Settings = ({navigation, showModal, userData}) => {
         // uri: user.profile.pmeta && user.profile.pmeta.banner_img
     });
 
-    const onBannerPress = () => {
-        ImagePicker.showImagePicker(options, response => {
+    const onBannerPress = async () => {
+        ImagePicker.showImagePicker(options, async response => {
             if (response.uri) {
                 setBanner(response);
+                let res = await requests.profile.updateImage('43', {
+                    banner_image: response
+                });
+                console.log({bannerRes: res.data});
             }
         });
     };
     const onAvatarPress = () => {
-        ImagePicker.showImagePicker(options, response => {
+        ImagePicker.showImagePicker(options, async response => {
             if (response.uri) {
                 setAvatar(response);
+                let res = await requests.profile.updateImage('43', {
+                    profile_image: response
+                });
+                console.log({avatarRes: res.data});
             }
         });
+        //TODO upload to the server
+    };
+
+    let onSavePress = async () => {
+        //TODO requests to remote api
+        // let res = await requests.profile.update(profileData)
+        Alert.alert('Attention', 'Successfully updated', [
+            {text: 'OK', onPress: () => console.log('OK Pressed')}
+        ]);
     };
     return (
         <ScrollView style={styles.container}>
@@ -158,6 +199,8 @@ const Settings = ({navigation, showModal, userData}) => {
                     <View style={styles.inputWrapper}>
                         <Text style={styles.iconName}>{strings.firstName}</Text>
                         <TextInput
+                            value={profileData.firstName}
+                            onChangeText={e => handleChange('firstName', e)}
                             onFocus={() => {
                                 setInputBorderColor(colors.red);
                             }}
@@ -179,6 +222,8 @@ const Settings = ({navigation, showModal, userData}) => {
                     <View style={styles.inputWrapper}>
                         <Text style={styles.iconName}>{strings.lastName}</Text>
                         <TextInput
+                            value={profileData.lastName}
+                            onChangeText={e => handleChange('lastName', e)}
                             onFocus={() => {
                                 setInputBorderColor(colors.red);
                             }}
@@ -202,6 +247,10 @@ const Settings = ({navigation, showModal, userData}) => {
                             {strings.yourHourlyRate} (UZS)
                         </Text>
                         <TextInput
+                            value={profileData.yourHourlyRate}
+                            onChangeText={e =>
+                                handleChange('yourHourlyRate', e)
+                            }
                             onFocus={() => {
                                 setInputBorderColor(colors.red);
                             }}
@@ -223,7 +272,10 @@ const Settings = ({navigation, showModal, userData}) => {
                         <Text style={styles.iconName}>
                             {strings.yourTagline}
                         </Text>
+
                         <TextInput
+                            value={profileData.yourTagline}
+                            onChangeText={e => handleChange('yourTagline', e)}
                             onFocus={() => {
                                 setInputBorderColor(colors.red);
                             }}
@@ -325,6 +377,16 @@ const Settings = ({navigation, showModal, userData}) => {
                         <Entypo name="chevron-thin-right" size={20} />
                     </View>
                 </View>
+
+                <View>
+                    <View style={styles.buttonWrapper}>
+                        <RectangleButton
+                            onPress={onSavePress}
+                            textColor={colors.white}
+                            text={strings.save}
+                        />
+                    </View>
+                </View>
             </View>
         </ScrollView>
     );
@@ -351,6 +413,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+
     avatar: {
         height: 120,
         width: 120,

@@ -2,6 +2,7 @@ import LocalizedStrings from 'localized-strings';
 
 export default new LocalizedStrings({
     uz: {
+        save: 'Saqlash',
         attention: 'Diqqat',
         sendOffer: 'Taklif yuborish',
         selectImage: 'Rasm tanlash',
