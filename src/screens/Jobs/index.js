@@ -1,12 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, ScrollView, FlatList} from 'react-native';
-import colors from '../../constants/colors';
-import JobCard from '../../components/JobCard';
-import {withNavigation} from 'react-navigation';
+import React, {useEffect, useState} from 'react';
+import {FlatList, StyleSheet, View} from 'react-native';
 import {connect} from 'react-redux';
 import requests from '../../api/requests';
-import {showLoading, hideLoading} from '../../redux/actions';
+import JobCard from '../../components/JobCard';
+import colors from '../../constants/colors';
 import strings from '../../locales/strings';
+import {hideLoading, showLoading} from '../../redux/actions';
 
 const Jobs = ({navigation, showLoading, hideLoading}) => {
     let [pageIndex, setPageIndex] = useState(1);
