@@ -13,6 +13,12 @@ import {
 } from 'react-native-safe-area-context';
 import Modal from './src/components/Modal';
 
+if (__DEV__) {
+    import('./ReactotronConfig').then(() =>
+        console.log('Reactotron Configured')
+    );
+}
+
 if (Platform.OS === 'android') {
     if (UIManager.setLayoutAnimationEnabledExperimental) {
         UIManager.setLayoutAnimationEnabledExperimental(true);

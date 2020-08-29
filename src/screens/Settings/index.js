@@ -1,29 +1,68 @@
+import Geolocation from '@react-native-community/geolocation';
 import React, {useEffect, useState} from 'react';
 import {
-    View,
-    Text,
-    StyleSheet,
-    Image,
     Alert,
+    Image,
     ScrollView,
+    StyleSheet,
+    Text,
     TextInput,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    View
 } from 'react-native';
+import ImagePicker from 'react-native-image-picker';
+import MapView, {Marker} from 'react-native-maps';
+import RNPickerSelect from 'react-native-picker-select';
+import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {connect} from 'react-redux';
+import requests from '../../api/requests';
+import RectangleButton from '../../components/RectangleButton';
 import RoundButton from '../../components/RoundButton';
 import colors from '../../constants/colors';
 import strings from '../../locales/strings';
-import Entypo from 'react-native-vector-icons/Entypo';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MapView, {Marker} from 'react-native-maps';
-import Geolocation from '@react-native-community/geolocation';
-import {connect} from 'react-redux';
 import {showModal} from '../../redux/actions';
-import AsyncStorage from '@react-native-community/async-storage';
-import ImagePicker from 'react-native-image-picker';
-import images from '../../assets/images';
-import requests from '../../api/requests';
-import RectangleButton from '../../components/RectangleButton';
+import {log} from 'react-native-reanimated';
 
+const employees = [
+    {label: '1', value: 1},
+    {label: '10', value: 10},
+    {label: '100', value: 100},
+    {label: '500', value: 500},
+    {label: '1000', value: 1000},
+    {label: '5000', value: 5000}
+];
+
+const departments = [
+    {label: 'Bugalteriya va moliya', value: 'Bugalteriya va moliya'},
+    {
+        label: 'Mijozlarga xizmat korsatish',
+        value: 'Mijozlarga xizmat korsatish'
+    },
+    {label: 'Muhandislik', value: 'Muhandislik'},
+    {label: 'Kadrlar menejmenti', value: 'Kadrlar menejmenti'},
+    {label: 'Marketing', value: 'Marketing'},
+    {label: 'Ishlab chiqarish', value: 'Ishlab chiqarish'},
+    {label: 'Taminot', value: 'Taminot'},
+    {label: 'Tadqiqot va ishlab chiqish', value: 'Tadqiqot va ishlab chiqish'},
+    {label: 'Savdo sotiq', value: 'Savdo sotiq'}
+];
+
+const locations = [
+    {label: 'Toshkent', value: 1},
+    {label: 'Samarqand', value: 2},
+    {label: 'Buxoro', value: 3},
+    {label: 'Xiva', value: 4},
+    {label: 'Nukus', value: 5},
+    {label: 'Shaxrisabz', value: 6},
+    {label: 'Qoqon', value: 7},
+    {label: 'Fargona', value: 8}
+];
+
+const gender = [
+    {label: strings.male, value: 'Male'},
+    {label: strings.famale, value: 'Famale'}
+];
 const options = {
     title: strings.selectImage,
     customButtons: [{name: 'fb', title: 'Choose Photo from Facebook'}],
@@ -39,6 +78,7 @@ const Settings = ({navigation, showModal, userData}) => {
     let [bannerHeight, setBannerHeight] = useState(0);
     let [buttonWidth, setButtonWidth] = useState(0);
     let [inputBorderColor, setInputBorderColor] = useState('');
+
     const [profileData, setProfileData] = useState({});
 
     //for geolocation
@@ -64,9 +104,9 @@ const Settings = ({navigation, showModal, userData}) => {
         let id = userData.profile.umeta.id;
         try {
             let res = await requests.profile.getProfile(id);
+            console.log({res: res.data});
+            setProfileData(res.data);
         } catch (error) {}
-        console.log({res: res.data});
-        setProfileData(res.data);
         //TODO show these data in fields
     };
 
@@ -121,14 +161,30 @@ const Settings = ({navigation, showModal, userData}) => {
         });
         //TODO upload to the server
     };
-
+    // profile: {
+    //     getProfile: id => axios.get(`${url}profile/setting?id=${id}`),
+    //     updateProfile: (user_id, first_name, last_name, location_id, role) =>
+    //         axios.post(
+    //             `${url}user/update-profile?user_id=${user_id}&first_name=${first_name}&last_name=${last_name}&location_id=${location_id}&role${role}`
+    //         ),
+    //     updateImage: (id, data) =>
+    //         axios.post(`${url}media/upload-media?id=${id}`, formData(data))
+    // },
+    // act: {
+    //     submitProposal: filters => axios.post(`${url}user/submit-proposal`)
+    // }
     let onSavePress = async () => {
         //TODO requests to remote api
-        // let res = await requests.profile.update(profileData)
+        let id = userData.profile.umeta.id;
+        let res = await requests.profile.updateProfile({
+            ...profileData,
+            user_id: id
+        });
         Alert.alert('Attention', 'Successfully updated', [
             {text: 'OK', onPress: () => console.log('OK Pressed')}
         ]);
     };
+
     return (
         <ScrollView style={styles.container}>
             <View
@@ -184,23 +240,55 @@ const Settings = ({navigation, showModal, userData}) => {
                     />
                 </View>
                 <Text style={styles.title}>{strings.yourDetails}</Text>
-                <View style={styles.box}>
-                    <View style={styles.inputWrapper}>
-                        <Text style={styles.iconName}>
-                            {strings.selectGender}
-                        </Text>
-                        <Text style={styles.input}>Male</Text>
+
+                {/* Gender */}
+                <RNPickerSelect
+                    doneText={strings.gender}
+                    onValueChange={value => {
+                        setProfileData({
+                            ...profileData,
+                            gender: value
+                        });
+                    }}
+                    value={profileData.gender}
+                    items={gender}>
+                    <View>
+                        <View
+                            style={{
+                                borderColor: colors.paleGray,
+                                borderTopWidth: 0.3,
+                                borderBottomWidth: 0.3,
+                                flexDirection: 'row',
+                                justifyContent: 'space-between'
+                            }}>
+                            <View style={styles.inputWrapper}>
+                                <Text style={styles.iconName}>
+                                    {strings.selectGender}
+                                </Text>
+                                <Text style={styles.input}>
+                                    {profileData.gender
+                                        ? gender.find(
+                                              e =>
+                                                  e.value === profileData.gender
+                                          )?.label
+                                        : strings.selectGender}
+                                </Text>
+                            </View>
+                            <View style={styles.secondaryItem}>
+                                <Entypo name="chevron-thin-right" size={20} />
+                            </View>
+                        </View>
                     </View>
-                    <View style={styles.secondaryItem}>
-                        <Entypo name="chevron-thin-right" size={20} />
-                    </View>
-                </View>
+                </RNPickerSelect>
+
                 <View style={styles.box}>
                     <View style={styles.inputWrapper}>
                         <Text style={styles.iconName}>{strings.firstName}</Text>
                         <TextInput
-                            value={profileData.firstName}
-                            onChangeText={e => handleChange('firstName', e)}
+                            value={profileData.first_name}
+                            onChangeText={first_name =>
+                                setProfileData({...profileData, first_name})
+                            }
                             onFocus={() => {
                                 setInputBorderColor(colors.red);
                             }}
@@ -222,8 +310,10 @@ const Settings = ({navigation, showModal, userData}) => {
                     <View style={styles.inputWrapper}>
                         <Text style={styles.iconName}>{strings.lastName}</Text>
                         <TextInput
-                            value={profileData.lastName}
-                            onChangeText={e => handleChange('lastName', e)}
+                            value={profileData.last_name}
+                            onChangeText={last_name =>
+                                setProfileData({...profileData, last_name})
+                            }
                             onFocus={() => {
                                 setInputBorderColor(colors.red);
                             }}
@@ -248,9 +338,10 @@ const Settings = ({navigation, showModal, userData}) => {
                         </Text>
                         <TextInput
                             value={profileData.yourHourlyRate}
-                            onChangeText={e =>
-                                handleChange('yourHourlyRate', e)
+                            onChangeText={per_hour_rate =>
+                                setProfileData({...profileData, per_hour_rate})
                             }
+                            // onChangeText={e => handleChange('per_hour_rate', e)}
                             onFocus={() => {
                                 setInputBorderColor(colors.red);
                             }}
@@ -275,7 +366,10 @@ const Settings = ({navigation, showModal, userData}) => {
 
                         <TextInput
                             value={profileData.yourTagline}
-                            onChangeText={e => handleChange('yourTagline', e)}
+                            onChangeText={tag_line =>
+                                setProfileData({...profileData, tag_line})
+                            }
+                            // onChangeText={e => handleChange('yourTagline', e)}
                             onFocus={() => {
                                 setInputBorderColor(colors.red);
                             }}
@@ -292,18 +386,55 @@ const Settings = ({navigation, showModal, userData}) => {
                         />
                     </View>
                 </View>
+                {/* LOCATION */}
                 <Text style={styles.title}>{strings.yourLocation}</Text>
-                <View style={styles.box}>
+
+                {/* <View style={styles.box}>
                     <View style={styles.inputWrapper}>
                         <Text style={styles.iconName}>
                             {strings.selectCountry}
                         </Text>
-                        <Text style={styles.input}>Male</Text>
+                        <Text style={styles.input}>Manzil</Text>
                     </View>
                     <View style={styles.secondaryItem}>
                         <Entypo name="chevron-thin-right" size={20} />
                     </View>
-                </View>
+                </View> */}
+
+                <RNPickerSelect
+                    doneText={strings.select}
+                    onValueChange={value => {
+                        // setLocation({...profileData, department: value})
+                        setProfileData({...profileData, location: value});
+                    }}
+                    value={profileData.location}
+                    items={locations}>
+                    <View
+                        style={{
+                            borderColor: colors.paleGray,
+                            borderTopWidth: 0.3,
+                            borderBottomWidth: 0.3,
+                            flexDirection: 'row',
+                            justifyContent: 'space-between'
+                        }}>
+                        <View style={styles.inputWrapper}>
+                            <Text style={styles.iconName}>
+                                {strings.selectCountry}
+                            </Text>
+                            <Text style={styles.input}>
+                                {profileData.location
+                                    ? locations.find(
+                                          e => e.value === profileData.location
+                                      )?.label
+                                    : strings.location}
+                            </Text>
+                        </View>
+                        <View style={styles.secondaryItem}>
+                            <Entypo name="chevron-thin-right" size={20} />
+                        </View>
+                    </View>
+                </RNPickerSelect>
+
                 <View style={styles.box}>
                     <View style={styles.inputWrapper}>
                         <Text style={styles.iconName}>
@@ -351,41 +482,95 @@ const Settings = ({navigation, showModal, userData}) => {
                     </MapView>
                 </View>
                 <Text style={styles.title}>{strings.companyDetails}</Text>
-                <View style={styles.box}>
-                    <View style={styles.inputWrapper}>
-                        <Text style={styles.iconName}>
-                            {strings.numOfEmployees}
-                        </Text>
-                        <Text style={styles.input}>
-                            2 - 9 {strings.employees}
-                        </Text>
+                {/* <View style={styles.secondaryItem}>
+                            <Entypo name="chevron-thin-right" size={20} />
+                        </View>   */}
+                {/* Employees */}
+                <RNPickerSelect
+                    doneText={strings.no_of_employees}
+                    onValueChange={value => {
+                        setProfileData({
+                            ...profileData,
+                            no_of_employees: value
+                        });
+                    }}
+                    items={employees}>
+                    <View>
+                        <View
+                            style={{
+                                borderColor: colors.paleGray,
+                                borderTopWidth: 0.3,
+                                borderBottomWidth: 0.3,
+                                flexDirection: 'row',
+                                justifyContent: 'space-between'
+                            }}>
+                            <View style={styles.inputWrapper}>
+                                <Text style={styles.iconName}>
+                                    {strings.numOfEmployees}
+                                </Text>
+                                <Text style={styles.input}>
+                                    {profileData.no_of_employees
+                                        ? profileData.no_of_employees
+                                        : 0}
+                                </Text>
+                            </View>
+                            <View style={styles.secondaryItem}>
+                                <Entypo name="chevron-thin-right" size={20} />
+                            </View>
+                        </View>
                     </View>
-                    <View style={styles.secondaryItem}>
-                        <Entypo name="chevron-thin-right" size={20} />
+                </RNPickerSelect>
+                {/* Departments */}
+                <RNPickerSelect
+                    doneText={strings.department}
+                    onValueChange={value => {
+                        setProfileData({
+                            ...profileData,
+                            department: value
+                        });
+                    }}
+                    items={departments}>
+                    <View>
+                        <View
+                            style={{
+                                borderColor: colors.paleGray,
+                                borderTopWidth: 0.3,
+                                borderBottomWidth: 0.3,
+                                flexDirection: 'row',
+                                justifyContent: 'space-between'
+                            }}>
+                            <View style={styles.inputWrapper}>
+                                <Text style={styles.iconName}>
+                                    {strings.yourDepartment}
+                                </Text>
+                                <Text style={styles.input}>
+                                    {profileData.department
+                                        ? departments.find(
+                                              e =>
+                                                  e.value ===
+                                                  profileData.department
+                                          )?.label
+                                        : strings.selectDepartment}
+                                </Text>
+                            </View>
+                            <View style={styles.secondaryItem}>
+                                <Entypo name="chevron-thin-right" size={20} />
+                            </View>
+                        </View>
                     </View>
-                </View>
-                <View style={styles.box}>
-                    <View style={styles.inputWrapper}>
-                        <Text style={styles.iconName}>
-                            {strings.yourDepartment}
-                        </Text>
-                        <Text style={styles.input}>
-                            {strings.marketingOrSales}
-                        </Text>
-                    </View>
-                    <View style={styles.secondaryItem}>
-                        <Entypo name="chevron-thin-right" size={20} />
-                    </View>
-                </View>
+                </RNPickerSelect>
+                <View style={styles.box} />
+                {/* 
+                <RectangleButton onPress={onSavePress} text={strings.save} /> */}
 
-                <View>
-                    <View style={styles.buttonWrapper}>
-                        <RectangleButton
-                            onPress={onSavePress}
-                            textColor={colors.white}
-                            text={strings.save}
-                        />
-                    </View>
+                <View style={styles.footer}>
+                    <TouchableWithoutFeedback
+                        onPress={onSavePress}
+                        text={strings.save}>
+                        <Text style={styles.footerText}>
+                            <Text style={styles.bold}>{strings.save}</Text>
+                        </Text>
+                    </TouchableWithoutFeedback>
                 </View>
             </View>
         </ScrollView>
@@ -433,8 +618,6 @@ const styles = StyleSheet.create({
         fontSize: 19
     },
     box: {
-        borderTopColor: colors.paleGray,
-        borderTopWidth: 0.3,
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
@@ -461,6 +644,23 @@ const styles = StyleSheet.create({
     },
     map: {
         ...StyleSheet.absoluteFillObject
+    },
+    row: {
+        flexDirection: 'row'
+    },
+    footer: {
+        backgroundColor: colors.red,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10,
+        margin: 10
+    },
+    footerText: {
+        color: colors.white,
+        fontSize: 14
+    },
+    bold: {
+        fontWeight: 'bold'
     }
 });
 

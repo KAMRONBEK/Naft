@@ -5,7 +5,8 @@ import {
     StyleSheet,
     ScrollView,
     SafeAreaView,
-    Alert
+    Alert,
+    Linking
 } from 'react-native';
 import JobPageCard from '../../components/JobPageCard';
 import colors from '../../constants/colors';
@@ -58,6 +59,11 @@ const JobPage = ({navigation, showLoading, hideLoading, user}) => {
             requests.act.submitProposal(normalizeFilters());
         } catch (error) {}
     };
+
+    let onSharePress = () => {
+        Linking.openURL(job.link);
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
@@ -107,6 +113,7 @@ const JobPage = ({navigation, showLoading, hideLoading, user}) => {
                                     fill
                                     backColor={colors.green}
                                     iconName="md-share"
+                                    onPress={onSharePress}
                                 />
                                 <RectangleButton
                                     fill

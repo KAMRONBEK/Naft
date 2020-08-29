@@ -62,7 +62,7 @@ const Freelancer = ({navigation, hideLoading, showLoading}) => {
     return (
         <View style={styles.container}>
             <FlatList
-                data={freelancerList}
+                data={[]}
                 renderItem={({item}) => (
                     <FreelancerCard item={item} navigation={navigation} />
                 )}

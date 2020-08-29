@@ -10,6 +10,7 @@ import Auth from './Auth';
 import Register from './Auth/Register';
 import Loader from './Auth/Loader';
 import Activation from './Auth/Activation';
+import ForgotPassword from './Auth/ForgotPassword';
 
 export {
     Home,
@@ -23,5 +24,6 @@ export {
     Auth,
     Register,
     Loader,
-    Activation
+    Activation,
+    ForgotPassword
 };

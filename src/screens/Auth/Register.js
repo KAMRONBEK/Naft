@@ -19,14 +19,14 @@ import {connect} from 'react-redux';
 import {userLoggedIn} from '../../redux/actions';
 
 const locations = [
-    {label: 'Ташкент', value: 1},
-    {label: 'Самарканд', value: 2},
-    {label: 'Бухара', value: 3},
-    {label: 'Хива', value: 4},
-    {label: 'Нукус', value: 5},
-    {label: 'Шахрисабз', value: 6},
-    {label: 'Коканд', value: 7},
-    {label: 'Фергана', value: 8}
+    {label: 'Toshkent', value: 1},
+    {label: 'Samarqand', value: 2},
+    {label: 'Buxoro', value: 3},
+    {label: 'Xiva', value: 4},
+    {label: 'Nukus', value: 5},
+    {label: 'Shaxrisabz', value: 6},
+    {label: 'Qoqon', value: 7},
+    {label: 'Fargona', value: 8}
 ];
 
 const titles = [
@@ -43,15 +43,15 @@ const employees = [
     {label: '5000', value: 5000}
 ];
 const departments = [
-    {label: 'Бухгалтерский Учет И Финансы', value: 1},
-    {label: 'Обслуживание Клиентов Или Операции', value: 2},
-    {label: 'Инжиниринг Или Управление Продукцией', value: 3},
-    {label: 'Управление HR', value: 4},
-    {label: 'Маркетинг', value: 5},
-    {label: 'Производство', value: 6},
-    {label: 'Снабжение', value: 7},
-    {label: 'Исследования И Разработки', value: 8},
-    {label: 'Продажи', value: 9}
+    {label: 'Bugalteriya va moliya', value: 1},
+    {label: 'Mijozlarga xizmat korsatish', value: 2},
+    {label: 'Muhandislik', value: 3},
+    {label: 'Kadrlar menejmenti', value: 4},
+    {label: 'Marketing', value: 5},
+    {label: 'Ishlab chiqarish', value: 6},
+    {label: 'Taminot', value: 7},
+    {label: 'Tadqiqot va ishlab chiqish', value: 8},
+    {label: 'Savdo sotiq', value: 9}
 ];
 
 const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
@@ -198,6 +198,7 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
                                 <EvilIcons name="check" size={25} />
                             </View>
                         </RNPickerSelect>
+
                         {titles[role].label == strings.employer && (
                             <RNPickerSelect
                                 doneText={strings.select}
@@ -220,6 +221,7 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
                                 </View>
                             </RNPickerSelect>
                         )}
+
                         {titles[role].label == strings.employer && (
                             <RNPickerSelect
                                 doneText={strings.select}

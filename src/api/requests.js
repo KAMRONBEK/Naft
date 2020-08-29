@@ -33,21 +33,21 @@ import {url} from './config';
 let formData = rawData => {
     let form = new FormData();
     Object.keys(rawData).forEach(key => {
-        if (Array.isArray(rawData[key])) {
-            let obj = rawData[key];
-            for (let index in obj) {
-                form.append(`${key}[${index}]`, obj[index]);
-            }
-            return;
-        }
-        if (typeof rawData[key] === 'object' && key.indexOf('image' === -1)) {
-            let obj = rawData[key];
-            let i = 0;
-            Object.keys(obj).forEach((id, index) => {
-                if (obj[id]) form.append(`${key}[${i++}]`, parseInt(id));
-            });
-            return;
-        }
+        // if (Array.isArray(rawData[key])) {
+        //     let obj = rawData[key];
+        //     for (let index in obj) {
+        //         form.append(`${key}[${index}]`, obj[index]);
+        //     }
+        //     return;
+        // }
+        // if (typeof rawData[key] === 'object' && key.indexOf('image' === -1)) {
+        //     let obj = rawData[key];
+        //     let i = 0;
+        //     Object.keys(obj).forEach((id, index) => {
+        //         if (obj[id]) form.append(`${key}[${i++}]`, parseInt(id));
+        //     });
+        //     return;
+        // }
         form.append(key, rawData[key]);
     });
     return form;
@@ -112,9 +112,11 @@ let requests = {
     },
     profile: {
         getProfile: id => axios.get(`${url}profile/setting?id=${id}`),
-        updateProfile: (user_id, first_name, last_name, location_id, role) =>
+        updateProfile: ({user_id, first_name, last_name, location_id, role}) =>
             axios.post(
-                `${url}user/update-profile?user_id=${user_id}&first_name=${first_name}&last_name=${last_name}&location_id${location_id}&role${role}`
+                `${url}user/update-profile?user_id=${user_id ||
+                    ''}&first_name=${first_name || ''}&last_name=${last_name ||
+                    ''}&location_id=${location_id || ''}&role${role || ''}`
             ),
         updateImage: (id, data) =>
             axios.post(`${url}media/upload-media?id=${id}`, formData(data))
