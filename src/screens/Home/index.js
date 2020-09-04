@@ -134,7 +134,7 @@ const Home = ({navigation, showLoading, hideLoading, user}) => {
                             </View>
                             <FlatList
                                 horizontal={true}
-                                data={jobList}
+                                data={jobList || []}
                                 renderItem={({item, index}) => (
                                     <JobCard
                                         item={item}

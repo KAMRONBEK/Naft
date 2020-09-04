@@ -16,7 +16,8 @@ import {
     Register,
     Auth,
     Loader,
-    Activation
+    Activation,
+    ForgotPassword
 } from '../screens';
 import Header from '../components/Header';
 import colors from '../constants/colors';
@@ -215,6 +216,12 @@ let AuthStack = createSwitchNavigator({
         screen: Register,
         navigationOptions: {
             header: () => <Header title={strings.register} noMenu />
+        }
+    },
+    ForgotPassword: {
+        screen: ForgotPassword,
+        navigationOptions: {
+            header: () => <Header title={strings.forgotPassword} noMenu />
         }
     },
     Activation: {

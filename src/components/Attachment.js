@@ -1,10 +1,11 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, Link} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import colors from '../constants/colors';
 import images from '../assets/images';
 
 const Attachment = ({item}) => {
+    console.log({item});
     return (
         <View style={styles.container}>
             <View style={styles.iconWrapper}>

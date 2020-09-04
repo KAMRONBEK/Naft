@@ -2,6 +2,10 @@ import LocalizedStrings from 'localized-strings';
 
 export default new LocalizedStrings({
     uz: {
+        forgotPassword: 'Parol esdan chiqdimi?',
+
+        male: 'Erkak',
+        famale: 'Ayol',
         save: 'Saqlash',
         attention: 'Diqqat',
         sendOffer: 'Taklif yuborish',
@@ -45,7 +49,7 @@ export default new LocalizedStrings({
         allEarnings: 'Barcha daromadlar',
         cancelledProjects: 'Bekor qilingan ishlar',
         completedProjects: 'Tugallangan ishlar',
-        currentProjects: 'Current Projects',
+        currentProjects: 'Loyhalar',
         projectStats: 'Amaldagi ishlar',
         about: 'Haqida',
         registerYear: "Ro'yhatdan o'tgan yil",
