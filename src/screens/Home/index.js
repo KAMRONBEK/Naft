@@ -26,15 +26,17 @@ const Home = ({navigation, showLoading, hideLoading, user}) => {
         try {
             //get categories
             let categoies = await requests.list.getCategory();
-            setCategoryList(categoies.data);
+            if (categoies.data.type !== 'error')
+                setCategoryList(categoies.data);
 
             //get freelancers
-            let freelancers = await requests.list.getFreelancer('featured', 5);
-            setFreelancerList(freelancers.data);
+            let freelancers = await requests.list.getFreelancer('latest', 5);
+            if (freelancers.data.type !== 'error')
+                setFreelancerList(freelancers.data);
 
             //get jobs
             let jobs = await requests.list.getJobs('latest', 5);
-            setJobList(jobs.data);
+            if (jobs.data.type !== 'error') setJobList(jobs.data);
         } catch (error) {
             console.warn(error.message);
         } finally {

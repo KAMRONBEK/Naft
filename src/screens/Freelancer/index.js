@@ -23,7 +23,8 @@ const Freelancer = ({navigation, hideLoading, showLoading}) => {
                 '',
                 pageIndex
             );
-            setFreelancerList(freelancerRes.data);
+            if (freelancerRes.data.type !== 'error')
+                setFreelancerList(freelancerRes.data);
         } catch (error) {
             console.warn(error.message);
         } finally {

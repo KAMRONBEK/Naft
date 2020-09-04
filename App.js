@@ -19,6 +19,12 @@ if (Platform.OS === 'android') {
     }
 }
 
+if (__DEV__) {
+    import('./src/redux/ReactotronConfig').then(() =>
+        console.log('Reactotron Configured')
+    );
+}
+
 const App = () => {
     let store = configureStore();
     // configureAxios(store);
