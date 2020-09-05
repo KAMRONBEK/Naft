@@ -15,6 +15,12 @@ import {showLoading, hideLoading, userLoggedIn} from '../../redux/actions';
 import requests from '../../api/requests';
 
 const Activation = ({navigation, userLoggedIn}) => {
+    let phone = navigation.getParam('phone');
+    let password = navigation.getParam('password');
+    let [code, setCode] = useState('');
+
+    let inputRef = useRef(null);
+
     const onPress = () => {
         requests.auth
             .verifyUser({
@@ -55,12 +61,6 @@ const Activation = ({navigation, userLoggedIn}) => {
         //         });
         //         userLoggedIn(loginRes.data);
     };
-
-    let phone = navigation.getParam('phone');
-    let password = navigation.getParam('password');
-    let [code, setCode] = useState('');
-
-    let inputRef = useRef(null);
 
     return (
         <View style={styles.container}>

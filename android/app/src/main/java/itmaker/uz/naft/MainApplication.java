@@ -1,4 +1,4 @@
-package itmaker.uz.work;
+package itmaker.uz.naft;
 
 import android.app.Application;
 import android.content.Context;

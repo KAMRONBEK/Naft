@@ -128,7 +128,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "itmaker.uz.work"
+        applicationId "itmaker.uz.naft"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 7

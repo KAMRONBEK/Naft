@@ -4,17 +4,31 @@ import {
     Text,
     TextInput,
     TouchableWithoutFeedback,
-    View
+    View,
+    Alert
 } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import RectangleButton from '../../components/RectangleButton';
 import colors from '../../constants/colors';
 import strings from '../../locales/strings';
+import requests from '../../api/requests';
 
-const ForgotPassword = () => {
+const ForgotPassword = navigation => {
     let [phone, setPhone] = useState('');
 
     let [errorEntry, setErrorEntry] = useState('');
+
+    let onLoginPress = async () => {
+        try {
+            let res = await requests.auth.forgotPassword(phone);
+            if (res.data.type === 'success') {
+                Alert.alert(
+                    'Diqqat',
+                    'Profilingizga aktivatsiya linki yuborildi! U orqali parolingizni qayta tiklashingiz mumkin.'
+                );
+            }
+        } catch (error) {}
+    };
 
     return (
         <View style={styles.container}>
