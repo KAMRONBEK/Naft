@@ -94,6 +94,11 @@ const DrawerContent = ({userLoggedOut, navigation, user}) => {
                                 }}
                                 simpleIcon=""
                             />
+                            <DrawetItem
+                                name={strings.list}
+                                simpleIcon="list"
+                                to="List"
+                            />
                         </>
                     ) : (
                         <View style={styles.registerWrapper}>
@@ -110,13 +115,13 @@ const DrawerContent = ({userLoggedOut, navigation, user}) => {
                                     Linking.openURL('http://naft.uz/');
                                 }}
                             />
+                            <DrawetItem
+                                name={strings.list}
+                                simpleIcon="list"
+                                to="List"
+                            />
                         </View>
                     )}
-                    <DrawetItem
-                        name={strings.list}
-                        simpleIcon="list"
-                        to="List"
-                    />
                 </View>
             </View>
         </View>
@@ -163,8 +168,10 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start'
     },
     registerWrapper: {
-        justifyContent: 'space-between',
-        flex: 1
+        justifyContent: 'flex-start',
+        flex: 1,
+        paddingLeft: 8,
+        paddingRight: 8
     }
 });
 
