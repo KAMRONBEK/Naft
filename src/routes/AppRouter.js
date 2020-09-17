@@ -26,6 +26,7 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import DrawerContent from '../components/DrawerContent';
 import strings from '../locales/strings';
 import {connect} from 'react-redux';
+import List from '../screens/Auth/List';
 
 let JobsStack = createStackNavigator(
     {
@@ -250,6 +251,9 @@ let AuthvsTab = createSwitchNavigator({
         navigationOptions: {
             headerShown: false
         }
+    },
+    List: {
+        screen: List
     }
 });
 

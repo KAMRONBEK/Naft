@@ -97,7 +97,7 @@ const Auth = ({user, navigation, userLoggedIn, showLoading, hideLoading}) => {
                 </View>
             </View>
             <View>
-                <Text onPress={navigation.navigate('ForgotPassword')}>
+                <Text onPress={() => navigation.navigate('ForgotPassword')}>
                     {strings.forgotPassword}
                 </Text>
             </View>

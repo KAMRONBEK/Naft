@@ -112,6 +112,11 @@ const DrawerContent = ({userLoggedOut, navigation, user}) => {
                             />
                         </View>
                     )}
+                    <DrawetItem
+                        name={strings.list}
+                        simpleIcon="list"
+                        to="List"
+                    />
                 </View>
             </View>
         </View>
