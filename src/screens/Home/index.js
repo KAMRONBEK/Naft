@@ -5,7 +5,8 @@ import {
     SafeAreaView,
     StyleSheet,
     Text,
-    View
+    View,
+    Dimensions
 } from 'react-native';
 import {connect} from 'react-redux';
 import requests from '../../api/requests';
@@ -15,6 +16,8 @@ import JobCard from '../../components/JobCard';
 import colors from '../../constants/colors';
 import strings from '../../locales/strings';
 import {hideLoading, showLoading} from '../../redux/actions/appState';
+import images from '../../assets/images';
+const deviceWidth = Dimensions.get('window').width;
 
 const Home = ({navigation, showLoading, hideLoading, user}) => {
     const [categoryList, setCategoryList] = useState([]);
@@ -57,10 +60,7 @@ const Home = ({navigation, showLoading, hideLoading, user}) => {
                         <>
                             <View style={styles.topImage}>
                                 <Image
-                                    source={{
-                                        uri:
-                                            'https://demotix.com/wp-content/uploads/2019/10/job.jpg'
-                                    }}
+                                    source={images.homeIntro}
                                     style={styles.image}
                                 />
                             </View>
@@ -169,6 +169,7 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 5,
         borderBottomLeftRadius: 5,
         height: 200,
+        width: deviceWidth,
         resizeMode: 'cover'
     },
     top: {
