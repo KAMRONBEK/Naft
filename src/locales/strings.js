@@ -99,7 +99,8 @@ export default new LocalizedStrings({
         codeSentToYourNumber: 'Aktivatsiya kodi raqamingizga yuborildi',
         enterCode: 'Kodni kiriting',
         send: 'Yuborish',
-        CANCEL: 'BEKOR QILISH'
+        CANCEL: 'BEKOR QILISH',
+        list: 'Avto-powerball'
     },
     ru: {imLookingFor: ''}
 });
