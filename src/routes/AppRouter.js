@@ -17,7 +17,8 @@ import {
     Auth,
     Loader,
     Activation,
-    ForgotPassword
+    ForgotPassword,
+    BuyAccount
 } from '../screens';
 import Header from '../components/Header';
 import colors from '../constants/colors';
@@ -87,8 +88,14 @@ let CompanyStack = createStackNavigator({
 });
 
 let HomeStack = createStackNavigator({
+    BuyAccount: {
+        screen: BuyAccount,
+        navigationOptions: {
+            header: () => <Header />
+        }
+    },
     Home: {
-        screen: Home,
+        screen: BuyAccount,
         navigationOptions: {
             header: () => <Header />
         }
