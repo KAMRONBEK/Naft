@@ -12,10 +12,10 @@ import {
 } from '../../redux/actions';
 
 import {
-    StyleSheet,
     Text,
     View,
     TextInput,
+    StyleSheet,
     TouchableWithoutFeedback,
     InteractionManager
 } from 'react-native';
@@ -83,23 +83,12 @@ const Auth = ({
         requests.auth
             .login({phone: phone, password: password})
             .then(res => {
-                const { pmeta, umeta } = res.data.profile
                 hideLoading();
                 if (res.data.type === 'success') {
-                    if(pmeta.is_paid){
-                        userLoggedIn(res.data);
-                    } else {
-                        navigation.navigate(
-                            'BuyAccount',
-                            {
-                                id: umeta.id,
-                                profile_id: umeta.profile_id
-                            }
-                        )
-                    }
+                    setErrorEntry('')
+                    userLoggedIn(res.data);
                 } else {
                     setErrorEntry(res.data.message);
-                    // setErrorEntry(strings.passwordOrMailWrong);
                 }
             })
             .catch(err => {

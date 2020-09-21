@@ -19,17 +19,21 @@ const { width, height } = Dimensions.get('window')
 const html = '<iframe src="https://promo-money.ru/quickpay/shop-widget?writer=seller&targets=%D0%90%D0%BA%D1%82%D0%B8%D0%B2%D0%B0%D1%86%D0%B8%D1%8F%20%D0%B0%D0%BA%D0%BA%D0%B0%D1%83%D0%BD%D1%82%D0%B0&targets-hint=&default-sum=200&button-text=11&payment-type-choice=on&phone=on&hint=&successURL=https%3A%2F%2Fnaft.uz%2FyandexPayGate&quickpay=shop&account=410011993428689" width="423" height="222" frameborder="0" allowtransparency="true" scrolling="no"></iframe>'
 
 const mapStateToProps = ({user}) => ({
-    user
+    userData: user
 });
 
 const mapDispatchToProps = {userLoaded};
 
-const BuyAccount = ({navigation, userLoaded}) => {
+const BuyAccount = ({
+    navigation,
+    userLoaded,
+    userData,
+}) => {
     const [loading, setLoading] = useState(false)
 
     const onPress = async () => {
         setLoading(true)
-        let response = await axios.get(`http://naft.uz/api/v1/user/info/${navigation.state.params.id}`)
+        let response = await axios.get(`http://naft.uz/api/v1/user/info/${userData.profile.umeta.id}`)
         let { pmeta } = response.data.profile
         if(pmeta.is_paid){
             userLoaded(response.data)
@@ -40,6 +44,9 @@ const BuyAccount = ({navigation, userLoaded}) => {
     return(
         <View style={styles.container}>
             <View style={styles.btnCont}>
+                <Text style={styles.text}>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, rem voluptate? Alias error ex omnis?
+                </Text>
                 {loading ? (
                     <View style={styles.indicatorCont}>
                         <ActivityIndicator
@@ -50,7 +57,7 @@ const BuyAccount = ({navigation, userLoaded}) => {
                 ) : (
                     <TouchableWithoutFeedback onPress={onPress}>
                         <Text style={styles.btn}>
-                            Check payment
+                            To'lovni tekshirish
                         </Text>
                     </TouchableWithoutFeedback>
                 )}
@@ -76,6 +83,15 @@ const styles = StyleSheet.create({
     },
     btnCont: {
         paddingVertical: 24,
+        backgroundColor: '#eee'
+    },
+    text: {
+        fontWeight: '500',
+        fontSize: 16,
+        lineHeight: 18,
+        marginVertical: 8,
+        paddingHorizontal: 24,
+        textAlign: 'justify'
     },
     indicatorCont: {
         paddingHorizontal: 30,

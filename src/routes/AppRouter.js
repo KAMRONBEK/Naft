@@ -207,7 +207,7 @@ let tabOptions = {
     }
 };
 
-let Tabs = createMaterialTopTabNavigator(TabRoutes, tabOptions);
+// let Tabs = createMaterialTopTabNavigator(TabRoutes, tabOptions);
 let WithSettingsTabs = createMaterialTopTabNavigator(
     {
         ...TabRoutes,
@@ -256,78 +256,14 @@ let AuthStack = createSwitchNavigator({
     },
 });
 
-let AuthvsTab = createSwitchNavigator({
-    Loader: {
-        screen: Loader,
+let BuyAccountStack = createSwitchNavigator({
+    BuyAccount: {
+        screen: BuyAccount,
         navigationOptions: {
             headerShown: false
         }
-    },
-    tab: {
-        screen: Tabs,
-        navigationOptions: {
-            headerShown: false
-        }
-    },
-    auth: {
-        screen: AuthStack,
-        navigationOptions: {
-            headerShown: false
-        }
-    },
-});
-
-let LoadvsHome = createSwitchNavigator({
-    Loader: {
-        screen: Loader,
-        navigationOptions: {
-            headerShown: false
-        }
-    },
-    tab: {
-        screen: WithSettingsTabs,
-        navigationOptions: {
-            headerShown: false
-        }
-    },
-})
-
-let DrawerHome = createDrawerNavigator(
-    {
-        LoadvsHome,
-    },
-    {
-        drawerType: 'slide',
-        contentComponent: props => {
-            progress = props.progress;
-            return <DrawerContent {...props} />;
-        },
-        drawerWidth: 100
     }
-);
-
-let LoadvsAuth = createSwitchNavigator({
-    auth: {
-        screen: AuthStack,
-        navigationOptions: {
-            headerShown: false
-        }
-    },
 })
-
-let DrawerAuth = createDrawerNavigator(
-    {
-        AuthvsTab: LoadvsAuth
-    },
-    {
-        drawerType: 'slide',
-        contentComponent: props => {
-            progress = props.progress;
-            return <DrawerContent {...props} />;
-        },
-        drawerWidth: 100
-    }
-);
 
 let DrawerWithSettings = createDrawerNavigator(
     {
@@ -356,50 +292,20 @@ let DrawerWithSettings = createDrawerNavigator(
     }
 );
 
-let DrawerNavigator = createDrawerNavigator(
-    {
-        AuthvsTab: createSwitchNavigator({
-            Loader: {
-                screen: Loader,
-                navigationOptions: {
-                    headerShown: false
-                }
-            },
-            tab: {
-                screen: Tabs,
-                navigationOptions: {
-                    headerShown: false
-                }
-            },
-            auth: {
-                screen: AuthStack,
-                navigationOptions: {
-                    headerShown: false
-                }
-            },
-        })
-    },
-    {
-        drawerType: 'slide',
-        contentComponent: props => {
-            progress = props.progress;
-            return <DrawerContent {...props} />;
-        },
-        drawerWidth: 100
-    }
-);
-
 
 let AppRouter = ({user}) => {
     if (user && user.type === 'success') {
-        console.log('!!if')
-        let App = createAppContainer(DrawerWithSettings);
-        // let App = createAppContainer(DrawerHome)
+        let App
+        let { pmeta } = user.profile
+        // pmeta.is_paid = 1
+        if(pmeta.is_paid){
+            App = createAppContainer(DrawerWithSettings);
+        } else {
+            App = createAppContainer(BuyAccountStack)
+        }
         return <App />;
     }
-    console.log('!!else')
-    // let App = createAppContainer(DrawerNavigator);
-    let App = createAppContainer(DrawerAuth)
+    let App = createAppContainer(AuthStack)
     return <App />;
 };
 
