@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         alignItems: 'center',
-        paddingBottom: 30
+        paddingBottom: 30,
+        paddingHorizontal: 10,
     },
     name: {
         color: colors.black,

@@ -1,23 +1,18 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {
-    ActivityIndicator,
-    FlatList,
-    Image,
-    StyleSheet,
     Text,
-    View
+    View,
+    Image,
+    FlatList,
+    StyleSheet,
+    ActivityIndicator,
+    TouchableWithoutFeedback,
 } from 'react-native';
-import {SearchBar} from 'react-native-elements';
 
-const imgUrl =
-    'https://hafidiy-restapi.herokuapp.com/avatars/male/avatar38.jpeg';
-
-const ScreenTmp = () => {
-    const [didMount, setDidMount] = useState(true);
+const ScreenTmp = ({navigation}) => {
     const [cards, setCards] = useState([]);
     const [page, setPage] = useState(1);
-    const [seed, setSeed] = useState(1);
 
     const [stateFetch, setStateFetch] = useState({
         loading: false,
@@ -26,12 +21,11 @@ const ScreenTmp = () => {
     });
 
     const effect = async () => {
-        const url = `https://hafidiy-restapi.herokuapp.com/api/people?page=${page}&limit=10`;
+        // const url = `https://hafidiy-restapi.herokuapp.com/api/people?page=${page}&limit=10`;
+        const url = `http://naft.uz/api/v1/users?show_users=10&page_number=${page}`
         setStateFetch({...stateFetch, loading: true});
         try {
             const response = await axios.get(url);
-
-            console.log('response: ', Object.keys(response));
 
             setCards([...cards, ...response.data]);
             setStateFetch({
@@ -52,16 +46,8 @@ const ScreenTmp = () => {
     };
 
     useEffect(() => {
-        if (didMount) {
-            setDidMount(false);
-            effect();
-            console.log('effect');
-        }
+        effect();
     }, []);
-
-    useEffect(() => {
-        console.log('cards.length: ', cards.length);
-    }, [cards]);
 
     const handleLoadMore = () => {
         setPage(page + 1);
@@ -87,34 +73,23 @@ const ScreenTmp = () => {
         />
     );
 
-    const renderHeader = () => (
-        <SearchBar placeholder="Type here..." lightTheme round />
-    );
+    const onPress = () => navigation.navigate('Info', { name: 'Hafidiy', id: 10 })
 
     const renderItem = ({item}) => (
-        // <ListItem
-        //     roundAvatar
-        //     title={`${item.name.first} ${item.name.last}`}
-        //     subtitle={item.email}
-        //     avatar={{ uri: item.picture.thumbnail }}
-        //     containerStyle={{ borderBottomWidth: 0 }}
-        // />
-        <View style={styles.card}>
-            <Image
-                style={styles.img}
-                source={{uri: item.avatar}}
-                // source={{ uri: item.picture.thumbnail }}
-            />
-            <View style={styles.info}>
-                <Text style={styles.date}>{item.cell}</Text>
-                <Text style={styles.price}>
-                    {Math.round(Math.random() * 10000000)} so'm
-                </Text>
-                <Text style={styles.name}>
-                    {`${item.name.first} ${item.name.last}`}
-                </Text>
+        <TouchableWithoutFeedback onPress={onPress}>
+            <View style={styles.card}>
+                <Image
+                    style={styles.img}
+                    source={{uri: item.avatar || null}}
+                />
+                <View style={styles.info}>
+                    <Text style={styles.date}>{item.created_at}</Text>
+                    <Text style={styles.name}>
+                        {`${item.first_name} ${item.last_name}`}
+                    </Text>
+                </View>
             </View>
-        </View>
+        </TouchableWithoutFeedback>
     );
 
     const renderFooter = () => {
@@ -137,33 +112,13 @@ const ScreenTmp = () => {
             data={cards}
             renderItem={renderItem}
             keyExtractor={(item, index) => index}
-            // keyExtractor={item => item._id}
             ItemSeparatorComponent={renderSeparator}
-            ListHeaderComponent={renderHeader}
             ListFooterComponent={renderFooter}
             refreshing={stateFetch.refreshing}
             onRefresh={handleRefresh}
             onEndReached={handleLoadMore}
             onEndThreshold={10}
         />
-        // <View style={styles.container}>
-        //     <ScrollView
-        //         showsVerticalScrollIndicator={false}
-        //         refreshControl={<RefreshControl onRefresh={effect} refreshing={stateFetch.loading}/>}
-        //     >
-        //         {stateData.cards.length ? stateData.cards.map((card, index) => (
-        //             <View key={index} style={styles.card}>
-        //                 <Image source={{ uri: card.avatar }} style={styles.img} />
-        //                 <View style={styles.info}>
-        //                     <Text style={styles.date}>{card.cell}</Text>
-        //                     <Text style={styles.name}>
-        //                         {`${card.name.first} ${card.name.last}`}
-        //                     </Text>
-        //                 </View>
-        //             </View>
-        //         )) : null}
-        //     </ScrollView>
-        // </View>
     );
 };
 

@@ -1,4 +1,7 @@
 import Home from './Home';
+import List from './Home/List'
+import Info from './Home/Info'
+import BuyAccount from './Home/BuyAccount'
 import Jobs from './Jobs';
 import Freelancer from './Freelancer';
 import Company from './Company';
@@ -14,6 +17,9 @@ import ForgotPassword from './Auth/ForgotPassword';
 
 export {
     Home,
+    List,
+    Info,
+    BuyAccount,
     Jobs,
     Freelancer,
     Company,

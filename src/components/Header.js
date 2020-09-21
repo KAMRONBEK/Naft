@@ -62,9 +62,7 @@ const Header = ({navigation, progress, back, title, noMenu}) => {
             )}
             {!noMenu && (
                 <TouchableWithoutFeedback
-                    onPress={() => {
-                        navigation.toggleDrawer();
-                    }}>
+                    onPress={() => navigation.toggleDrawer()}>
                     <View style={[styles.iconWrapper]}>
                         {/* <DrawerGestureContext.Consumer>
                         {props => {

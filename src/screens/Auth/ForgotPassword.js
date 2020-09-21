@@ -13,7 +13,7 @@ import colors from '../../constants/colors';
 import strings from '../../locales/strings';
 import requests from '../../api/requests';
 
-const ForgotPassword = navigation => {
+const ForgotPassword = ({navigation}) => {
     let [phone, setPhone] = useState('');
 
     let [errorEntry, setErrorEntry] = useState('');

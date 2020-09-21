@@ -1,11 +1,21 @@
 import React from 'react';
+
+import {connect} from 'react-redux';
+
 import {createDrawerNavigator} from 'react-navigation-drawer';
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
+
 import {Text, View} from 'react-native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+
 import {
     Home,
+    List,
+    Info,
+    BuyAccount,
     Settings,
     Jobs,
     Freelancer,
@@ -19,14 +29,14 @@ import {
     Activation,
     ForgotPassword
 } from '../screens';
+
 import Header from '../components/Header';
-import colors from '../constants/colors';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import DrawerContent from '../components/DrawerContent';
+
+import colors from '../constants/colors';
 import strings from '../locales/strings';
-import {connect} from 'react-redux';
-import List from '../screens/Auth/List';
+
+const mapStateToProps = ({user}) => ({user});
 
 let JobsStack = createStackNavigator(
     {
@@ -98,6 +108,18 @@ let HomeStack = createStackNavigator({
         navigationOptions: {
             header: () => <Header />
         }
+    },
+    List: {
+        screen: List,
+        navigationOptions: {
+            header: () => <Header />
+        }
+    },
+    Info: {
+        screen: Info,
+        navigationOptions: {
+            header: () => <Header title={'Avto-powerball'} />
+        }
     }
 });
 
@@ -155,8 +177,6 @@ let TabRoutes = {
         }
     }
 };
-
-const mapStateToProps = ({user}) => ({user});
 
 let tabOptions = {
     swipeEnabled: false,
@@ -230,7 +250,10 @@ let AuthStack = createSwitchNavigator({
         navigationOptions: {
             header: () => <Header title={strings.activation} back noMenu />
         }
-    }
+    },
+    BuyAccount: {
+        screen: BuyAccount,
+    },
 });
 
 let AuthvsTab = createSwitchNavigator({
@@ -252,10 +275,59 @@ let AuthvsTab = createSwitchNavigator({
             headerShown: false
         }
     },
-    List: {
-        screen: List
-    }
 });
+
+let LoadvsHome = createSwitchNavigator({
+    Loader: {
+        screen: Loader,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    tab: {
+        screen: WithSettingsTabs,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+})
+
+let DrawerHome = createDrawerNavigator(
+    {
+        LoadvsHome,
+    },
+    {
+        drawerType: 'slide',
+        contentComponent: props => {
+            progress = props.progress;
+            return <DrawerContent {...props} />;
+        },
+        drawerWidth: 100
+    }
+);
+
+let LoadvsAuth = createSwitchNavigator({
+    auth: {
+        screen: AuthStack,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+})
+
+let DrawerAuth = createDrawerNavigator(
+    {
+        AuthvsTab: LoadvsAuth
+    },
+    {
+        drawerType: 'slide',
+        contentComponent: props => {
+            progress = props.progress;
+            return <DrawerContent {...props} />;
+        },
+        drawerWidth: 100
+    }
+);
 
 let DrawerWithSettings = createDrawerNavigator(
     {
@@ -286,7 +358,26 @@ let DrawerWithSettings = createDrawerNavigator(
 
 let DrawerNavigator = createDrawerNavigator(
     {
-        AuthvsTab
+        AuthvsTab: createSwitchNavigator({
+            Loader: {
+                screen: Loader,
+                navigationOptions: {
+                    headerShown: false
+                }
+            },
+            tab: {
+                screen: Tabs,
+                navigationOptions: {
+                    headerShown: false
+                }
+            },
+            auth: {
+                screen: AuthStack,
+                navigationOptions: {
+                    headerShown: false
+                }
+            },
+        })
     },
     {
         drawerType: 'slide',
@@ -298,12 +389,17 @@ let DrawerNavigator = createDrawerNavigator(
     }
 );
 
+
 let AppRouter = ({user}) => {
     if (user && user.type === 'success') {
+        console.log('!!if')
         let App = createAppContainer(DrawerWithSettings);
+        // let App = createAppContainer(DrawerHome)
         return <App />;
     }
-    let App = createAppContainer(DrawerNavigator);
+    console.log('!!else')
+    // let App = createAppContainer(DrawerNavigator);
+    let App = createAppContainer(DrawerAuth)
     return <App />;
 };
 

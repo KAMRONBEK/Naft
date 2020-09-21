@@ -13,6 +13,7 @@ import colors from '../../constants/colors';
 import requests from '../../api/requests';
 import strings from '../../locales/strings';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native'
 
 const Loader = ({
     navigation,
@@ -25,10 +26,13 @@ const Loader = ({
         showLoading(strings.loading);
         let userData = await AsyncStorage.getItem('@user');
         if (!userData) {
-            navigation.navigate('Home');
+            console.log('userData: ', userData)
+            console.log('if - 1')
+            navigation.navigate('Login');
             return;
         }
         if (userData) {
+            console.log('if - 2')
             console.warn('loader');
             let parsedUser = JSON.parse(userData);
             console.warn(
@@ -60,6 +64,7 @@ const Loader = ({
                     navigation.navigate('Home');
                 });
         } else {
+            console.log('else')
             console.warn('no user');
             hideLoading();
             navigation.navigate('Home');

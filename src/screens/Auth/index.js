@@ -1,17 +1,8 @@
-import React, {useState} from 'react';
-import {
-    StyleSheet,
-    Text,
-    View,
-    TextInput,
-    TouchableWithoutFeedback,
-    InteractionManager
-} from 'react-native';
+import React, {useState, useEffect} from 'react';
+
+import AsyncStorage from '@react-native-community/async-storage';
+
 import {connect} from 'react-redux';
-import colors from '../../constants/colors';
-import strings from '../../locales/strings';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import RectangleButton from '../../components/RectangleButton';
 import requests from '../../api/requests';
 import {
     userLoggedIn,
@@ -20,22 +11,92 @@ import {
     hideLoading
 } from '../../redux/actions';
 
-const Auth = ({user, navigation, userLoggedIn, showLoading, hideLoading}) => {
+import {
+    StyleSheet,
+    Text,
+    View,
+    TextInput,
+    TouchableWithoutFeedback,
+    InteractionManager
+} from 'react-native';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+
+import RectangleButton from '../../components/RectangleButton';
+
+import colors from '../../constants/colors';
+import strings from '../../locales/strings';
+
+const mapStateToProps = ({user}) => ({
+    user
+});
+
+const mapDispatchToProps = {
+    userLoggedIn,
+    showLoading,
+    hideLoading,
+    userLoaded
+};
+
+const Auth = ({
+    user,
+    navigation,
+    showLoading,
+    userLoaded,
+    hideLoading,
+    userLoggedIn,
+}) => {
     let [phone, setPhone] = useState('');
     let [password, setPassword] = useState('');
 
     let [errorEntry, setErrorEntry] = useState('');
     let [internetError, setInternetError] = useState('');
 
+    const effect = () => {
+        AsyncStorage.getItem('@user')
+            .then(userData => {
+                if(userData){
+                    showLoading(strings.loggingIn);
+                    let parsedUser = JSON.parse(userData);
+                    requests.auth
+                        .login({
+                            phone: parsedUser.profile.umeta.user_number,
+                            password: parsedUser.profile.umeta.user_pass
+                        })
+                        .then(res => {
+                            hideLoading();
+                            if (res.data.type == 'success') {
+                                userLoaded(parsedUser);
+                            } else {
+                                console.warn('cant login with asyncs');
+                            }
+                        })            
+                }
+            })
+    }
+
+    useEffect(() => {
+        effect()
+    }, [])
+
     const onLoginPress = () => {
         showLoading(strings.loggingIn);
         requests.auth
             .login({phone: phone, password: password})
             .then(res => {
+                const { pmeta, umeta } = res.data.profile
                 hideLoading();
                 if (res.data.type === 'success') {
-                    userLoggedIn(res.data);
-                    navigation.navigate('tab');
+                    if(pmeta.is_paid){
+                        userLoggedIn(res.data);
+                    } else {
+                        navigation.navigate(
+                            'BuyAccount',
+                            {
+                                id: umeta.id,
+                                profile_id: umeta.profile_id
+                            }
+                        )
+                    }
                 } else {
                     setErrorEntry(res.data.message);
                     // setErrorEntry(strings.passwordOrMailWrong);
@@ -97,11 +158,26 @@ const Auth = ({user, navigation, userLoggedIn, showLoading, hideLoading}) => {
                 </View>
             </View>
             <View>
-                <Text onPress={() => navigation.navigate('ForgotPassword')}>
-                    {strings.forgotPassword}
-                </Text>
             </View>
             <View style={styles.footer}>
+                <TouchableWithoutFeedback
+                    onPress={() => navigation.navigate('ForgotPassword')}
+                >
+                    <Text
+                        style={[
+                            styles.bold,
+                            styles.footerText,
+                            {
+                                marginBottom: 4,
+                                paddingBottom: 4,
+                                borderBottomWidth: 1,
+                                borderBottomColor: '#fff',
+                            }
+                        ]}
+                    >
+                        {strings.forgotPassword}
+                    </Text>
+                </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback
                     onPress={() => {
                         navigation.navigate('Register');
@@ -115,6 +191,11 @@ const Auth = ({user, navigation, userLoggedIn, showLoading, hideLoading}) => {
         </View>
     );
 };
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Auth);
 
 const styles = StyleSheet.create({
     container: {
@@ -176,18 +257,3 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     }
 });
-
-const mapStateToProps = ({user}) => ({
-    user
-});
-
-const mapDispatchToProps = {
-    userLoggedIn,
-    showLoading,
-    hideLoading
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Auth);

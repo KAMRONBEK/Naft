@@ -94,6 +94,11 @@ const DrawerContent = ({userLoggedOut, navigation, user}) => {
                                 }}
                                 simpleIcon=""
                             />
+                            <DrawetItem
+                                name={strings.list}
+                                simpleIcon="list"
+                                to="List"
+                            />
                         </>
                     ) : (
                         <View style={styles.registerWrapper}>
@@ -101,6 +106,7 @@ const DrawerContent = ({userLoggedOut, navigation, user}) => {
                                 name={strings.login}
                                 antIcon="user"
                                 to="Login"
+                                styl
                                 simpleIcon=""
                             />
                             <DrawetItem
@@ -112,11 +118,6 @@ const DrawerContent = ({userLoggedOut, navigation, user}) => {
                             />
                         </View>
                     )}
-                    <DrawetItem
-                        name={strings.list}
-                        simpleIcon="list"
-                        to="List"
-                    />
                 </View>
             </View>
         </View>
@@ -125,7 +126,7 @@ const DrawerContent = ({userLoggedOut, navigation, user}) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
     },
     top: {
         backgroundColor: colors.red,
@@ -163,8 +164,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start'
     },
     registerWrapper: {
-        justifyContent: 'space-between',
-        flex: 1
+        // flex: 1,
     }
 });
 
