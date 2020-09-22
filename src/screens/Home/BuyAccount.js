@@ -63,7 +63,7 @@ const BuyAccount = ({
             </View>
             <WebView
                 source={{
-                    uri: 'https://naft.uz/yandexpay/41',
+                    uri: `https://naft.uz/yandexpay/${userData.profile.umeta.id}`,
                 }}
                 injectedJavaScript={INJECTEDJAVASCRIPT}
                 scalesPageToFit={false}
