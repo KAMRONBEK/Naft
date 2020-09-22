@@ -15,8 +15,7 @@ import {
 import { WebView } from 'react-native-webview';
 
 const { width, height } = Dimensions.get('window')
-// const html = '<iframe src="https://promo-money.ru/quickpay/button-widget?targets=ACTIVATION&default-sum=300&button-text=11&yamoney-payment-type=on&button-size=l&button-color=orange&successURL=&quickpay=small&account=41001951153675&" width="227" height="48" frameborder="0" allowtransparency="true" scrolling="no"></iframe>';
-const html = '<iframe src="https://promo-money.ru/quickpay/shop-widget?writer=seller&targets=%D0%90%D0%BA%D1%82%D0%B8%D0%B2%D0%B0%D1%86%D0%B8%D1%8F%20%D0%B0%D0%BA%D0%BA%D0%B0%D1%83%D0%BD%D1%82%D0%B0&targets-hint=&default-sum=200&button-text=11&payment-type-choice=on&phone=on&hint=&successURL=https%3A%2F%2Fnaft.uz%2FyandexPayGate&quickpay=shop&account=410011993428689" width="423" height="222" frameborder="0" allowtransparency="true" scrolling="no"></iframe>'
+const INJECTEDJAVASCRIPT = 'const meta = document.createElement(\'meta\'); meta.setAttribute(\'content\', \'width=device-width, initial-scale=1, maximum-scale=0.99, user-scalable=0\'); meta.setAttribute(\'name\', \'viewport\'); document.getElementsByTagName(\'head\')[0].appendChild(meta);'
 
 const mapStateToProps = ({user}) => ({
     userData: user
@@ -63,7 +62,12 @@ const BuyAccount = ({
                 )}
             </View>
             <WebView
-                source={{ html }}
+                source={{
+                    uri: 'https://naft.uz/yandexpay/41',
+                }}
+                injectedJavaScript={INJECTEDJAVASCRIPT}
+                scalesPageToFit={false}
+                scrollEnabled
                 originWhitelist={['*']}
                 style={styles.webViewContainer}
             />

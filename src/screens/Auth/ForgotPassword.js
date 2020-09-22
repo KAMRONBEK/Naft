@@ -26,6 +26,9 @@ const ForgotPassword = ({navigation}) => {
                     'Diqqat',
                     'Profilingizga aktivatsiya linki yuborildi! U orqali parolingizni qayta tiklashingiz mumkin.'
                 );
+                navigation.navigate('Login')
+            } else {
+                setErrorEntry(res.data.message)
             }
         } catch (error) {}
     };
@@ -91,57 +94,57 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.white,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     content: {
         flex: 1,
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     title: {
-        marginTop: -40,
         fontSize: 25,
+        marginTop: -40,
+        paddingBottom: 20,
+        fontWeight: 'bold',
         textAlign: 'center',
         color: colors.darkGrayBlue,
-        fontWeight: 'bold',
-        paddingBottom: 20
     },
     desc: {
         fontSize: 15,
         fontWeight: '300',
+        textAlign: 'center',
         color: colors.darkGray,
-        textAlign: 'center'
     },
     inputs: {
+        margin: 20,
         borderRadius: 5,
         borderWidth: 0.5,
         overflow: 'hidden',
-        margin: 20
     },
     inputWrapper: {
+        padding: 10,
         flexDirection: 'row',
-        justifyContent: 'center',
         alignItems: 'center',
-        padding: 10
+        justifyContent: 'center',
     },
     input: {
         flex: 1,
         padding: 0,
-        backgroundColor: colors.white,
         paddingVertical: 10,
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        backgroundColor: colors.white,
     },
     buttonWrapper: {
         paddingHorizontal: 30
     },
     footer: {
         padding: 10,
-        backgroundColor: colors.red,
+        alignItems: 'center',
         justifyContent: 'center',
-        alignItems: 'center'
+        backgroundColor: colors.red,
     },
     footerText: {
+        fontSize: 14,
         color: colors.white,
-        fontSize: 14
     },
     bold: {
         fontWeight: 'bold'

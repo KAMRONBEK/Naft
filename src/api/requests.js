@@ -75,7 +75,9 @@ let requests = {
         refreshToken: token =>
             axios.post(`${url}auth/refresh-token?token=${token}`),
         verifyUser: data =>
-            axios.post(`${url}user/verify?`, formData(data)).then(res => res)
+            axios.post(`${url}user/verify?`, formData(data)).then(res => res),
+        forgotPassword: phone =>
+            axios.post(`${url}password/reset?phone=${phone}`)
     },
     list: {
         getCategory: () =>

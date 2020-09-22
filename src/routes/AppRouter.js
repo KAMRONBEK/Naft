@@ -251,9 +251,6 @@ let AuthStack = createSwitchNavigator({
             header: () => <Header title={strings.activation} back noMenu />
         }
     },
-    BuyAccount: {
-        screen: BuyAccount,
-    },
 });
 
 let BuyAccountStack = createSwitchNavigator({
