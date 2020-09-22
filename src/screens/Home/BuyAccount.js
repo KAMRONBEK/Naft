@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import axios from 'axios'
+import React, {useState} from 'react';
+import axios from 'axios';
 
-import { connect } from 'react-redux'
-import { userLoaded } from '../../redux/actions'
+import {connect} from 'react-redux';
+import {userLoaded} from '../../redux/actions';
 
 import {
     View,
@@ -10,12 +10,14 @@ import {
     StyleSheet,
     Dimensions,
     ActivityIndicator,
-    TouchableWithoutFeedback,
-} from 'react-native'
-import { WebView } from 'react-native-webview';
+    TouchableWithoutFeedback
+} from 'react-native';
+import {WebView} from 'react-native-webview';
+import strings from '../../locales/strings';
 
-const { width, height } = Dimensions.get('window')
-const INJECTEDJAVASCRIPT = 'const meta = document.createElement(\'meta\'); meta.setAttribute(\'content\', \'width=device-width, initial-scale=1, maximum-scale=0.99, user-scalable=0\'); meta.setAttribute(\'name\', \'viewport\'); document.getElementsByTagName(\'head\')[0].appendChild(meta);'
+const {width, height} = Dimensions.get('window');
+const INJECTEDJAVASCRIPT =
+    "const meta = document.createElement('meta'); meta.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=0.99, user-scalable=0'); meta.setAttribute('name', 'viewport'); document.getElementsByTagName('head')[0].appendChild(meta);";
 
 const mapStateToProps = ({user}) => ({
     userData: user
@@ -23,47 +25,40 @@ const mapStateToProps = ({user}) => ({
 
 const mapDispatchToProps = {userLoaded};
 
-const BuyAccount = ({
-    navigation,
-    userLoaded,
-    userData,
-}) => {
-    const [loading, setLoading] = useState(false)
+const BuyAccount = ({navigation, userLoaded, userData}) => {
+    const [loading, setLoading] = useState(false);
 
     const onPress = async () => {
-        setLoading(true)
-        let response = await axios.get(`http://naft.uz/api/v1/user/info/${userData.profile.umeta.id}`)
-        let { pmeta } = response.data.profile
-        if(pmeta.is_paid){
-            userLoaded(response.data)
+        setLoading(true);
+        let response = await axios.get(
+            `http://naft.uz/api/v1/user/info/${userData.profile.umeta.id}`
+        );
+        let {pmeta} = response.data.profile;
+        if (pmeta.is_paid) {
+            userLoaded(response.data);
         }
-        setLoading(false)
-    }
+        setLoading(false);
+    };
 
-    return(
+    return (
         <View style={styles.container}>
             <View style={styles.btnCont}>
-                <Text style={styles.text}>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, rem voluptate? Alias error ex omnis?
-                </Text>
+                <Text style={styles.text}>{strings.buyAccountDesc}</Text>
                 {loading ? (
                     <View style={styles.indicatorCont}>
-                        <ActivityIndicator
-                            color={'#fff'}
-                            animating={loading}
-                        />
+                        <ActivityIndicator color={'#fff'} animating={loading} />
                     </View>
                 ) : (
                     <TouchableWithoutFeedback onPress={onPress}>
-                        <Text style={styles.btn}>
-                            To'lovni tekshirish
-                        </Text>
+                        <Text style={styles.btn}> {strings.checkPayment} </Text>
                     </TouchableWithoutFeedback>
                 )}
             </View>
             <WebView
                 source={{
-                    uri: `https://naft.uz/yandexpay/${userData.profile.umeta.id}`,
+                    uri: `https://naft.uz/yandexpay/${
+                        userData.profile.umeta.id
+                    }`
                 }}
                 injectedJavaScript={INJECTEDJAVASCRIPT}
                 scalesPageToFit={false}
@@ -72,13 +67,13 @@ const BuyAccount = ({
                 style={styles.webViewContainer}
             />
         </View>
-    )
-}
+    );
+};
 
 export default connect(
     mapStateToProps,
-    mapDispatchToProps,
-)(BuyAccount)
+    mapDispatchToProps
+)(BuyAccount);
 
 const styles = StyleSheet.create({
     container: {
@@ -95,7 +90,7 @@ const styles = StyleSheet.create({
         lineHeight: 18,
         marginVertical: 8,
         paddingHorizontal: 24,
-        textAlign: 'justify'
+        textAlign: 'center'
     },
     indicatorCont: {
         paddingHorizontal: 30,
@@ -112,10 +107,10 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         fontWeight: 'bold',
         alignSelf: 'center',
-        backgroundColor: '#6864EC',
+        backgroundColor: '#6864EC'
     },
     webViewContainer: {
         // width,
         // height,
     }
-})
+});
