@@ -38,18 +38,15 @@ const Activation = ({navigation, userLoggedIn}) => {
                         })
                         .then(res => {
                             if (res.data.type === 'success') {
-                                let { pmeta, umeta } = res.data.profile
-                                if(pmeta.is_paid){
+                                let {pmeta, umeta} = res.data.profile;
+                                if (pmeta.is_paid) {
                                     userLoggedIn(res.data);
                                 } else {
-                                    console.log('buyAccount')
-                                    navigation.navigate(
-                                        'BuyAccount',
-                                        {
-                                            id: umeta.id,
-                                            profile_id: umeta.profile_id
-                                        }
-                                    )
+                                    console.log('buyAccount');
+                                    navigation.navigate('BuyAccount', {
+                                        id: umeta.id,
+                                        profile_id: umeta.profile_id
+                                    });
                                 }
                             } else {
                                 setErrorEntry(res.data.message);

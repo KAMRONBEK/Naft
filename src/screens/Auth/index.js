@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 
 import AsyncStorage from '@react-native-community/async-storage';
-
+import TextInputMask from 'react-native-text-input-mask';
 import {connect} from 'react-redux';
 import requests from '../../api/requests';
 import {
@@ -117,12 +117,16 @@ const Auth = ({
                                 borderBottomWidth: 0.5
                             }
                         ]}>
-                        <TextInput
-                            onChangeText={text => setPhone(text)}
+                        <TextInputMask
+                            onChangeText={text => {
+                                setPhone('+' + text.replace(/\D/g, ''));
+                            }}
                             placeholder={strings.enterPhoneNumber}
-                            keyboardType="number-pad"
+                            keyboardType="numeric"
+                            mask={'+998 ([00]) [000] [00] [00]'}
                             style={styles.input}
                         />
+
                         <EvilIcons name="envelope" size={25} />
                     </View>
                     <View style={styles.inputWrapper}>
