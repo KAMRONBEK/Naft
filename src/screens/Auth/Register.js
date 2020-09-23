@@ -316,11 +316,14 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: colors.darkGrayBlue,
         fontWeight: 'bold',
-        paddingBottom: 20
+        paddingBottom: 10,
+        marginTop: 25
     },
     desc: {
-        fontSize: 15,
+        fontSize: 17,
         fontWeight: '300',
+        paddingLeft: 30,
+        paddingRight: 30,
         color: colors.darkGray,
         textAlign: 'center'
     },
@@ -341,8 +344,8 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 0,
         backgroundColor: colors.white,
-        paddingVertical: 10,
-        paddingHorizontal: 10
+        paddingVertical: 0,
+        paddingHorizontal: 0
     },
     buttonWrapper: {
         paddingHorizontal: 30,

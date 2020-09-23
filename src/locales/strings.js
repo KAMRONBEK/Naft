@@ -70,6 +70,7 @@ export default new LocalizedStrings({
         selectGender: 'Jinsni tanlang',
         firstName: 'Ism',
         lastName: 'Familiya',
+        makeRegister: "Ro'yhatdan o'tish",
         yourHourlyRate: 'Sizning ish haqqinggiz',
         yourTagline: 'Sizning teglaringgiz',
         yourLocation: 'Joylashuvingiz',
@@ -206,6 +207,7 @@ export default new LocalizedStrings({
         CANCEL: 'BEKOR QILISH',
         list: 'Avto-powerball',
         checkPayment: "Проверить платежTo'lovni tekshirish",
+        makeRegister: 'Зарегистрироваться',
         buyAccountDesc:
             'Вам необходимо активировать свой профиль, чтобы воспользоваться всеми преимуществами приложения. Внесите оплату с помощью формы ниже и начните использовать приложение в полной мере.'
     }

@@ -43,7 +43,7 @@ const Auth = ({
     showLoading,
     userLoaded,
     hideLoading,
-    userLoggedIn,
+    userLoggedIn
 }) => {
     let [phone, setPhone] = useState('');
     let [password, setPassword] = useState('');
@@ -52,31 +52,30 @@ const Auth = ({
     let [internetError, setInternetError] = useState('');
 
     const effect = () => {
-        AsyncStorage.getItem('@user')
-            .then(userData => {
-                if(userData){
-                    showLoading(strings.loggingIn);
-                    let parsedUser = JSON.parse(userData);
-                    requests.auth
-                        .login({
-                            phone: parsedUser.profile.umeta.user_number,
-                            password: parsedUser.profile.umeta.user_pass
-                        })
-                        .then(res => {
-                            hideLoading();
-                            if (res.data.type == 'success') {
-                                userLoaded(parsedUser);
-                            } else {
-                                console.warn('cant login with asyncs');
-                            }
-                        })            
-                }
-            })
-    }
+        AsyncStorage.getItem('@user').then(userData => {
+            if (userData) {
+                showLoading(strings.loggingIn);
+                let parsedUser = JSON.parse(userData);
+                requests.auth
+                    .login({
+                        phone: parsedUser.profile.umeta.user_number,
+                        password: parsedUser.profile.umeta.user_pass
+                    })
+                    .then(res => {
+                        hideLoading();
+                        if (res.data.type == 'success') {
+                            userLoaded(parsedUser);
+                        } else {
+                            console.warn('cant login with asyncs');
+                        }
+                    });
+            }
+        });
+    };
 
     useEffect(() => {
-        effect()
-    }, [])
+        effect();
+    }, []);
 
     const onLoginPress = () => {
         showLoading(strings.loggingIn);
@@ -85,7 +84,7 @@ const Auth = ({
             .then(res => {
                 hideLoading();
                 if (res.data.type === 'success') {
-                    setErrorEntry('')
+                    setErrorEntry('');
                     userLoggedIn(res.data);
                 } else {
                     setErrorEntry(res.data.message);
@@ -144,14 +143,21 @@ const Auth = ({
                         text={strings.login}
                         fill
                     />
+
+                    <TouchableWithoutFeedback
+                        onPress={() => {
+                            navigation.navigate('Register');
+                        }}>
+                        <Text style={styles.registerButton}>
+                            {strings.makeRegister}
+                        </Text>
+                    </TouchableWithoutFeedback>
                 </View>
             </View>
-            <View>
-            </View>
+            <View />
             <View style={styles.footer}>
                 <TouchableWithoutFeedback
-                    onPress={() => navigation.navigate('ForgotPassword')}
-                >
+                    onPress={() => navigation.navigate('ForgotPassword')}>
                     <Text
                         style={[
                             styles.bold,
@@ -160,10 +166,9 @@ const Auth = ({
                                 marginBottom: 4,
                                 paddingBottom: 4,
                                 borderBottomWidth: 1,
-                                borderBottomColor: '#fff',
+                                borderBottomColor: '#fff'
                             }
-                        ]}
-                    >
+                        ]}>
                         {strings.forgotPassword}
                     </Text>
                 </TouchableWithoutFeedback>
@@ -205,14 +210,22 @@ const styles = StyleSheet.create({
         paddingBottom: 20
     },
     desc: {
-        fontSize: 15,
+        fontSize: 17,
         fontWeight: '300',
+        paddingLeft: 30,
+        paddingRight: 30,
         color: colors.darkGray,
         textAlign: 'center'
+    },
+    registerButton: {
+        textAlign: 'center',
+        fontSize: 16,
+        marginTop: 20
     },
     inputs: {
         borderRadius: 5,
         borderWidth: 0.5,
+        padding: 0,
         overflow: 'hidden',
         margin: 20
     },
