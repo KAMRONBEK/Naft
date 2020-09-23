@@ -17,6 +17,7 @@ import requests from '../../api/requests';
 import {showLoading, hideLoading} from '../../redux/actions/appState';
 import {connect} from 'react-redux';
 import {userLoggedIn} from '../../redux/actions';
+import TextInputMask from 'react-native-text-input-mask';
 
 const locations = [
     {label: 'Toshkent', value: 1},
@@ -155,12 +156,16 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
                                     borderBottomWidth: 0.5
                                 }
                             ]}>
-                            <TextInput
-                                onChangeText={text => setPhone(text)}
+                            <TextInputMask
+                                onChangeText={text => {
+                                    setPhone('+' + text.replace(/\D/g, ''));
+                                }}
                                 placeholder={strings.enterPhoneNumber}
-                                keyboardType="number-pad"
+                                keyboardType="numeric"
+                                mask={'+998 ([00]) [000] [00] [00]'}
                                 style={styles.input}
                             />
+
                             <SimpleLineIcons name="phone" size={18} />
                         </View>
                         <View
