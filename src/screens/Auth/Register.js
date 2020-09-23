@@ -12,6 +12,7 @@ import colors from '../../constants/colors';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import RectangleButton from '../../components/RectangleButton';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 import RNPickerSelect from 'react-native-picker-select';
 import requests from '../../api/requests';
 import {showLoading, hideLoading} from '../../redux/actions/appState';
@@ -84,6 +85,11 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
             let data = registerRes.data;
             if (data.type == 'error') {
                 setErrorMessage(registerRes.data.message);
+
+                showMessage({
+                    message: registerRes.data.message,
+                    type: 'danger'
+                });
             } else {
                 navigation.navigate('Activation', {
                     phone: phone,

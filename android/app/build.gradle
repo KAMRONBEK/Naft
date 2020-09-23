@@ -131,8 +131,8 @@ android {
         applicationId "itmaker.uz.naft"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 110
-        versionName "1.1.0"
+        versionCode 116
+        versionName "1.1.6"
     }
     splits {
         abi {

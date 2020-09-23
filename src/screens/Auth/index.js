@@ -20,7 +20,7 @@ import {
     InteractionManager
 } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-
+import {showMessage, hideMessage} from 'react-native-flash-message';
 import RectangleButton from '../../components/RectangleButton';
 
 import colors from '../../constants/colors';
@@ -78,21 +78,21 @@ const Auth = ({
     }, []);
 
     const onLoginPress = () => {
-        showLoading(strings.loggingIn);
         requests.auth
             .login({phone: phone, password: password})
             .then(res => {
-                hideLoading();
                 if (res.data.type === 'success') {
                     setErrorEntry('');
                     userLoggedIn(res.data);
                 } else {
-                    setErrorEntry(res.data.message);
+                    showMessage({
+                        message: res.data.message,
+                        type: 'danger'
+                    });
                 }
             })
             .catch(err => {
                 console.warn(err);
-                hideLoading();
             });
     };
 
