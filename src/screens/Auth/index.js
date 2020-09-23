@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 
 import AsyncStorage from '@react-native-community/async-storage';
-
+import TextInputMask from 'react-native-text-input-mask';
 import {connect} from 'react-redux';
 import requests from '../../api/requests';
 import {
@@ -43,7 +43,7 @@ const Auth = ({
     showLoading,
     userLoaded,
     hideLoading,
-    userLoggedIn,
+    userLoggedIn
 }) => {
     let [phone, setPhone] = useState('');
     let [password, setPassword] = useState('');
@@ -52,31 +52,30 @@ const Auth = ({
     let [internetError, setInternetError] = useState('');
 
     const effect = () => {
-        AsyncStorage.getItem('@user')
-            .then(userData => {
-                if(userData){
-                    showLoading(strings.loggingIn);
-                    let parsedUser = JSON.parse(userData);
-                    requests.auth
-                        .login({
-                            phone: parsedUser.profile.umeta.user_number,
-                            password: parsedUser.profile.umeta.user_pass
-                        })
-                        .then(res => {
-                            hideLoading();
-                            if (res.data.type == 'success') {
-                                userLoaded(parsedUser);
-                            } else {
-                                console.warn('cant login with asyncs');
-                            }
-                        })            
-                }
-            })
-    }
+        AsyncStorage.getItem('@user').then(userData => {
+            if (userData) {
+                showLoading(strings.loggingIn);
+                let parsedUser = JSON.parse(userData);
+                requests.auth
+                    .login({
+                        phone: parsedUser.profile.umeta.user_number,
+                        password: parsedUser.profile.umeta.user_pass
+                    })
+                    .then(res => {
+                        hideLoading();
+                        if (res.data.type == 'success') {
+                            userLoaded(parsedUser);
+                        } else {
+                            console.warn('cant login with asyncs');
+                        }
+                    });
+            }
+        });
+    };
 
     useEffect(() => {
-        effect()
-    }, [])
+        effect();
+    }, []);
 
     const onChangePhone = text => {
         if(!phone.length){
@@ -93,7 +92,7 @@ const Auth = ({
             .then(res => {
                 hideLoading();
                 if (res.data.type === 'success') {
-                    setErrorEntry('')
+                    setErrorEntry('');
                     userLoggedIn(res.data);
                 } else {
                     setErrorEntry(res.data.message);
@@ -126,13 +125,16 @@ const Auth = ({
                                 borderBottomWidth: 0.5
                             }
                         ]}>
-                        <TextInput
-                            value={phone}
-                            onChangeText={onChangePhone}
+                        <TextInputMask
+                            onChangeText={text => {
+                                setPhone('+' + text.replace(/\D/g, ''));
+                            }}
                             placeholder={strings.enterPhoneNumber}
-                            keyboardType="number-pad"
+                            keyboardType="numeric"
+                            mask={'+998 ([00]) [000] [00] [00]'}
                             style={styles.input}
                         />
+
                         <EvilIcons name="envelope" size={25} />
                     </View>
                     <View style={styles.inputWrapper}>
@@ -160,12 +162,39 @@ const Auth = ({
                         text={strings.login}
                         fill
                     />
+
+                    <TouchableWithoutFeedback
+                        onPress={() => {
+                            navigation.navigate('Register');
+                        }}>
+                        <Text style={styles.registerButton}>
+                            {strings.makeRegister}
+                        </Text>
+                    </TouchableWithoutFeedback>
                 </View>
             </View>
-            <View>
-            </View>
+            <View />
             <View style={styles.footer}>
                 <TouchableWithoutFeedback
+<<<<<<< HEAD
+=======
+                    onPress={() => navigation.navigate('ForgotPassword')}>
+                    <Text
+                        style={[
+                            styles.bold,
+                            styles.footerText,
+                            {
+                                marginBottom: 4,
+                                paddingBottom: 4,
+                                borderBottomWidth: 1,
+                                borderBottomColor: '#fff'
+                            }
+                        ]}>
+                        {strings.forgotPassword}
+                    </Text>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback
+>>>>>>> 61faf1a7ac890665df1f69f7efe472fd860c7e04
                     onPress={() => {
                         navigation.navigate('Register');
                     }}>
@@ -203,14 +232,22 @@ const styles = StyleSheet.create({
         paddingBottom: 20
     },
     desc: {
-        fontSize: 15,
+        fontSize: 17,
         fontWeight: '300',
+        paddingLeft: 30,
+        paddingRight: 30,
         color: colors.darkGray,
         textAlign: 'center'
+    },
+    registerButton: {
+        textAlign: 'center',
+        fontSize: 16,
+        marginTop: 20
     },
     inputs: {
         borderRadius: 5,
         borderWidth: 0.5,
+        padding: 0,
         overflow: 'hidden',
         margin: 20
     },
