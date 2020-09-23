@@ -31,11 +31,7 @@ const Activation = ({navigation, userLoggedIn}) => {
                 verification_code: code
             })
             .then(res => {
-<<<<<<< HEAD
-                console.log('activation...', res.data)
-=======
                 console.log(phone, res.data);
->>>>>>> 82fbe76a32e751758dbb137d532eea42103a8d9a
                 hideLoading();
                 if (res.data.type === 'success') {
                     requests.auth
