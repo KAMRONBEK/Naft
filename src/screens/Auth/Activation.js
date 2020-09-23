@@ -22,6 +22,7 @@ const Activation = ({navigation, userLoggedIn}) => {
     let inputRef = useRef(null);
 
     const onPress = () => {
+        console.log('onPressed...')
         requests.auth
             .verifyUser({
                 phone: phone,
@@ -29,6 +30,7 @@ const Activation = ({navigation, userLoggedIn}) => {
                 verification_code: code
             })
             .then(res => {
+                console.log('activation...', res.data)
                 hideLoading();
                 if (res.data.type === 'success') {
                     requests.auth
@@ -37,17 +39,15 @@ const Activation = ({navigation, userLoggedIn}) => {
                             password: password
                         })
                         .then(res => {
+                            console.log('auth: ', res.data)
                             if (res.data.type === 'success') {
-                                let {pmeta, umeta} = res.data.profile;
-                                if (pmeta.is_paid) {
-                                    userLoggedIn(res.data);
-                                } else {
-                                    console.log('buyAccount');
-                                    navigation.navigate('BuyAccount', {
-                                        id: umeta.id,
-                                        profile_id: umeta.profile_id
-                                    });
-                                }
+                                userLoggedIn(res.data);
+                                // let {pmeta, umeta} = res.data.profile;
+                                // if (pmeta.is_paid) {
+                                // } else {
+                                //     console.log('buyAccount');
+                                //     navigation.navigate('BuyAccount');
+                                // }
                             } else {
                                 setErrorEntry(res.data.message);
                             }
@@ -58,6 +58,7 @@ const Activation = ({navigation, userLoggedIn}) => {
                 }
             })
             .catch(err => {
+                console.log('activation Error...', err)
                 hideLoading();
             });
 
