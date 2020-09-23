@@ -101,14 +101,6 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
         }
     };
 
-    const onChangePhone = text => {
-        if(!phone.length){
-            setPhone('+' + text)
-        } else {
-            setPhone(text)
-        }
-    }
-
     return (
         <View style={styles.container}>
             <View style={styles.content}>
@@ -165,10 +157,6 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
                                     borderBottomWidth: 0.5
                                 }
                             ]}>
-<<<<<<< HEAD
-                            <TextInput
-                                value={phone}
-=======
                             <TextInputMask
                                 onChangeText={text => {
                                     setPhone('+' + text.replace(/\D/g, ''));
@@ -176,11 +164,7 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
                                 placeholder={strings.enterPhoneNumber}
                                 keyboardType="numeric"
                                 mask={'+998 ([00]) [000] [00] [00]'}
->>>>>>> 61faf1a7ac890665df1f69f7efe472fd860c7e04
                                 style={styles.input}
-                                keyboardType="number-pad"
-                                onChangeText={onChangePhone}
-                                placeholder={strings.enterPhoneNumber}
                             />
 
                             <SimpleLineIcons name="phone" size={18} />

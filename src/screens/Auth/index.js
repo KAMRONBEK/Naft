@@ -77,14 +77,6 @@ const Auth = ({
         effect();
     }, []);
 
-    const onChangePhone = text => {
-        if(!phone.length){
-            setPhone('+' + text)
-        } else {
-            setPhone(text)
-        }
-    }
-
     const onLoginPress = () => {
         showLoading(strings.loggingIn);
         requests.auth
@@ -148,8 +140,7 @@ const Auth = ({
                     </View>
                 </View>
                 <TouchableWithoutFeedback
-                    onPress={() => navigation.navigate('ForgotPassword')}
-                >
+                    onPress={() => navigation.navigate('ForgotPassword')}>
                     <Text style={styles.forgotPassword}>
                         {strings.forgotPassword}
                     </Text>
@@ -176,8 +167,6 @@ const Auth = ({
             <View />
             <View style={styles.footer}>
                 <TouchableWithoutFeedback
-<<<<<<< HEAD
-=======
                     onPress={() => navigation.navigate('ForgotPassword')}>
                     <Text
                         style={[
@@ -194,7 +183,6 @@ const Auth = ({
                     </Text>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback
->>>>>>> 61faf1a7ac890665df1f69f7efe472fd860c7e04
                     onPress={() => {
                         navigation.navigate('Register');
                     }}>
@@ -285,6 +273,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: colors.red,
         marginBottom: 18,
-        textAlign: 'center',
+        textAlign: 'center'
     }
 });
