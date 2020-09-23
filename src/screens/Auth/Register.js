@@ -68,11 +68,12 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
 
     const onRegisterPress = async () => {
         showLoading(strings.registering);
+
         try {
             let registerRes = await requests.auth.register(
                 name,
                 lastName,
-                phone,
+                phone.slice(1),
                 password,
                 titles[role].role,
                 employeeCount,
@@ -98,6 +99,14 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
             hideLoading();
         }
     };
+
+    const onChangePhone = text => {
+        if(!phone.length){
+            setPhone('+' + text)
+        } else {
+            setPhone(text)
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -156,10 +165,11 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
                                 }
                             ]}>
                             <TextInput
-                                onChangeText={text => setPhone(text)}
-                                placeholder={strings.enterPhoneNumber}
-                                keyboardType="number-pad"
+                                value={phone}
                                 style={styles.input}
+                                keyboardType="number-pad"
+                                onChangeText={onChangePhone}
+                                placeholder={strings.enterPhoneNumber}
                             />
                             <SimpleLineIcons name="phone" size={18} />
                         </View>

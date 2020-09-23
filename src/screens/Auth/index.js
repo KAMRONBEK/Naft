@@ -78,6 +78,14 @@ const Auth = ({
         effect()
     }, [])
 
+    const onChangePhone = text => {
+        if(!phone.length){
+            setPhone('+' + text)
+        } else {
+            setPhone(text)
+        }
+    }
+
     const onLoginPress = () => {
         showLoading(strings.loggingIn);
         requests.auth
@@ -119,7 +127,8 @@ const Auth = ({
                             }
                         ]}>
                         <TextInput
-                            onChangeText={text => setPhone(text)}
+                            value={phone}
+                            onChangeText={onChangePhone}
                             placeholder={strings.enterPhoneNumber}
                             keyboardType="number-pad"
                             style={styles.input}
@@ -136,6 +145,13 @@ const Auth = ({
                         <EvilIcons name="lock" size={25} />
                     </View>
                 </View>
+                <TouchableWithoutFeedback
+                    onPress={() => navigation.navigate('ForgotPassword')}
+                >
+                    <Text style={styles.forgotPassword}>
+                        {strings.forgotPassword}
+                    </Text>
+                </TouchableWithoutFeedback>
                 <View style={styles.buttonWrapper}>
                     <RectangleButton
                         onPress={onLoginPress}
@@ -149,24 +165,6 @@ const Auth = ({
             <View>
             </View>
             <View style={styles.footer}>
-                <TouchableWithoutFeedback
-                    onPress={() => navigation.navigate('ForgotPassword')}
-                >
-                    <Text
-                        style={[
-                            styles.bold,
-                            styles.footerText,
-                            {
-                                marginBottom: 4,
-                                paddingBottom: 4,
-                                borderBottomWidth: 1,
-                                borderBottomColor: '#fff',
-                            }
-                        ]}
-                    >
-                        {strings.forgotPassword}
-                    </Text>
-                </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback
                     onPress={() => {
                         navigation.navigate('Register');
@@ -244,5 +242,12 @@ const styles = StyleSheet.create({
     },
     bold: {
         fontWeight: 'bold'
+    },
+    forgotPassword: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: colors.red,
+        marginBottom: 18,
+        textAlign: 'center',
     }
 });
