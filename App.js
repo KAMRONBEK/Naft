@@ -7,6 +7,8 @@ import {Provider} from 'react-redux';
 import {configureStore} from './src/redux/configureStore';
 import {configureAxios} from './src/api/config';
 import LoadingModal from './src/components/LoadingModal';
+import FlashMessage from 'react-native-flash-message';
+
 import {
     SafeAreaContext,
     SafeAreaProvider
@@ -51,6 +53,8 @@ const App = () => {
                             <Modal />
                             {/* </NavigationContainer> */}
                         </Provider>
+
+                        <FlashMessage position="top" />
                     </View>
                 )}
             </SafeAreaContext.Consumer>

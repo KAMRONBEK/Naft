@@ -12,6 +12,7 @@ import colors from '../../constants/colors';
 import RectangleButton from '../../components/RectangleButton';
 import {connect} from 'react-redux';
 import {showLoading, hideLoading, userLoggedIn} from '../../redux/actions';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 import requests from '../../api/requests';
 
 const Activation = ({navigation, userLoggedIn}) => {
@@ -30,7 +31,11 @@ const Activation = ({navigation, userLoggedIn}) => {
                 verification_code: code
             })
             .then(res => {
+<<<<<<< HEAD
                 console.log('activation...', res.data)
+=======
+                console.log(phone, res.data);
+>>>>>>> 82fbe76a32e751758dbb137d532eea42103a8d9a
                 hideLoading();
                 if (res.data.type === 'success') {
                     requests.auth
@@ -53,7 +58,12 @@ const Activation = ({navigation, userLoggedIn}) => {
                             }
                         });
                 } else {
-                    setErrorEntry(res.data.message);
+                    showMessage({
+                        message: res.data.message,
+                        type: 'danger'
+                    });
+
+                    console.log(res.data.message);
                     // setErrorEntry(strings.passwordOrMailWrong);
                 }
             })
@@ -113,8 +123,8 @@ let deviceWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 50,
-        justifyContent: 'space-between'
+        paddingTop: 100,
+        justifyContent: 'flex-start'
     },
     title: {
         fontSize: 18,
