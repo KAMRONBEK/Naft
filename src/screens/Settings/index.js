@@ -17,12 +17,10 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {connect} from 'react-redux';
 import requests from '../../api/requests';
-import RectangleButton from '../../components/RectangleButton';
 import RoundButton from '../../components/RoundButton';
 import colors from '../../constants/colors';
 import strings from '../../locales/strings';
 import {showModal} from '../../redux/actions';
-import {log} from 'react-native-reanimated';
 
 const employees = [
     {label: '1', value: 1},
@@ -77,7 +75,6 @@ const Settings = ({navigation, showModal, userData}) => {
     let [bannerWidth, setBannerWidth] = useState(0);
     let [bannerHeight, setBannerHeight] = useState(0);
     let [buttonWidth, setButtonWidth] = useState(0);
-    let [inputBorderColor, setInputBorderColor] = useState('');
 
     const [profileData, setProfileData] = useState({});
 
@@ -149,6 +146,7 @@ const Settings = ({navigation, showModal, userData}) => {
             }
         });
     };
+
     const onAvatarPress = () => {
         ImagePicker.showImagePicker(options, async response => {
             if (response.uri) {
@@ -161,18 +159,7 @@ const Settings = ({navigation, showModal, userData}) => {
         });
         //TODO upload to the server
     };
-    // profile: {
-    //     getProfile: id => axios.get(`${url}profile/setting?id=${id}`),
-    //     updateProfile: (user_id, first_name, last_name, location_id, role) =>
-    //         axios.post(
-    //             `${url}user/update-profile?user_id=${user_id}&first_name=${first_name}&last_name=${last_name}&location_id=${location_id}&role${role}`
-    //         ),
-    //     updateImage: (id, data) =>
-    //         axios.post(`${url}media/upload-media?id=${id}`, formData(data))
-    // },
-    // act: {
-    //     submitProposal: filters => axios.post(`${url}user/submit-proposal`)
-    // }
+
     let onSavePress = async () => {
         //TODO requests to remote api
         let id = userData.profile.umeta.id;
@@ -198,7 +185,6 @@ const Settings = ({navigation, showModal, userData}) => {
             <View
                 style={[
                     styles.absoluteWrapper,
-
                     {
                         marginLeft: bannerWidth / 2 - 60,
                         marginTop: bannerHeight / 2 - 60
@@ -212,13 +198,13 @@ const Settings = ({navigation, showModal, userData}) => {
                 <View style={styles.buttonWrapper}>
                     <RoundButton
                         onPress={onAvatarPress}
-                        borderColor={colors.white}
                         iconName="plus"
                         borderColor={colors.white}
                         backColor={colors.green}
                     />
                 </View>
             </View>
+
             <View style={styles.content}>
                 <View
                     onLayout={({nativeEvent}) => {
@@ -289,23 +275,12 @@ const Settings = ({navigation, showModal, userData}) => {
                             onChangeText={first_name =>
                                 setProfileData({...profileData, first_name})
                             }
-                            onFocus={() => {
-                                setInputBorderColor(colors.red);
-                            }}
-                            onEndEditing={() => {
-                                setInputBorderColor(colors.white);
-                            }}
-                            style={[
-                                styles.inputStyle,
-                                {
-                                    borderColor: inputBorderColor
-                                }
-                            ]}
+                            style={styles.inputStyle}
                             placeholder={strings.enterYourFirstName}
                         />
-                        {/* <Text style={styles.input}>Kamronbek</Text> */}
                     </View>
                 </View>
+
                 <View style={styles.box}>
                     <View style={styles.inputWrapper}>
                         <Text style={styles.iconName}>{strings.lastName}</Text>
@@ -314,23 +289,13 @@ const Settings = ({navigation, showModal, userData}) => {
                             onChangeText={last_name =>
                                 setProfileData({...profileData, last_name})
                             }
-                            onFocus={() => {
-                                setInputBorderColor(colors.red);
-                            }}
-                            onEndEditing={() => {
-                                setInputBorderColor(colors.white);
-                            }}
-                            style={[
-                                styles.inputStyle,
-                                {
-                                    borderColor: inputBorderColor
-                                }
-                            ]}
+                            style={styles.inputStyle}
                             placeholder={strings.enterYourLastName}
                         />
                         {/* <Text style={styles.input}>Jureav</Text> */}
                     </View>
                 </View>
+
                 <View style={styles.box}>
                     <View style={styles.inputWrapper}>
                         <Text style={styles.iconName}>
@@ -341,23 +306,12 @@ const Settings = ({navigation, showModal, userData}) => {
                             onChangeText={per_hour_rate =>
                                 setProfileData({...profileData, per_hour_rate})
                             }
-                            // onChangeText={e => handleChange('per_hour_rate', e)}
-                            onFocus={() => {
-                                setInputBorderColor(colors.red);
-                            }}
-                            onEndEditing={() => {
-                                setInputBorderColor(colors.white);
-                            }}
-                            style={[
-                                styles.inputStyle,
-                                {
-                                    borderColor: inputBorderColor
-                                }
-                            ]}
+                            style={styles.inputStyle}
                             placeholder={strings.enterHourlyRate}
                         />
                     </View>
                 </View>
+
                 <View style={styles.box}>
                     <View style={styles.inputWrapper}>
                         <Text style={styles.iconName}>
@@ -369,23 +323,12 @@ const Settings = ({navigation, showModal, userData}) => {
                             onChangeText={tag_line =>
                                 setProfileData({...profileData, tag_line})
                             }
-                            // onChangeText={e => handleChange('yourTagline', e)}
-                            onFocus={() => {
-                                setInputBorderColor(colors.red);
-                            }}
-                            onEndEditing={() => {
-                                setInputBorderColor(colors.white);
-                            }}
-                            style={[
-                                styles.inputStyle,
-                                {
-                                    borderColor: inputBorderColor
-                                }
-                            ]}
+                            style={styles.inputStyle}
                             placeholder={strings.enterHourlyRate}
                         />
                     </View>
                 </View>
+
                 {/* LOCATION */}
                 <Text style={styles.title}>{strings.yourLocation}</Text>
 
@@ -533,9 +476,6 @@ const Settings = ({navigation, showModal, userData}) => {
                     <View>
                         <View
                             style={{
-                                borderColor: colors.paleGray,
-                                borderTopWidth: 0.3,
-                                borderBottomWidth: 0.3,
                                 flexDirection: 'row',
                                 justifyContent: 'space-between'
                             }}>
@@ -559,9 +499,6 @@ const Settings = ({navigation, showModal, userData}) => {
                         </View>
                     </View>
                 </RNPickerSelect>
-                <View style={styles.box} />
-                {/* 
-                <RectangleButton onPress={onSavePress} text={strings.save} /> */}
 
                 <View style={styles.footer}>
                     <TouchableWithoutFeedback
@@ -630,10 +567,7 @@ const styles = StyleSheet.create({
         paddingRight: 10
     },
     inputStyle: {
-        borderColor: colors.yellow,
-        backgroundColor: colors.white,
-        height: 30
-        // width: 300
+        backgroundColor: colors.white
     },
     input: {
         fontSize: 18,

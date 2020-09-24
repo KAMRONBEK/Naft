@@ -131,7 +131,7 @@ let TabRoutes = {
                 <AntDesign name="home" size={24} color={colors.black} />
             ),
             tabBarLabel: () => {
-                return <Text>{strings.main}</Text>;
+                return <Text style={{fontSize: 10}}>{strings.main}</Text>;
             }
         }
     },
@@ -146,7 +146,7 @@ let TabRoutes = {
                 />
             ),
             tabBarLabel: () => {
-                return <Text>{strings.jobs}</Text>;
+                return <Text style={{fontSize: 10}}>{strings.jobs}</Text>;
             }
         }
     },
@@ -157,7 +157,9 @@ let TabRoutes = {
                 <AntDesign name="rest" size={24} color={colors.black} />
             ),
             tabBarLabel: () => {
-                return <Text>{strings.freelancers}</Text>;
+                return (
+                    <Text style={{fontSize: 10}}>{strings.freelancers}</Text>
+                );
             }
         }
     },
@@ -172,7 +174,7 @@ let TabRoutes = {
                 />
             ),
             tabBarLabel: () => {
-                return <Text>{strings.company}</Text>;
+                return <Text style={{fontSize: 10}}>{strings.company}</Text>;
             }
         }
     }
@@ -186,10 +188,13 @@ let tabOptions = {
         style: {
             backgroundColor: colors.white
         },
+        tabBarLabel: {
+            fontSize: 10
+        },
         labelStyle: {
             margin: 0,
             marginBottom: 3,
-            fontSize: 12,
+            fontSize: 10,
             textTransform: 'none',
             height: 20,
             color: colors.black
@@ -218,7 +223,9 @@ let WithSettingsTabs = createMaterialTopTabNavigator(
                     <AntDesign name="setting" size={24} color={colors.black} />
                 ),
                 tabBarLabel: () => {
-                    return <Text>{strings.settings}</Text>;
+                    return (
+                        <Text style={{fontSize: 10}}>{strings.settings}</Text>
+                    );
                 }
             }
         }
@@ -250,7 +257,7 @@ let AuthStack = createSwitchNavigator({
         navigationOptions: {
             header: () => <Header title={strings.activation} back noMenu />
         }
-    },
+    }
 });
 
 let BuyAccountStack = createSwitchNavigator({
@@ -260,7 +267,7 @@ let BuyAccountStack = createSwitchNavigator({
             headerShown: false
         }
     }
-})
+});
 
 let DrawerWithSettings = createDrawerNavigator(
     {
@@ -289,20 +296,19 @@ let DrawerWithSettings = createDrawerNavigator(
     }
 );
 
-
 let AppRouter = ({user}) => {
     if (user && user.type === 'success') {
-        let App
-        let { pmeta } = user.profile
+        let App;
+        let {pmeta} = user.profile;
         // pmeta.is_paid = 1
-        if(pmeta.is_paid){
+        if (pmeta.is_paid) {
             App = createAppContainer(DrawerWithSettings);
         } else {
-            App = createAppContainer(BuyAccountStack)
+            App = createAppContainer(BuyAccountStack);
         }
         return <App />;
     }
-    let App = createAppContainer(AuthStack)
+    let App = createAppContainer(AuthStack);
     return <App />;
 };
 
