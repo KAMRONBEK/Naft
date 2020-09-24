@@ -117,7 +117,18 @@ const Auth = ({
                                 borderBottomWidth: 0.5
                             }
                         ]}>
-                        <TextInputMask
+                        <TextInput
+                            onChangeText={text => setPhone(text)}
+                            keyboardType="number-pad"
+                            onChangeText={text => {
+                                setPhone('+' + text.replace(/\D/g, ''));
+                            }}
+                            defaultValue="+"
+                            placeholder={strings.enterPhoneNumber}
+                            style={styles.input}
+                        />
+
+                        {/* <TextInputMask
                             onChangeText={text => {
                                 setPhone('+' + text.replace(/\D/g, ''));
                             }}
@@ -125,7 +136,7 @@ const Auth = ({
                             keyboardType="numeric"
                             mask={'+998 ([00]) [000] [00] [00]'}
                             style={styles.input}
-                        />
+                        /> */}
 
                         <EvilIcons name="envelope" size={25} />
                     </View>

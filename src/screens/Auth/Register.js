@@ -163,15 +163,26 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
                                     borderBottomWidth: 0.5
                                 }
                             ]}>
-                            <TextInputMask
+                            <TextInput
+                                onChangeText={text => setPhone(text)}
+                                keyboardType="number-pad"
+                                onChangeText={text => {
+                                    setPhone('+' + text.replace(/\D/g, ''));
+                                }}
+                                placeholder={strings.enterPhoneNumber}
+                                defaultValue="+"
+                                style={styles.input}
+                            />
+
+                            {/* <TextInputMask
                                 onChangeText={text => {
                                     setPhone('+' + text.replace(/\D/g, ''));
                                 }}
                                 placeholder={strings.enterPhoneNumber}
                                 keyboardType="numeric"
-                                mask={'+998 ([00]) [000] [00] [00]'}
+                                mask={'+[000] [00] [000]-[00]-[00]'}
                                 style={styles.input}
-                            />
+                            /> */}
 
                             <SimpleLineIcons name="phone" size={18} />
                         </View>
