@@ -2,6 +2,7 @@ import Geolocation from '@react-native-community/geolocation';
 import React, {useEffect, useState} from 'react';
 import {
     Alert,
+    Dimensions,
     Image,
     ScrollView,
     StyleSheet,
@@ -97,11 +98,10 @@ const Settings = ({navigation, showModal, userData}) => {
     };
 
     let effect = async () => {
-        console.log({userData: userData.profile.umeta.id});
+        console.log({userData: userData.profile.pmeta});
         let id = userData.profile.umeta.id;
         try {
             let res = await requests.profile.getProfile(id);
-            console.log({res: res.data});
             setProfileData(res.data);
         } catch (error) {}
         //TODO show these data in fields
@@ -130,32 +130,56 @@ const Settings = ({navigation, showModal, userData}) => {
     }, []);
 
     //images
-    let [banner, setBanner] = useState('');
+    let [banner, setBanner] = useState({
+        uri: userData.profile.pmeta && userData.profile.pmeta.profile_img
+    });
     let [avatar, setAvatar] = useState({
-        // uri: user.profile.pmeta && user.profile.pmeta.banner_img
+        uri: userData.profile.pmeta && userData.profile.pmeta.banner_img
     });
 
-    const onBannerPress = async () => {
-        ImagePicker.showImagePicker(options, async response => {
-            if (response.uri) {
-                setBanner(response);
-                let res = await requests.profile.updateImage('43', {
-                    banner_image: response
-                });
-                console.log({bannerRes: res.data});
+    let setBannerConfirm = async (response, isAvatar) => {
+        if (isAvatar) {
+            setAvatar(response);
+        } else {
+            setBanner(response);
+        }
+        if (response.uri) {
+            let id = userData.profile.umeta.id;
+            try {
+                let res = await requests.profile.updateImage(
+                    id,
+                    isAvatar
+                        ? {
+                              banner_image: {
+                                  uri: response.uri,
+                                  type: response.type,
+                                  name: 'test.jpg'
+                              }
+                          }
+                        : {
+                              profile_image: {
+                                  uri: response.uri,
+                                  type: response.type,
+                                  name: 'test.jpg'
+                              }
+                          }
+                );
+                console.log(res.data);
+            } catch (error) {
+                console.warn(error);
             }
+        }
+    };
+
+    const onBannerPress = () => {
+        ImagePicker.showImagePicker(options, response => {
+            setBannerConfirm(response, false);
         });
     };
 
     const onAvatarPress = () => {
-        ImagePicker.showImagePicker(options, async response => {
-            if (response.uri) {
-                setAvatar(response);
-                let res = await requests.profile.updateImage('43', {
-                    profile_image: response
-                });
-                console.log({avatarRes: res.data});
-            }
+        ImagePicker.showImagePicker(options, response => {
+            setBannerConfirm(response, true);
         });
         //TODO upload to the server
     };
@@ -524,7 +548,9 @@ const styles = StyleSheet.create({
     },
     banner: {
         flex: 1,
-        resizeMode: 'cover'
+        resizeMode: 'cover',
+        height: 200,
+        width: Dimensions.get('window').width
     },
     absoluteWrapper: {
         position: 'absolute'
@@ -539,7 +565,7 @@ const styles = StyleSheet.create({
     avatar: {
         height: 120,
         width: 120,
-        backgroundColor: colors.white,
+        // backgroundColor: colors.white,
         borderRadius: 100
     },
     content: {

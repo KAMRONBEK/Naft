@@ -1,30 +1,25 @@
-import React, {useState, useEffect} from 'react';
-
 import AsyncStorage from '@react-native-community/async-storage';
-import TextInputMask from 'react-native-text-input-mask';
+import React, {useEffect, useState} from 'react';
+import {
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableWithoutFeedback,
+    View
+} from 'react-native';
+import {showMessage} from 'react-native-flash-message';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {connect} from 'react-redux';
 import requests from '../../api/requests';
-import {
-    userLoggedIn,
-    userLoaded,
-    showLoading,
-    hideLoading
-} from '../../redux/actions';
-
-import {
-    Text,
-    View,
-    TextInput,
-    StyleSheet,
-    TouchableWithoutFeedback,
-    InteractionManager
-} from 'react-native';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import {showMessage, hideMessage} from 'react-native-flash-message';
 import RectangleButton from '../../components/RectangleButton';
-
 import colors from '../../constants/colors';
 import strings from '../../locales/strings';
+import {
+    hideLoading,
+    showLoading,
+    userLoaded,
+    userLoggedIn
+} from '../../redux/actions';
 
 const mapStateToProps = ({user}) => ({
     user
@@ -85,8 +80,9 @@ const Auth = ({
                     setErrorEntry('');
                     userLoggedIn(res.data);
                 } else {
+                    console.log({res: res.data});
                     showMessage({
-                        message: res.data.message,
+                        message: res.data.message || 'Error',
                         type: 'danger'
                     });
                 }

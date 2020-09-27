@@ -23,7 +23,7 @@ const Activation = ({navigation, userLoggedIn}) => {
     let inputRef = useRef(null);
 
     const onPress = () => {
-        console.log('onPressed...')
+        console.log('onPressed...');
         requests.auth
             .verifyUser({
                 phone: phone,
@@ -40,7 +40,7 @@ const Activation = ({navigation, userLoggedIn}) => {
                             password: password
                         })
                         .then(res => {
-                            console.log('auth: ', res.data)
+                            console.log('auth: ', res.data);
                             if (res.data.type === 'success') {
                                 userLoggedIn(res.data);
                                 // let {pmeta, umeta} = res.data.profile;
@@ -64,7 +64,7 @@ const Activation = ({navigation, userLoggedIn}) => {
                 }
             })
             .catch(err => {
-                console.log('activation Error...', err)
+                console.log('activation Error...', err, err.response.data);
                 hideLoading();
             });
 

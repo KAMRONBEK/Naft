@@ -1,24 +1,23 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
+    ScrollView,
     StyleSheet,
     Text,
-    View,
     TextInput,
-    ScrollView,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    View
 } from 'react-native';
-import strings from '../../locales/strings';
-import colors from '../../constants/colors';
+import {showMessage} from 'react-native-flash-message';
+import RNPickerSelect from 'react-native-picker-select';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import RectangleButton from '../../components/RectangleButton';
-import {showMessage, hideMessage} from 'react-native-flash-message';
-import RNPickerSelect from 'react-native-picker-select';
-import requests from '../../api/requests';
-import {showLoading, hideLoading} from '../../redux/actions/appState';
 import {connect} from 'react-redux';
+import requests from '../../api/requests';
+import RectangleButton from '../../components/RectangleButton';
+import colors from '../../constants/colors';
+import strings from '../../locales/strings';
 import {userLoggedIn} from '../../redux/actions';
-import TextInputMask from 'react-native-text-input-mask';
+import {hideLoading, showLoading} from '../../redux/actions/appState';
 
 const locations = [
     {label: 'Toshkent', value: 1},
