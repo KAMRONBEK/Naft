@@ -80,6 +80,10 @@ let requests = {
             axios.post(`${url}password/reset?phone=${phone}`)
     },
     list: {
+        getCountires: () =>
+            axios.get(`${url}list/get-locations`),
+        getTowns: (id) =>
+            axios.get(`${url}list/get-locations?id=${id}`),
         getCategory: () =>
             axios.get(`${url}list/get-categories`).then(res => res),
         getFreelancer: (
@@ -114,6 +118,7 @@ let requests = {
     },
     profile: {
         getProfile: id => axios.get(`${url}profile/setting?id=${id}`),
+        getProfileData: id => axios.get(`${url}user/info/${id}`),
         updateProfile: ({user_id, first_name, last_name, location_id, role}) =>
             axios.post(
                 `${url}user/update-profile?user_id=${user_id ||

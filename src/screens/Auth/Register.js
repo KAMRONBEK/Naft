@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     ScrollView,
     StyleSheet,
@@ -19,16 +19,58 @@ import strings from '../../locales/strings';
 import {userLoggedIn} from '../../redux/actions';
 import {hideLoading, showLoading} from '../../redux/actions/appState';
 
-const locations = [
-    {label: 'Toshkent', value: 1},
-    {label: 'Samarqand', value: 2},
-    {label: 'Buxoro', value: 3},
-    {label: 'Xiva', value: 4},
-    {label: 'Nukus', value: 5},
-    {label: 'Shaxrisabz', value: 6},
-    {label: 'Qoqon', value: 7},
-    {label: 'Fargona', value: 8}
-];
+// let countries = [
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+//     {label: 'Uzbekistan'},
+// ]
+
+// let towns = [
+//     {label: 'Toshkent'},
+//     {label: 'Samarqand'},
+//     {label: 'Buxoro'},
+//     {label: 'Xiva'},
+//     {label: 'Nukus'},
+//     {label: 'Shaxrisabz'},
+//     {label: 'Qoqon'},
+//     {label: 'Fargona'},
+//     {label: 'Toshkent'},
+//     {label: 'Samarqand'},
+//     {label: 'Buxoro'},
+//     {label: 'Xiva'},
+//     {label: 'Nukus'},
+//     {label: 'Shaxrisabz'},
+//     {label: 'Qoqon'},
+//     {label: 'Fargona'},
+//     {label: 'Xiva'},
+//     {label: 'Nukus'},
+//     {label: 'Shaxrisabz'},
+//     {label: 'Qoqon'},
+//     {label: 'Fargona'},
+// ];
+
+// for (let i = 0; i < towns.length; i++){
+//     towns[i].value = i + 1
+//     countries[i].value = i + 1
+// }
 
 const titles = [
     {label: strings.employer, value: '0', role: 'employer'},
@@ -63,9 +105,70 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
     let [role, setRole] = useState(0);
     let [employeeCount, setEmployeeCount] = useState(0);
     let [department, setDepartment] = useState(0);
-    let [location, setLocation] = useState(0);
+
+    let [towns, setTowns] = useState([])
+    let [countries, setCountries] = useState([])
+
+    let [town, setTown] = useState(0);
+    let [country, setCountry] = useState(0);
 
     let [errorMessage, setErrorMessage] = useState('');
+
+    const effect = async () => {
+        let response = await requests.list.getCountires()
+        if(response.data.length){
+            let arr = []
+
+            response.data.map((item, index) => {
+                let obj = {
+                    id: item.id,
+                    value: index + 1,
+                    label: item.title,
+                }
+
+                arr.push(obj)
+            })
+
+            setCountries(arr)
+        }
+    }
+
+    useEffect(() => {
+        effect()
+    }, [])
+
+    const effectCountry = async () => {
+        console.log('country: ', countries[country-1])
+        let { id } = countries[country-1]
+        let response = await requests.list.getTowns(id) 
+        if(response.data.length){
+            let arr = []
+
+            response.data.map((item, index) => {
+                let obj = {
+                    id: item.id,
+                    value: index + 1,
+                    label: item.title
+                }
+
+                arr.push(obj)
+            })
+
+            setTowns(arr)
+        }
+    }
+
+    useEffect(() => {
+        effectCountry()
+    }, [country])
+
+    const effectTown = () => {
+        console.log('town: ', towns[town-1])
+    }
+
+    useEffect(() => {
+        effectTown()
+    }, [town])
 
     const onRegisterPress = async () => {
         showLoading(strings.registering);
@@ -79,7 +182,7 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
                 titles[role].role,
                 employeeCount,
                 department,
-                location
+                towns[town-1].id,
             );
             let data = registerRes.data;
             if (data.type == 'error') {
@@ -268,13 +371,26 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
                         )}
                         <RNPickerSelect
                             doneText={strings.select}
-                            onValueChange={value => setLocation(value)}
-                            items={locations}>
+                            onValueChange={value => setCountry(value)}
+                            items={countries}>
+                            <View style={[styles.inputWrapper, {borderBottomWidth: 0.5}]}>
+                                <Text style={styles.input}>
+                                    {country
+                                        ? countries[country - 1].label
+                                        : strings.selectCountry}
+                                </Text>
+                                <EvilIcons name="location" size={25} />
+                            </View>
+                        </RNPickerSelect>
+                        <RNPickerSelect
+                            doneText={strings.select}
+                            onValueChange={value => setTown(value)}
+                            items={towns}>
                             <View style={styles.inputWrapper}>
                                 <Text style={styles.input}>
-                                    {location
-                                        ? locations[location - 1].label
-                                        : strings.selectLocation}
+                                    {town
+                                        ? towns[town - 1].label
+                                        : strings.selectTown}
                                 </Text>
                                 <EvilIcons name="location" size={25} />
                             </View>
@@ -288,7 +404,8 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
                                 phone &&
                                 password &&
                                 role &&
-                                location &&
+                                town &&
+                                country &&
                                 onRegisterPress
                             }
                             backColor={
@@ -297,7 +414,8 @@ const Register = ({navigation, showLoading, hideLoading, userLoggedIn}) => {
                                 phone &&
                                 password &&
                                 role &&
-                                location != false
+                                town &&
+                                country != false
                                     ? colors.red
                                     : colors.paleGray
                             }

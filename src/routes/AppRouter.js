@@ -1,6 +1,8 @@
 import React from 'react';
 
 import {connect} from 'react-redux';
+import requests from '../api/requests'
+import {userLoaded} from '../redux/actions/user'
 
 import {createDrawerNavigator} from 'react-navigation-drawer';
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
@@ -35,8 +37,6 @@ import DrawerContent from '../components/DrawerContent';
 
 import colors from '../constants/colors';
 import strings from '../locales/strings';
-
-const mapStateToProps = ({user}) => ({user});
 
 let JobsStack = createStackNavigator(
     {
@@ -296,11 +296,16 @@ let DrawerWithSettings = createDrawerNavigator(
     }
 );
 
-let AppRouter = ({user}) => {
+const mapStateToProps = ({user}) => ({user});
+
+const mapDispatchToProps = {
+    userLoaded
+}
+
+let AppRouter = ({user, userLoaded}) => {
     if (user && user.type === 'success') {
         let App;
         let {pmeta} = user.profile;
-        // pmeta.is_paid = 1
         if (pmeta.is_paid) {
             App = createAppContainer(DrawerWithSettings);
         } else {
@@ -312,4 +317,4 @@ let AppRouter = ({user}) => {
     return <App />;
 };
 
-export default connect(mapStateToProps)(AppRouter);
+export default connect(mapStateToProps, mapDispatchToProps)(AppRouter);

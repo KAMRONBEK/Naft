@@ -16,12 +16,25 @@ import JobCard from '../../components/JobCard';
 import colors from '../../constants/colors';
 import strings from '../../locales/strings';
 import {hideLoading, showLoading} from '../../redux/actions/appState';
+import {userLoaded} from '../../redux/actions/user'
+import AsyncStorage from '@react-native-community/async-storage'
 
 const img = require('../../assets/images/home-intro.png')
 
 const { width } = Dimensions.get('window')
 
-const Home = ({navigation, showLoading, hideLoading, user}) => {
+// const mapStateToProps = state => {};
+const mapStateToProps = ({user}) => ({
+    user
+});
+
+const mapDispatchToProps = {
+    showLoading,
+    hideLoading,
+    userLoaded
+};
+
+const Home = ({navigation, showLoading, hideLoading, user, userLoaded}) => {
     const [categoryList, setCategoryList] = useState([]);
     const [freelancerList, setFreelancerList] = useState([]);
     const [jobList, setJobList] = useState([]);
@@ -42,6 +55,11 @@ const Home = ({navigation, showLoading, hideLoading, user}) => {
             //get jobs
             let jobs = await requests.list.getJobs('latest', 5);
             if (jobs.data.type !== 'error') setJobList(jobs.data);
+
+            let profileData = await requests.profile.getProfileData(user.profile.umeta.id)
+            if (profileData.data.type !== 'error') {
+                console.log('profileData.data: ', Object.keys(profileData.data))
+            }
         } catch (error) {
             console.warn(error.message);
         } finally {
@@ -157,6 +175,11 @@ const Home = ({navigation, showLoading, hideLoading, user}) => {
     );
 };
 
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Home);
+
 const styles = StyleSheet.create({
     container: {
         overflow: 'visible',
@@ -210,20 +233,3 @@ const styles = StyleSheet.create({
         color: colors.darkGray
     }
 });
-
-// const mapStateToProps = state => {};
-const mapStateToProps = ({user}) => ({
-    user
-});
-
-const mapDispatchToProps = {
-    showLoading,
-    hideLoading
-};
-
-let ConnectedHome = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Home);
-
-export default ConnectedHome;
