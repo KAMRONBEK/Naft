@@ -103,11 +103,11 @@ export default new LocalizedStrings({
         checkPayment: 'Проверить платеж',
         makeRegister: 'Зарегистрироваться',
         buyAccountDesc:
-            'Вам необходимо активировать свой профиль, чтобы воспользоваться всеми преимуществами приложения. Внесите оплату с помощью формы ниже и начните использовать приложение в полной мере.'
+            'Вам необходимо активировать свой профиль, чтобы воспользоваться всеми преимуществами приложения. Внесите оплату с помощью формы ниже и начните использовать приложение в полной мере.',
+        successfullyUpdated: 'Успешно обновлено',
     },
     uz: {
         forgotPassword: 'Parol esdan chiqdimi?',
-
         male: 'Erkak',
         famale: 'Ayol',
         save: 'Saqlash',
@@ -208,6 +208,7 @@ export default new LocalizedStrings({
         list: 'Avto-powerball',
         checkPayment: "To'lovni tekshirish",
         buyAccountDesc:
-            "Ilovadan to'liq foydalanish uchun profilni aktivlashtirish zarur. Quyidagi forma orqali to'lovni amalga oshiring va ilovadan to'liq foydalanishni boshlang."
+            "Ilovadan to'liq foydalanish uchun profilni aktivlashtirish zarur. Quyidagi forma orqali to'lovni amalga oshiring va ilovadan to'liq foydalanishni boshlang.",
+        successfullyUpdated: 'Muvaffaqiyatli yangilandi',
     }
 });

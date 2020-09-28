@@ -1,15 +1,16 @@
 import Geolocation from '@react-native-community/geolocation';
 import React, {useEffect, useState} from 'react';
 import {
+    Text,
+    View,
     Alert,
-    Dimensions,
     Image,
+    TextInput,
+    Dimensions,
     ScrollView,
     StyleSheet,
-    Text,
-    TextInput,
+    ActivityIndicator,
     TouchableWithoutFeedback,
-    View
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import MapView, {Marker} from 'react-native-maps';
@@ -76,8 +77,10 @@ const Settings = ({navigation, showModal, userData}) => {
     let [bannerWidth, setBannerWidth] = useState(0);
     let [bannerHeight, setBannerHeight] = useState(0);
     let [buttonWidth, setButtonWidth] = useState(0);
-
+    
     const [profileData, setProfileData] = useState({});
+
+    const [loading, setLoading] = useState(false)
 
     //for geolocation
     let [currentMarker, setCurrentMarker] = useState({
@@ -103,6 +106,8 @@ const Settings = ({navigation, showModal, userData}) => {
         try {
             let res = await requests.profile.getProfile(id);
             setProfileData(res.data);
+            setAvatar({ uri: res.data.avatar })
+            setBanner({ uri: res.data.banner })
         } catch (error) {}
         //TODO show these data in fields
     };
@@ -126,7 +131,6 @@ const Settings = ({navigation, showModal, userData}) => {
     };
     useEffect(() => {
         getCurrentPosition();
-        console.warn('setting', userData);
     }, []);
 
     //images
@@ -148,7 +152,7 @@ const Settings = ({navigation, showModal, userData}) => {
             try {
                 let res = await requests.profile.updateImage(
                     id,
-                    isAvatar
+                    !isAvatar
                         ? {
                               banner_image: {
                                   uri: response.uri,
@@ -164,7 +168,6 @@ const Settings = ({navigation, showModal, userData}) => {
                               }
                           }
                 );
-                console.log(res.data);
             } catch (error) {
                 console.warn(error);
             }
@@ -186,12 +189,14 @@ const Settings = ({navigation, showModal, userData}) => {
 
     let onSavePress = async () => {
         //TODO requests to remote api
+        setLoading(true)
         let id = userData.profile.umeta.id;
         let res = await requests.profile.updateProfile({
             ...profileData,
             user_id: id
         });
-        Alert.alert('Attention', 'Successfully updated', [
+        setLoading(false)
+        Alert.alert(strings.attention, strings.successfullyUpdated, [
             {text: 'OK', onPress: () => console.log('OK Pressed')}
         ]);
     };
@@ -238,7 +243,8 @@ const Settings = ({navigation, showModal, userData}) => {
                         styles.changeWrapper,
                         {
                             marginLeft: (bannerWidth - buttonWidth) / 2,
-                            top: -20
+                            top: -20,
+                            zIndex: 10,
                         }
                     ]}>
                     <RoundButton
@@ -525,13 +531,17 @@ const Settings = ({navigation, showModal, userData}) => {
                 </RNPickerSelect>
 
                 <View style={styles.footer}>
-                    <TouchableWithoutFeedback
-                        onPress={onSavePress}
-                        text={strings.save}>
-                        <Text style={styles.footerText}>
-                            <Text style={styles.bold}>{strings.save}</Text>
-                        </Text>
-                    </TouchableWithoutFeedback>
+                    {loading ? (
+                        <ActivityIndicator color={'#fff'} animating={loading} />
+                    ) : (
+                        <TouchableWithoutFeedback
+                            onPress={onSavePress}
+                            text={strings.save}>
+                            <Text style={styles.footerText}>
+                                <Text style={styles.bold}>{strings.save}</Text>
+                            </Text>
+                        </TouchableWithoutFeedback>
+                    )}
                 </View>
             </View>
         </ScrollView>
@@ -621,7 +631,14 @@ const styles = StyleSheet.create({
     },
     bold: {
         fontWeight: 'bold'
-    }
+    },
+    indicatorCont: {
+        paddingHorizontal: 30,
+        paddingVertical: 12,
+        borderRadius: 5,
+        alignSelf: 'center',
+        backgroundColor: '#6864EC'
+    },
 });
 
 const mapStateToProps = ({user}) => ({

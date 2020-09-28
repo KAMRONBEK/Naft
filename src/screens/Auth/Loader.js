@@ -73,6 +73,7 @@ const Loader = ({
     };
 
     useEffect(() => {
+        console.log('loader effect: ')
         bootstrap();
     }, []);
 
