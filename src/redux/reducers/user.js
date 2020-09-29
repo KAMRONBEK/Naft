@@ -9,7 +9,9 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, {type, payload}) => {
     switch (type) {
         case USER_LOADED:
-            return {...state, ...payload};
+            let newUserLoadedState = {...state, ...payload};
+            AsyncStorage.setItem('@user', JSON.stringify(newUserLoadedState));
+            return newUserLoadedState;
         case USER_LOGGED_IN:
             let newState = {...state, ...payload};
             AsyncStorage.setItem('@user', JSON.stringify(newState));
