@@ -10,7 +10,7 @@ import {
     ScrollView,
     StyleSheet,
     ActivityIndicator,
-    TouchableWithoutFeedback,
+    TouchableWithoutFeedback
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import MapView, {Marker} from 'react-native-maps';
@@ -77,10 +77,10 @@ const Settings = ({navigation, showModal, userData}) => {
     let [bannerWidth, setBannerWidth] = useState(0);
     let [bannerHeight, setBannerHeight] = useState(0);
     let [buttonWidth, setButtonWidth] = useState(0);
-    
+
     const [profileData, setProfileData] = useState({});
 
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
 
     //for geolocation
     let [currentMarker, setCurrentMarker] = useState({
@@ -106,8 +106,8 @@ const Settings = ({navigation, showModal, userData}) => {
         try {
             let res = await requests.profile.getProfile(id);
             setProfileData(res.data);
-            setAvatar({ uri: res.data.avatar })
-            setBanner({ uri: res.data.banner })
+            setAvatar({uri: res.data.avatar});
+            setBanner({uri: res.data.banner});
         } catch (error) {}
         //TODO show these data in fields
     };
@@ -189,13 +189,13 @@ const Settings = ({navigation, showModal, userData}) => {
 
     let onSavePress = async () => {
         //TODO requests to remote api
-        setLoading(true)
+        setLoading(true);
         let id = userData.profile.umeta.id;
         let res = await requests.profile.updateProfile({
             ...profileData,
             user_id: id
         });
-        setLoading(false)
+        setLoading(false);
         Alert.alert(strings.attention, strings.successfullyUpdated, [
             {text: 'OK', onPress: () => console.log('OK Pressed')}
         ]);
@@ -204,10 +204,10 @@ const Settings = ({navigation, showModal, userData}) => {
     return (
         <ScrollView style={styles.container}>
             <View
-                onLayout={({nativeEvent}) => {
-                    setBannerWidth(nativeEvent.layout.width);
-                    setBannerHeight(nativeEvent.layout.height);
-                }}
+                // onLayout={({nativeEvent}) => {
+                //     setBannerWidth(nativeEvent.layout.width);
+                //     setBannerHeight(nativeEvent.layout.height);
+                // }}
                 style={styles.topBanner}>
                 <Image style={styles.banner} source={banner} />
             </View>
@@ -236,15 +236,15 @@ const Settings = ({navigation, showModal, userData}) => {
 
             <View style={styles.content}>
                 <View
-                    onLayout={({nativeEvent}) => {
-                        setButtonWidth(nativeEvent.layout.width);
-                    }}
+                    // onLayout={({nativeEvent}) => {
+                    //     setButtonWidth(nativeEvent.layout.width);
+                    // }}
                     style={[
                         styles.changeWrapper,
                         {
                             marginLeft: (bannerWidth - buttonWidth) / 2,
                             top: -20,
-                            zIndex: 10,
+                            zIndex: 10
                         }
                     ]}>
                     <RoundButton
@@ -638,7 +638,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         alignSelf: 'center',
         backgroundColor: '#6864EC'
-    },
+    }
 });
 
 const mapStateToProps = ({user}) => ({
